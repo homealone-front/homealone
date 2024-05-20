@@ -13,8 +13,12 @@
     "postinstall": "husky"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.0",
+    "lucide-react": "^0.378.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.1.1",
@@ -37,8 +41,11 @@
     "husky": "^9.0.11",
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
+    "postcss": "^8.4.38",
     "prettier": "^2.8.8",
     "rollup-plugin-visualizer": "^5.12.0",
+    "tailwindcss": "^3.4.3",
+    "tailwindcss-animate": "^1.0.7",
     "terser": "^5.30.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
