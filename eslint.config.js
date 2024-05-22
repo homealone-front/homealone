@@ -71,7 +71,7 @@ export default tseslint.config(
       ...typescriptEslintPlugin.configs.languageOptions,
     },
     rules: {
-      'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
+      'no-console': ['error', { allow: ['info', 'warn', 'error'] }],
       'no-undef': 'error',
       'comma-dangle': 'off',
       quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
