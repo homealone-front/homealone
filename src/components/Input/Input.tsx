@@ -51,7 +51,8 @@ const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
                 onChange={
                   extractNumber
                     ? (e) => {
-                        onChange(handleExtractNumber(e));
+                        handleExtractNumber(e);
+                        onChange(e);
                       }
                     : onChange
                 }
