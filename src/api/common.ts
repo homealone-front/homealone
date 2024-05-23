@@ -17,7 +17,7 @@ apiFetch.interceptors.request.use((config) => {
   const accessToken = '';
 
   if (accessToken) {
-    config.headers.set('AccessToken', accessToken);
+    config.headers.set('Authorization', accessToken);
   }
 
   return config;
