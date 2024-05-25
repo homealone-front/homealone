@@ -1,3 +1,4 @@
+import './preload';
 import '@/lib/tailwind.css';
 
 import React from 'react';
