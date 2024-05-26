@@ -8,7 +8,6 @@ import { RegisterSchemaType } from '../Register';
 interface AddressSearchProps {
   control: Control<RegisterSchemaType>;
   errors: FieldError;
-  validate?: (value: string) => boolean | string;
   onAddressChange: (address: string) => void;
 }
 
