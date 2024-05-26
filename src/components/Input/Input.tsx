@@ -43,11 +43,14 @@ const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
         control={control}
         render={({ field: { onChange } }) => (
           <div className="w-full">
-            <div className="flex items-center mb-2">
-              <Label htmlFor={name} className="block text-gray-700">
-                {label}
-              </Label>
-            </div>
+            {label ? (
+              <div className="flex items-center mb-2">
+                <Label htmlFor={name} className="block text-gray-700">
+                  {label}
+                </Label>
+              </div>
+            ) : null}
+
             <div className="relative">
               <Input
                 id={name}
