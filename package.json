@@ -37,6 +37,7 @@
   "devDependencies": {
     "@eslint/js": "^9.1.1",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@testing-library/jest-dom": "^6.4.5",
     "@types/node": "^20.12.4",
     "@types/react": "^18.2.66",
