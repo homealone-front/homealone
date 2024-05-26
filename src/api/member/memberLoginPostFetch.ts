@@ -13,7 +13,7 @@ export interface MemberLoginFetchParams {
   password: string;
 }
 
-export interface UserLoginResponse extends MemberResponseModel {
+export interface MemberLoginResponse extends MemberResponseModel {
   /**
    * accessToken
    */
@@ -24,4 +24,4 @@ export interface UserLoginResponse extends MemberResponseModel {
  * 로그인 api
  */
 export const memberLoginPostFetch = (params: MemberLoginFetchParams) =>
-  apiFetch.post<UserLoginResponse>('/login', params);
+  apiFetch.post<MemberLoginResponse>('/login', params);
