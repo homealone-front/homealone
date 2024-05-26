@@ -20,7 +20,9 @@ export interface ProfileDropdownPropsType {
 const ProfileDropdown = (props: ProfileDropdownPropsType) => {
   const { isOpen, onOpenChange } = props;
 
-  return isOpen ? (
+  if (!isOpen) return null;
+
+  return (
     <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger />
       <DropdownMenuContent className="w-30 fixed top-6 right-0">
@@ -46,7 +48,7 @@ const ProfileDropdown = (props: ProfileDropdownPropsType) => {
         </Button>
       </DropdownMenuContent>
     </DropdownMenu>
-  ) : null;
+  );
 };
 
 export default ProfileDropdown;

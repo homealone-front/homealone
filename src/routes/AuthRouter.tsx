@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
@@ -19,23 +18,14 @@ const AuthRouter = () => {
   const navigate = usePageMoveHandler();
 
   const accessToken = useUserStore((state) => state.token);
-  const [isValid, setIsValid] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (accessToken) {
-      setIsValid(true);
-
-      return;
-    }
-  }, []);
-
-  return !isValid ? (
+  return !accessToken ? (
     <Outlet />
   ) : (
     <Alert
       title="비정상적인 접근"
       content="이미 로그인 되어있습니다."
-      isOpen={isValid}
+      isOpen={accessToken !== ''}
       submitButtonText="확인"
       onSubmit={() => navigate(PATH.root)}
     />

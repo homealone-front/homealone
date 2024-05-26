@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Control, FieldError } from 'react-hook-form';
+import { useRef } from 'react';
+import { Control, FieldError, Controller } from 'react-hook-form';
 
 import { Input } from '@/components/Input';
 
@@ -13,8 +13,6 @@ interface AddressSearchProps {
 
 const AddressSearch = (props: AddressSearchProps) => {
   const { control, errors, onAddressChange } = props;
-
-  const [firstAddress, setFirstAddress] = useState<string>('');
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -46,7 +44,6 @@ const AddressSearch = (props: AddressSearchProps) => {
         document.body.scrollTop = currentScroll;
 
         onAddressChange(addr);
-        setFirstAddress(addr);
       },
 
       onresize: (size: { height: number }) => {
@@ -65,27 +62,33 @@ const AddressSearch = (props: AddressSearchProps) => {
 
   return (
     <div>
-      <div>
-        <Input
+      <div className="mb-2">
+        <Controller
           name="firstAddress"
           control={control}
-          label="주소"
-          type="text"
-          error={errors}
-          extractNumber={false}
-          placeholder="주소를 검색해주세요."
-          addon={{
-            buttonText: '주소검색',
-            color: '#000',
-            onSubmit: () => searchRef.current?.click(),
-          }}
-          disabled={true}
-          value={firstAddress}
+          render={({ field: { value } }) => (
+            <Input
+              name="firstAddress"
+              control={control}
+              label="주소"
+              type="text"
+              error={errors}
+              extractNumber={false}
+              placeholder="주소를 검색해주세요."
+              addon={{
+                buttonText: '주소검색',
+                color: '#000',
+                onSubmit: () => searchRef.current?.click(),
+              }}
+              disabled={true}
+              value={value}
+            />
+          )}
         />
-        <Input name="lastAddress" control={control} type="text" placeholder="상세주소 입력" extractNumber={false} />
 
         <input ref={searchRef} className="hidden" type="button" onClick={execDaumPostcode} value="주소검색" />
       </div>
+      <Input name="lastAddress" control={control} type="text" placeholder="상세주소 입력" extractNumber={false} />
 
       <div className="w-full h-80 relative border border-black my-1 hidden" ref={wrapRef}>
         <img
