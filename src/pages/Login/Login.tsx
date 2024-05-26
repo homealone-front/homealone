@@ -11,7 +11,7 @@ import { PATH } from '@/constants/paths';
 
 import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
 
-import { MemberLoginFetchParams } from '@/api/member/memberLoginPostFetch';
+import { MemberLoginPostFetchParams } from '@/api/member/memberLoginPostFetch';
 
 import { loginSchema } from './validator';
 
@@ -23,7 +23,7 @@ const Login = () => {
     values: {
       email: '',
       password: '',
-    } as MemberLoginFetchParams,
+    } as MemberLoginPostFetchParams,
   });
 
   const {

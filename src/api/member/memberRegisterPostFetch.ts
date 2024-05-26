@@ -1,7 +1,7 @@
 import { apiFetch } from '../common';
 import { MemberResponseModel } from '../model';
 
-export interface MemberRegisterFetchParams {
+export interface MemberRegisterPostFetchParams {
   /**
    * 사용할 닉네임(이름)
    */
@@ -35,5 +35,5 @@ export interface MemberRegisterResponse extends MemberResponseModel {}
 /**
  * 회원가입 api
  */
-export const memberRegisterPostFetch = (params: MemberRegisterFetchParams) =>
+export const memberRegisterPostFetch = (params: MemberRegisterPostFetchParams) =>
   apiFetch.post<MemberRegisterResponse>('/signup', params);

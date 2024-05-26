@@ -1,7 +1,7 @@
 import { apiFetch } from '../common';
 import { MemberResponseModel } from '../model';
 
-export interface MemberLoginFetchParams {
+export interface MemberLoginPostFetchParams {
   /**
    * 이메일
    */
@@ -23,5 +23,5 @@ export interface MemberLoginResponse extends MemberResponseModel {
 /**
  * 로그인 api
  */
-export const memberLoginPostFetch = (params: MemberLoginFetchParams) =>
+export const memberLoginPostFetch = (params: MemberLoginPostFetchParams) =>
   apiFetch.post<MemberLoginResponse>('/login', params);
