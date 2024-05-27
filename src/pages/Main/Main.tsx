@@ -1,24 +1,92 @@
-import { Button } from '@/components/ui/button';
-import { Confirm } from '@/components/Confirm';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Layout } from '@/layout';
 
-import { useDisclosure } from '@/hooks/useDisclosure';
+import { Appbar } from '@/components/Appbar';
+import { Select } from '@/components/Select';
+import { Searchbar } from '@/components/Searchbar';
+import { Card } from '@/components/Card';
+import { Card as TextCard } from '@/components/Card';
+import { Footer } from '@/components/Footer';
+import ListTitle from './ListTitle';
+
+import { CATEGORY_OPTIONS } from './constants';
+import { Search } from 'lucide-react';
 
 const Main = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const method = useForm({
+    values: { category: '전체', query: '' },
+  });
+
+  const { watch } = method;
+
+  console.info('검색 상태 확인', watch());
 
   return (
-    <div>
-      메인페이지
-      <Confirm
-        title="포스트 삭제"
-        content="정말로 삭제하시겠습니까?"
-        submitButtonText="삭제"
-        isOpen={isOpen}
-        onSubmit={onClose}
-        onClose={onClose}
-      />
-      <Button onClick={onOpen}>confirm 공통컴포넌트</Button>
-    </div>
+    <>
+      <Appbar />
+      <Layout>
+        <FormProvider {...method}>
+          <div className="flex w-[40rem] gap-4 mx-auto">
+            <Select options={CATEGORY_OPTIONS} />
+            <div className="w-[40rem] m-auto relative">
+              <Searchbar />
+              <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
+            </div>
+          </div>
+        </FormProvider>
+        <ListTitle
+          imgPath="/icons/receipe_icon.png"
+          title="트렌드 레시피"
+          description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
+        />
+
+        <div className="grid grid-cols-4 gap-y-4 place-items-start">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card
+              key={i}
+              imgPath="https://github.com/shadcn.png"
+              lineClamp={1}
+              cookInfo={{
+                cookPrice: '3000원',
+                cookTime: '30분',
+              }}
+              likes={40}
+            />
+          ))}
+        </div>
+        <ListTitle
+          imgPath="/icons/room_icon.png"
+          title="최근 인기 방자랑"
+          description="인테리어 어떻게 할 지 고민될 때! 다른사람들은 어떻게 꾸몄을까요?"
+        />
+        <div className="grid grid-cols-4 gap-y-4 place-items-start">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card
+              key={i}
+              imgPath="https://github.com/shadcn.png"
+              lineClamp={1}
+              cookInfo={{
+                cookPrice: '3000원',
+                cookTime: '30분',
+              }}
+              likes={40}
+            />
+          ))}
+        </div>
+
+        <ListTitle
+          imgPath="/icons/single_ment.png"
+          title="나홀로 집에서 혼잣말"
+          description="혼잣말은 일상생활에 힘이 됩니다."
+        />
+        <div className="grid grid-cols-4 gap-y-4 place-items-start mb-20">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <TextCard key={i} lineClamp={2} dateTime="2024년 5월 12일" likes={40} />
+          ))}
+        </div>
+      </Layout>
+      <Footer />
+    </>
   );
 };
 

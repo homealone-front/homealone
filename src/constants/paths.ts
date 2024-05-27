@@ -10,10 +10,12 @@ export const PATH = Object.freeze({
   /**
    * 로그인
    */
-  login: 'login' as const,
+  login: '/login' as const,
 
   /**
    * 회원가입
    */
-  register: 'register' as const,
+  register: '/register' as const,
 });
+
+export type PathValue = ValueOf<typeof PATH>;

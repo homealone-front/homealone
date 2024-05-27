@@ -3,6 +3,8 @@ import { Controller, Control, FieldError, FieldValues, Path } from 'react-hook-f
 import { useExtractNumberHandler } from '@/hooks/useExtractNumberHandler';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { InputButtonPropsType } from '../InputButton/InputButton';
+import { InputButton } from '../InputButton';
 
 interface CustomInputPropsType<T extends FieldValues> {
   name: Path<T>;
@@ -18,6 +20,8 @@ interface CustomInputPropsType<T extends FieldValues> {
    */
   extractNumber: boolean;
 
+  addon?: InputButtonPropsType;
+
   value?: string;
   placeholder?: string;
   maxLength?: number;
@@ -28,7 +32,7 @@ interface CustomInputPropsType<T extends FieldValues> {
  * ReactHookForm 과 같이 사용하기 위한 Tailwind InputForm 컴포넌트
  */
 const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
-  const { name, label, control, type, error, helperText, extractNumber, ...rest } = props;
+  const { name, label, addon, control, type, error, helperText, extractNumber, ...rest } = props;
 
   const handleExtractNumber = useExtractNumberHandler();
 
@@ -39,11 +43,14 @@ const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
         control={control}
         render={({ field: { onChange } }) => (
           <div className="w-full">
-            <div className="flex items-center mb-2">
-              <Label htmlFor={name} className="block text-gray-700">
-                {label}
-              </Label>
-            </div>
+            {label ? (
+              <div className="flex items-center mb-2">
+                <Label htmlFor={name} className="block text-gray-700">
+                  {label}
+                </Label>
+              </div>
+            ) : null}
+
             <div className="relative">
               <Input
                 id={name}
@@ -61,6 +68,16 @@ const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
                 } `}
                 {...rest}
               />
+              {addon ? (
+                <InputButton
+                  buttonText={addon?.buttonText}
+                  leftIcon={addon?.leftIcon}
+                  backgroundColor={addon?.backgroundColor}
+                  color={addon?.color}
+                  onSubmit={addon?.onSubmit}
+                  disabled={addon?.disabled}
+                />
+              ) : null}
             </div>
             {error ? (
               <p className="mt-2 text-sm text-red-600 text-left">{error?.message}</p>

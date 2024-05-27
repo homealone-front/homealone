@@ -1,3 +1,1 @@
-/**
- * @description 전체적으로 사용하는 공통 컨테이너 및 레이아웃 관련 컴포넌트 함수 작업해주세요.
- */
+export { default as Layout } from './Layout';
