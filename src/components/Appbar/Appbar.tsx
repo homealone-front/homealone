@@ -35,14 +35,14 @@ const Appbar = () => {
           </h1>
           <nav className="ml-10">
             <ul className="flex items-center gap-4">
-              <List>
-                <span className="text-lg">레시피</span>
+              <List path={PATH.receipe} onPageMove={() => navigate(PATH.receipe)}>
+                레시피
               </List>
-              <List>
-                <span className="text-lg">방자랑</span>
+              <List path={PATH.room} onPageMove={() => navigate(PATH.room)}>
+                방자랑
               </List>
-              <List>
-                <span className="text-lg">혼잣말</span>
+              <List path={PATH.talk} onPageMove={() => navigate(PATH.talk)}>
+                혼잣말
               </List>
             </ul>
           </nav>
