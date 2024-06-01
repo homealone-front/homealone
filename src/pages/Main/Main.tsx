@@ -7,19 +7,22 @@ import { Searchbar } from '@/components/Searchbar';
 import { Card } from '@/components/Card';
 import { Card as TextCard } from '@/components/Card';
 import { Footer } from '@/components/Footer';
-import ListTitle from './ListTitle';
+import { PriceSlot } from './components/PriceSlot';
+import { DateSlot } from './components/DateSlot';
+
+import ListTitle from './components/ListTitle/ListTitle';
 
 import { CATEGORY_OPTIONS } from './constants';
 import { Search } from 'lucide-react';
 
 const Main = () => {
+  /**
+   * 검색창에서 메인페이지 전체 렌더링 발생했던 부분
+   * - 콘솔에 watch 메서드로 상태찍고 있었어서 그랬던 거였숩니다...
+   */
   const method = useForm({
     values: { category: '전체', query: '' },
   });
-
-  const { watch } = method;
-
-  console.info('검색 상태 확인', watch());
 
   return (
     <>
@@ -46,10 +49,14 @@ const Main = () => {
               key={i}
               imgPath="https://github.com/shadcn.png"
               lineClamp={1}
-              cookInfo={{
-                cookPrice: '3000원',
-                cookTime: '30분',
-              }}
+              slot={
+                <PriceSlot
+                  cookInfo={{
+                    cookPrice: '3000원',
+                    cookTime: '30분',
+                  }}
+                />
+              }
               likes={40}
             />
           ))}
@@ -65,10 +72,7 @@ const Main = () => {
               key={i}
               imgPath="https://github.com/shadcn.png"
               lineClamp={1}
-              cookInfo={{
-                cookPrice: '3000원',
-                cookTime: '30분',
-              }}
+              slot={<DateSlot dateTime="2024년 5월 31일" />}
               likes={40}
             />
           ))}
@@ -81,7 +85,7 @@ const Main = () => {
         />
         <div className="grid grid-cols-4 gap-y-4 place-items-start mb-20">
           {Array.from({ length: 8 }).map((_, i) => (
-            <TextCard key={i} lineClamp={2} dateTime="2024년 5월 12일" likes={40} />
+            <TextCard key={i} lineClamp={2} slot={<DateSlot dateTime="2024년 5월 12일" />} likes={40} />
           ))}
         </div>
       </Layout>

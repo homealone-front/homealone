@@ -1,8 +1,10 @@
+import { ReactNode } from 'react';
+
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 
-import { Clock, CreditCard, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export interface CustomCardPropsType {
   /**
@@ -21,32 +23,24 @@ export interface CustomCardPropsType {
   likes: number;
 
   /**
-   * 게시글 날짜
+   * price || date slot
    */
-  dateTime?: string;
-
-  cookInfo?: {
-    /**
-     * 요리시간
-     */
-    cookTime: string;
-
-    /**
-     * 재료가격
-     */
-    cookPrice: string;
-  };
+  slot: ReactNode | ReactNode[];
 }
 
+/**
+ * 테일윈드 background url 속성이 안먹어서 일단은 인라인 스타일로 처리했습니다..
+ */
 const CustomCard = (props: CustomCardPropsType) => {
-  const { imgPath, lineClamp, dateTime, cookInfo, likes } = props;
+  const { imgPath, lineClamp, likes, slot } = props;
 
   return (
-    <Card className="w-[300px] m-auto cursor-pointer transition-transform duration-500 ease-out hover:-translate-y-2.5 hover:shadow-xl">
+    <Card className="w-[300px] m-auto cursor-pointer transition-all duration-300 ease  hover:shadow-xl box-border">
       <CardHeader
         className={`relative rounded-t-lg p-1 ${
           imgPath ? `h-56 bg-[url('${imgPath}')] bg-cover bg-no-repeat grid place-items-center` : 'hidden'
         }`}
+        style={{ backgroundImage: imgPath ? `url('${imgPath}')` : 'none' }}
       >
         {imgPath ? (
           <div className="flex gap-1 items-center rounded-2xl bg-gray400 opacity-70 px-2 py-1 mt-auto ml-auto">
@@ -55,29 +49,14 @@ const CustomCard = (props: CustomCardPropsType) => {
           </div>
         ) : null}
       </CardHeader>
-      <CardContent className="py-2 px-3">
+      <CardContent className="py-2 px-3 box-border">
         <h3 className="mb-2 text-lg font-semibold truncate">치즈돈까스(후에 서버데이터로)</h3>
         <p className={`text-md text-gray500 max-w-xs mb-4  ${lineClamp === 1 ? 'truncate' : 'line-clamp-2'}`}>
           (후에 서버 데이터로 교체)Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus dolor placeat repellat
           corrupti in rem error excepturi natus a nihil. Molestiae architecto ut corrupti accusamus nihil laboriosam
           odio consequuntur exercitationem?
         </p>
-        <div className="mb-2">
-          {dateTime ? (
-            <span className="text-gray500 text-sm font-light">{dateTime}</span>
-          ) : (
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1 items-center">
-                <Clock className="w-4 h-4" />
-                <span className="text-sm font-light">{cookInfo?.cookTime}</span>
-              </div>
-              <div className="flex gap-1 items-center">
-                <CreditCard className="w-4 h-4" />
-                <span className="text-sm font-light">{cookInfo?.cookPrice}</span>
-              </div>
-            </div>
-          )}
-        </div>
+        <div className="mb-2">{slot}</div>
         <Separator />
       </CardContent>
       <CardFooter className="flex items-center gap-2 pb-2 px-3">

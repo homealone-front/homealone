@@ -62,7 +62,6 @@ const Login = () => {
                 control={control}
                 name="email"
                 type="text"
-                extractNumber={true}
                 label="이메일"
                 placeholder="example@example.com"
                 error={errors?.email}
@@ -74,7 +73,6 @@ const Login = () => {
                 control={control}
                 name="password"
                 type="password"
-                extractNumber={false}
                 label="비밀번호"
                 placeholder="영어 대소문자, 특수문자 1자를 포함"
                 error={errors?.password}

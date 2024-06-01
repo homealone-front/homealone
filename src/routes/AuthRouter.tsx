@@ -2,8 +2,6 @@ import { Outlet } from 'react-router-dom';
 
 import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
 
-import { useUserStore } from '@/store/useUserStore';
-
 import { Alert } from '@/components/Alert';
 
 import { PATH } from '@/constants/paths';
@@ -17,7 +15,7 @@ import { PATH } from '@/constants/paths';
 const AuthRouter = () => {
   const navigate = usePageMoveHandler();
 
-  const accessToken = useUserStore((state) => state.token);
+  const accessToken = JSON.parse(localStorage.getItem('auth') as string)?.state?.token as string;
 
   return !accessToken ? (
     <Outlet />
