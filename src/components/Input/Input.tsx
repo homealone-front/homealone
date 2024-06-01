@@ -26,6 +26,7 @@ interface CustomInputPropsType<T extends FieldValues> {
   placeholder?: string;
   maxLength?: number;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 /**
