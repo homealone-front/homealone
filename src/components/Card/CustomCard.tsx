@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -26,16 +26,24 @@ export interface CustomCardPropsType {
    * price || date slot
    */
   slot: ReactNode | ReactNode[];
+
+  /**
+   * @todo 나중에 옵셔널 풀어준다.
+   */
+  onPageMove?: MouseEventHandler;
 }
 
 /**
  * 테일윈드 background url 속성이 안먹어서 일단은 인라인 스타일로 처리했습니다..
  */
 const CustomCard = (props: CustomCardPropsType) => {
-  const { imgPath, lineClamp, likes, slot } = props;
+  const { imgPath, lineClamp, likes, slot, onPageMove } = props;
 
   return (
-    <Card className="w-[300px] m-auto cursor-pointer transition-all duration-300 ease  hover:shadow-xl box-border">
+    <Card
+      className="w-[300px] m-auto cursor-pointer transition-all duration-300 ease  hover:shadow-xl box-border"
+      onClick={onPageMove}
+    >
       <CardHeader
         className={`relative rounded-t-lg p-1 ${
           imgPath ? `h-56 bg-[url('${imgPath}')] bg-cover bg-no-repeat grid place-items-center` : 'hidden'
