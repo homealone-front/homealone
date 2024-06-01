@@ -57,6 +57,7 @@ const AddressSearch = (props: AddressSearchProps) => {
 
     if (wrapRef.current) {
       wrapRef.current.style.display = 'block';
+      wrapRef.current.style.maxHeight = '28rem';
     }
   };
 
@@ -73,14 +74,13 @@ const AddressSearch = (props: AddressSearchProps) => {
               label="주소"
               type="text"
               error={errors}
-              extractNumber={false}
+              readOnly
               placeholder="주소를 검색해주세요."
               addon={{
                 buttonText: '주소검색',
                 color: '#000',
                 onSubmit: () => searchRef.current?.click(),
               }}
-              disabled={true}
               value={value}
             />
           )}
