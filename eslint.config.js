@@ -53,6 +53,11 @@ export default tseslint.config(
         ArrayType: 'readonly',
 
         /**
+         * Custom Utility
+         */
+        ValueOf: 'readonly',
+
+        /**
          * env
          */
         process: 'readonly',
