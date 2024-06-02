@@ -15,7 +15,8 @@ import { CATEGORY_OPTIONS } from '../Main/constants';
 import { Pagination } from '@/components/Pagination';
 
 import { useNavigate, generatePath } from 'react-router-dom';
-import { RECIEPE_PATH } from '@/constants/paths';
+import { PATH, RECIEPE_PATH } from '@/constants/paths';
+import { Button } from '@/components/ui/button';
 
 /**
  * 레시피 페이지 컴포넌트
@@ -33,18 +34,24 @@ const Receipe = () => {
       <Layout>
         <FormProvider {...method}>
           <div className="flex w-[40rem] gap-4 mx-auto">
-            <Select options={CATEGORY_OPTIONS} />
+            <Select name="category" options={CATEGORY_OPTIONS} />
             <div className="w-[40rem] m-auto relative">
               <Searchbar />
               <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
             </div>
           </div>
         </FormProvider>
-        <ListTitle
-          imgPath="/icons/receipe_icon.png"
-          title="트렌드 레시피"
-          description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
-        />
+        <div className="flex justify-between items-center">
+          <ListTitle
+            imgPath="/icons/receipe_icon.png"
+            title="트렌드 레시피"
+            description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
+          />
+          <Button className="rounded-full" onClick={() => navigate(PATH.receipeWrite)}>
+            새 글 작성
+          </Button>
+        </div>
+
         <div className="grid grid-cols-4 gap-6 place-items-start">
           {Array.from({ length: 4 }).map((_, i) => (
             <Card

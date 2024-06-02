@@ -29,7 +29,7 @@ const Room = () => {
       <Layout>
         <FormProvider {...method}>
           <div className="flex w-[40rem] gap-4 mx-auto">
-            <Select options={CATEGORY_OPTIONS} />
+            <Select name="category" options={CATEGORY_OPTIONS} />
             <div className="w-[40rem] m-auto relative">
               <Searchbar />
               <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
