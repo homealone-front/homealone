@@ -1,5 +1,5 @@
 import { apiFetch } from '../common';
-import { MemberResponseModel } from '../model';
+import { ResponseModel } from '../model';
 
 export interface MemberLoginPostFetchParams {
   /**
@@ -13,7 +13,7 @@ export interface MemberLoginPostFetchParams {
   password: string;
 }
 
-export interface MemberLoginResponse extends MemberResponseModel {
+export interface MemberLoginResponse extends ResponseModel {
   /**
    * accessToken
    */

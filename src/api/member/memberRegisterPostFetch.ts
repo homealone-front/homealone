@@ -1,5 +1,5 @@
 import { apiFetch } from '../common';
-import { MemberResponseModel } from '../model';
+import { ResponseModel } from '../model';
 
 export interface MemberRegisterPostFetchParams {
   /**
@@ -30,7 +30,7 @@ export interface MemberRegisterPostFetchParams {
   password: string;
 }
 
-export interface MemberRegisterResponse extends MemberResponseModel {}
+export interface MemberRegisterResponse extends ResponseModel {}
 
 /**
  * 회원가입 api

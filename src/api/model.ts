@@ -1,6 +1,6 @@
 /**
- * member 관련 공통 response
+ * 공통 response
  */
-export interface MemberResponseModel {
+export interface ResponseModel {
   message: string;
 }
