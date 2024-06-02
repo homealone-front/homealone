@@ -1,6 +1,6 @@
 import { firebaseStorage } from '@/lib/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 /**
  * 파이어베이스 storage에 이미지를 올린다.
