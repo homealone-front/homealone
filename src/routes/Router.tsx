@@ -13,6 +13,7 @@ import { TalkPage } from '@/pages/Talk';
 import { ReciepeDetailPage } from '@/pages/ReciepeDetail';
 import { RoomDetailPage } from '@/pages/RoomDetail';
 import { TalkDetailPage } from '@/pages/TalkDetail';
+import { ReciepeWritePage } from '@/pages/ReciepeWrite';
 
 const Router = () => {
   return (
@@ -26,6 +27,7 @@ const Router = () => {
         </Route>
 
         <Route path={PATH.receipe} element={<ReciepePage />} />
+        <Route path={PATH.receipeWrite} element={<ReciepeWritePage />} />
         <Route path={RECIEPE_PATH.detail} element={<ReciepeDetailPage />} />
 
         <Route path={PATH.room} element={<RoomPage />} />
