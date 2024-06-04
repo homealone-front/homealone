@@ -17,7 +17,7 @@ export interface MemberLoginResponse extends ResponseModel {
   /**
    * accessToken
    */
-  token: string;
+  accessToken: string;
 }
 
 /**
