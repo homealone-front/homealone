@@ -9,16 +9,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export interface ProfileDropdownPropsType {
+  userName?: string;
   isOpen: boolean;
   onOpenChange: () => void;
 }
 
 /**
  * @todo 마이페이지 토글 메뉴리스트에 링크 달기
- * @todo 이름 유저 상태값으로 교체
  */
 const ProfileDropdown = (props: ProfileDropdownPropsType) => {
-  const { isOpen, onOpenChange } = props;
+  const { userName, isOpen, onOpenChange } = props;
 
   if (!isOpen) return null;
 
@@ -27,7 +27,7 @@ const ProfileDropdown = (props: ProfileDropdownPropsType) => {
       <DropdownMenuTrigger />
       <DropdownMenuContent className="w-30 fixed top-6 right-0">
         <DropdownMenuLabel className="text-center font-light text-sm">
-          <span className="font-semibold">홍길동</span> 님
+          <span className="font-semibold">{userName}</span> 님
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Button className="flex items-center justify-center m-auto" variant="ghost">

@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { isAxiosError } from 'axios';
 
 import { Layout } from '@/layout';
 
@@ -11,12 +12,24 @@ import { PATH } from '@/constants/paths';
 
 import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
 
-import { MemberLoginPostFetchParams } from '@/api/member/memberLoginPostFetch';
+import { MemberLoginPostFetchParams, memberLoginPostFetch } from '@/api/member/memberLoginPostFetch';
 
 import { loginSchema } from './validator';
 
+import { useUserStore } from '@/store/useUserStore';
+import { useToast } from '@/hooks/useToast';
+import { TOAST } from '@/constants/toast';
+import { CircleCheck } from 'lucide-react';
+import { CircleXIcon } from 'lucide-react';
+import { memberInfoGetFetch } from '@/api/member/memberInfoGetFetch';
+
 const Login = () => {
   const navigate = usePageMoveHandler();
+
+  const setAccessToken = useUserStore((state) => state.setAccessToken);
+  const setUserInfo = useUserStore((state) => state.setUserInfo);
+
+  const { toast } = useToast();
 
   const method = useForm({
     resolver: yupResolver(loginSchema),
@@ -38,9 +51,33 @@ const Login = () => {
 
   const handleSubmit = submit(async () => {
     try {
+      const loginRes = await memberLoginPostFetch(getValues());
+
+      const { data } = loginRes;
+
+      setAccessToken(data.accessToken);
+
+      const userInfoRes = await memberInfoGetFetch();
+
+      setUserInfo(userInfoRes.data);
+
+      toast({
+        title: data.message || '로그인 성공',
+        icon: <CircleCheck />,
+        className: TOAST.success,
+      });
+
       navigate(PATH.root);
     } catch (error) {
       console.error(error);
+
+      if (isAxiosError(error)) {
+        toast({
+          title: error?.response?.data.message || '로그인 실패',
+          icon: <CircleXIcon />,
+          className: TOAST.error,
+        });
+      }
     }
   });
 
