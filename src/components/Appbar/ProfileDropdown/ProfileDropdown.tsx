@@ -1,5 +1,7 @@
 import { BookMarked, LogOut, NotebookPen, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLogout } from '@/hooks/useLogout';
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -19,6 +21,8 @@ export interface ProfileDropdownPropsType {
  */
 const ProfileDropdown = (props: ProfileDropdownPropsType) => {
   const { userName, isOpen, onOpenChange } = props;
+
+  const handleLogout = useLogout();
 
   if (!isOpen) return null;
 
@@ -44,7 +48,14 @@ const ProfileDropdown = (props: ProfileDropdownPropsType) => {
         </Button>
         <Button className="flex items-center justify-center m-auto" variant="ghost">
           <LogOut className="w-4 h-4" />
-          <DropdownMenuLabel className="text-center font-light text-sm">로그아웃</DropdownMenuLabel>
+          <DropdownMenuLabel
+            className="text-center font-light text-sm"
+            onClick={async () => {
+              await handleLogout();
+            }}
+          >
+            로그아웃
+          </DropdownMenuLabel>
         </Button>
       </DropdownMenuContent>
     </DropdownMenu>
