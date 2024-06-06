@@ -26,7 +26,16 @@ export const useToast = () => {
   };
 
   /**
-   * 내부적으로만 씀
+   * title 토스트 제목
+   * icon 아이콘 컴포넌트 
+   * className 추가적으로 줄 tailwind 선택자
+   * 
+   * @example
+   *  toast({
+        title: data.message || '로그인 성공',
+        icon: <CircleCheck />,
+        className: TOAST.success,
+      });
    */
   const show = ({ title, icon, className }: ToastMessageType) => {
     toast({

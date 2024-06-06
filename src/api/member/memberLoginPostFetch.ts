@@ -15,7 +15,7 @@ export interface MemberLoginPostFetchParams {
 
 export interface MemberLoginResponse extends ResponseModel {
   /**
-   * accessToken
+   * accessToken 액세스 토큰
    */
   accessToken: string;
 }
