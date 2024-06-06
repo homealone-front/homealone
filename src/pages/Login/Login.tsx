@@ -51,7 +51,9 @@ const Login = () => {
 
   const handleSubmit = submit(async () => {
     try {
-      const loginRes = await memberLoginPostFetch(getValues());
+      const loginParams = getValues();
+
+      const loginRes = await memberLoginPostFetch(loginParams);
 
       const { data } = loginRes;
 

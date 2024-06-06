@@ -12,7 +12,7 @@ import { PATH } from '@/constants/paths';
 const UserRouter = () => {
   const navigate = usePageMoveHandler();
 
-  const accessToken = JSON.parse(localStorage.getItem('auth') as string)?.state?.token;
+  const accessToken = JSON.parse(localStorage.getItem('auth') as string)?.state?.accessToken;
 
   return !accessToken ? (
     <Alert
