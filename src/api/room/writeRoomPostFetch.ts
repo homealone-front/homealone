@@ -18,9 +18,16 @@ export interface WriteRoomPostFetchParams {
   thumbnailUrl: string;
 
   /**
-   * 방자랑 썸네일 이미지
+   * 방자랑 컨텐츠 이미지 리스트
    */
-  RoomImages: string[];
+  roomImages: string[];
+
+  /**
+   * 방자랑 태그 리스트
+   */
+  tags: {
+    tagName: string;
+  }[];
 }
 
 export interface WriteRoomResponse extends ResponseModel {}
