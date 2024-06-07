@@ -1,0 +1,176 @@
+import { useRef, ChangeEvent } from 'react';
+import { FieldError, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { Layout } from '@/layout';
+
+import { Appbar } from '@/components/Appbar';
+import { Footer } from '@/components/Footer';
+
+import { Input } from '@/components/Input';
+import { AddressSearch } from '@/pages/Register/AddressSearch';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+
+import { memberSchema } from './validator';
+
+export type MemberSchemaType = yup.InferType<typeof memberSchema>;
+
+/**
+ * 마이페이지 컴포넌트
+ */
+
+/**
+ * @todo 회원데이터바인딩, 프로필이미지 변경 및 삭제, 변경사항 저장, 회원탈퇴 api
+ */
+const Mypage = () => {
+  const method = useForm<MemberSchemaType>({
+    resolver: yupResolver(memberSchema),
+    values: {
+      email: '',
+      birth: '',
+      name: '',
+      firstAddress: '',
+      lastAddress: '',
+    },
+  });
+
+  const {
+    handleSubmit: submit,
+    control,
+    setValue,
+    clearErrors,
+    formState: { isSubmitting, errors },
+  } = method;
+
+  const handleSubmit = submit(async () => {});
+
+  const uploadRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadImage = () => {
+    uploadRef.current?.click();
+    clearErrors('images');
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { files = [] } = e.target;
+
+    if (files && files.length > 0) {
+      const uploadFile = files[0];
+
+      setValue(`images.${0}.image`, uploadFile);
+
+      const imageUrl = URL.createObjectURL(uploadFile);
+
+      setValue(`images.${0}.imageUrl`, imageUrl);
+    }
+  };
+
+  const handleChangeAddress = (addr: string) => {
+    setValue('firstAddress', addr);
+
+    if (errors?.firstAddress) {
+      clearErrors('firstAddress');
+
+      return;
+    }
+  };
+
+  return (
+    <>
+      <Appbar />
+      <Layout>
+        <div className="flex flex-row items-center gap-6 mb-16">
+          <img src="/icons/arrow_svg_rightdown.svg" alt="arrow_icon" />
+          <span className="text-xl font-semibold text-gray-800">나의 정보</span>
+        </div>
+
+        <div className="flex gap-10">
+          <div className="min-w-[53.25rem] mx-auto">
+            <form className="flex flex-col text-gray-600 border-b-[0.063rem] border-gray-200" onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-9 w-full">
+                <div className="flex flex-col w-48">
+                  <Label className="mb-2" htmlFor="img">
+                    프로필 이미지
+                  </Label>
+                  <Avatar className="w-[6.25rem] h-[6.25rem] my-4">
+                    <AvatarImage src="https://github.com/shadcn.png" alt="프로필 이미지" />
+                    <AvatarFallback>nickname state</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-row gap-1">
+                    <Button variant="outline" onClick={handleUploadImage}>
+                      이미지 변경
+                    </Button>
+                    <input
+                      ref={uploadRef}
+                      className="hidden"
+                      accept="image/*"
+                      type="file"
+                      onChange={handleFileChange}
+                    />
+                    <Button variant="ghost">삭제</Button>
+                  </div>
+                </div>
+
+                <Input name="name" control={control} type="text" label="닉네임" error={errors?.name} />
+                <Input
+                  name="birth"
+                  control={control}
+                  type="text"
+                  extractNumber={true}
+                  label="생년월일"
+                  placeholder="YYYYMMDD"
+                  maxLength={8}
+                  error={errors?.birth}
+                />
+                <Input
+                  name="email"
+                  control={control}
+                  type="email"
+                  extractNumber={false}
+                  label="이메일"
+                  placeholder="example@example.com"
+                  addon={{
+                    buttonText: '중복확인',
+                    color: '#000',
+                    onSubmit: () => {},
+                  }}
+                  error={errors?.email}
+                />
+                <AddressSearch
+                  control={control}
+                  errors={errors?.firstAddress as FieldError}
+                  onAddressChange={handleChangeAddress}
+                />
+              </div>
+
+              <div className="ml-auto my-9">
+                <Button type="submit" disabled={isSubmitting}>
+                  변경 사항 저장
+                </Button>
+              </div>
+            </form>
+
+            <div className="flex py-9 mb-20">
+              <div>
+                <div className="text-sm mb-0.5 text-gray-600">회원탈퇴</div>
+                <span className="text-sm text-gray-400">
+                  탈퇴 시 작성하신 게시글 및 댓글이 모두 삭제되며 복구되지 않습니다.
+                </span>
+              </div>
+              <Button className="ml-auto" variant="destructive">
+                회원탈퇴
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Layout>
+      <Footer />
+    </>
+  );
+};
+
+export default Mypage;
