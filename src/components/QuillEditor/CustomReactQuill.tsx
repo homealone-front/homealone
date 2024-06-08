@@ -21,6 +21,7 @@ const CustomReactQuill = forwardRef<ReactQuill, ReactQuillProps>(({ modules, pla
           placeholder={placeholder}
           modules={modules}
           theme="snow"
+          className="h-full"
           ref={ref}
           value={value}
           onChange={onChange}
