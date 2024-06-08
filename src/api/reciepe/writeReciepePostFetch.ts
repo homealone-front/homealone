@@ -27,7 +27,7 @@ export interface WriteReciepePostFetchParams {
    * 조리 시간.
    * - 22..
    */
-  reciepeTime: number;
+  reciepeTime: string;
 
   /**
    * 어디 나라 음식?

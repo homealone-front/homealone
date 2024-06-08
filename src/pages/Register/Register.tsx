@@ -134,6 +134,8 @@ const Register = () => {
               />
             </div>
             <AddressSearch
+              name="firstAddress"
+              lastName="lastAddress"
               control={control}
               errors={errors?.firstAddress as FieldError}
               onAddressChange={(addr) => {

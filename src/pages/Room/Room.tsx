@@ -53,6 +53,7 @@ const Room = () => {
         <div className="grid grid-cols-4 gap-6 place-items-start">
           {Array.from({ length: 20 }).map((_, i) => (
             <Card
+              description="할리스 페스토햄"
               onPageMove={() =>
                 navigate(
                   generatePath(ROOM_PATH.detail, {
@@ -61,14 +62,14 @@ const Room = () => {
                 )
               }
               key={i}
-              imgPath="https://github.com/shadcn.png"
+              imageUrl="https://github.com/shadcn.png"
               lineClamp={1}
               slot={<DateSlot dateTime="2024년 5월 31일" />}
               likes={40}
             />
           ))}
         </div>
-        <Pagination totalPage={4} totalItem={80} currentPage={1} onPageChange={() => alert('페이지네이션 로직 필요')} />
+        <Pagination totalPage={4} currentPage={1} onPageChange={() => alert('페이지네이션 로직 필요')} />
       </Layout>
       <Footer />
     </>

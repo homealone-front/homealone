@@ -46,15 +46,15 @@ export const getReciepeCleansingData = async (data: ReciepeSchemaType) => {
 
   return {
     ...rest,
-    cuisine: FOOD_CATEGORIES.find((c) => c.value === rest.cuisine)?.param,
-    reciepeTime: COOK_TIME.find((t) => t.value === rest.reciepeTime)?.param,
-    reciepeType: RECIEPE_TYPE.find((t) => t.value === rest.reciepeType)?.param,
+    cuisine: FOOD_CATEGORIES.find((c) => c.value === rest.cuisine)?.param as string,
+    reciepeTime: COOK_TIME.find((t) => t.value === rest.reciepeTime)?.param as string,
+    reciepeType: RECIEPE_TYPE.find((t) => t.value === rest.reciepeType)?.param as string,
     ingredients: rest.ingredients.map((item) => ({
       ...item,
       quantity: parseInt(item.quantity, 10),
     })),
-    portions: PORTIONS.find((p) => p.value === rest.portions)?.param,
+    portions: PORTIONS.find((p) => p.value === rest.portions)?.param as number,
     images: [...cleasingMainImage],
     details: [...cleansingDetailsImage],
-  } as WriteReciepePostFetchParams;
+  };
 };

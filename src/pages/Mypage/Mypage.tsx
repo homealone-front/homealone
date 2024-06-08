@@ -181,6 +181,8 @@ const Mypage = () => {
                   error={errors?.email}
                 />
                 <AddressSearch
+                  name="firstAddress"
+                  lastName="lastAddress"
                   control={control}
                   errors={errors?.firstAddress as FieldError}
                   onAddressChange={handleChangeAddress}

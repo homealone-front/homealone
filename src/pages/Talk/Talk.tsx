@@ -47,6 +47,7 @@ const Talk = () => {
           {Array.from({ length: 20 }).map((_, i) => (
             <TextCard
               key={i}
+              description="바꼈어요"
               lineClamp={2}
               slot={<DateSlot dateTime="2024년 5월 31일" />}
               likes={40}
@@ -60,7 +61,7 @@ const Talk = () => {
             />
           ))}
         </div>
-        <Pagination totalPage={4} totalItem={80} currentPage={1} onPageChange={() => alert('페이지네이션 로직 필요')} />
+        <Pagination totalPage={4} currentPage={1} onPageChange={() => alert('페이지네이션 로직 필요')} />
       </Layout>
       <Footer />
     </>

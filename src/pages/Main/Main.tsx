@@ -52,12 +52,13 @@ const Main = () => {
           {Array.from({ length: 4 }).map((_, i) => (
             <Card
               key={i}
-              imgPath="https://github.com/shadcn.png"
+              description="배고파요"
+              imageUrl="https://github.com/shadcn.png"
               lineClamp={1}
               slot={
                 <PriceSlot
                   cookInfo={{
-                    cookPrice: '3000원',
+                    portions: 3,
                     cookTime: '30분',
                   }}
                 />
@@ -76,7 +77,8 @@ const Main = () => {
           {Array.from({ length: 4 }).map((_, i) => (
             <Card
               key={i}
-              imgPath="https://github.com/shadcn.png"
+              description="배고파요"
+              imageUrl="https://github.com/shadcn.png"
               lineClamp={1}
               slot={<DateSlot dateTime="2024년 5월 31일" />}
               likes={40}
@@ -92,7 +94,13 @@ const Main = () => {
         />
         <div className="grid grid-cols-4 gap-6 place-items-start mb-20">
           {Array.from({ length: 8 }).map((_, i) => (
-            <TextCard key={i} lineClamp={2} slot={<DateSlot dateTime="2024년 5월 12일" />} likes={40} />
+            <TextCard
+              key={i}
+              description="배교파요"
+              lineClamp={2}
+              slot={<DateSlot dateTime="2024년 5월 12일" />}
+              likes={40}
+            />
           ))}
         </div>
       </Layout>
