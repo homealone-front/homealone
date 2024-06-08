@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Search } from 'lucide-react';
 
@@ -18,15 +19,26 @@ import { useNavigate, generatePath } from 'react-router-dom';
 import { PATH, RECIEPE_PATH } from '@/constants/paths';
 import { Button } from '@/components/ui/button';
 
+import { useRecipeListQuery } from '@/services/recipe/useRecipeListQuery';
+import { SkeletonCard } from '@/components/Skeleton';
+
 /**
  * 레시피 페이지 컴포넌트
  */
 const Receipe = () => {
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
+  const { data, isLoading, isFetching } = useRecipeListQuery({ page: currentPage, size: 20 });
+
   const navigate = useNavigate();
 
   const method = useForm({
     values: { category: '전체', query: '' },
   });
+
+  const handlePageMove = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -52,9 +64,12 @@ const Receipe = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-4 gap-6 place-items-start">
+        {/* <div className="grid grid-cols-4 gap-6 place-items-start">
           {Array.from({ length: 4 }).map((_, i) => (
             <Card
+              title="배고파요"
+              description="진짜 너무너무 배고파요...."
+              userName="홍길동"
               onPageMove={() =>
                 navigate(
                   generatePath(RECIEPE_PATH.detail, {
@@ -63,12 +78,12 @@ const Receipe = () => {
                 )
               }
               key={i}
-              imgPath="https://github.com/shadcn.png"
+              imageUrl="https://github.com/shadcn.png"
               lineClamp={1}
               slot={
                 <PriceSlot
                   cookInfo={{
-                    cookPrice: '3000원',
+                    portions: 2,
                     cookTime: '30분',
                   }}
                 />
@@ -76,32 +91,39 @@ const Receipe = () => {
               likes={40}
             />
           ))}
-        </div>
+        </div> */}
         <ListTitle imgPath="/icons/receipe_icon.png" title="모든 레시피" />
         <div className="grid grid-cols-4 gap-6 place-items-start py-12">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <Card
-              key={i}
-              imgPath="https://github.com/shadcn.png"
-              lineClamp={1}
-              slot={
-                <PriceSlot
-                  cookInfo={{
-                    cookPrice: '3000원',
-                    cookTime: '30분',
-                  }}
+          {isLoading || isFetching
+            ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
+            : data?.content?.map((card, i) => (
+                <Card
+                  key={i}
+                  title={card?.title}
+                  description={card?.description}
+                  userName={card?.userName}
+                  imageUrl={card?.imageUrl}
+                  lineClamp={1}
+                  slot={
+                    <PriceSlot
+                      cookInfo={{
+                        portions: card?.portions,
+                        cookTime: card?.recipeTime,
+                      }}
+                    />
+                  }
+                  likes={40}
+                  onPageMove={() =>
+                    navigate(
+                      generatePath(RECIEPE_PATH.detail, {
+                        id: card.id.toString(),
+                      }),
+                    )
+                  }
                 />
-              }
-              likes={40}
-            />
-          ))}
+              ))}
         </div>
-        <Pagination
-          totalPage={4}
-          totalItem={80}
-          currentPage={1}
-          onPageChange={() => alert('페이지네이션 로직 적용 필요')}
-        />
+        <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
       </Layout>
       <Footer />
     </>

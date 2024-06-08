@@ -31,7 +31,11 @@ export const registerSchema = yup.object().shape({
   /**
    * 이름
    */
-  name: yup.string().required('이름 혹은 별칭을 입력해주세요.').min(2, '이름은 2글자 이상입니다.'),
+  name: yup
+    .string()
+    .required('이름 혹은 별칭을 입력해주세요.')
+    .min(2, '닉네임은 2글자 이상입니다.')
+    .max(8, '닉네임은 8글자 이하입니다.'),
 
   /**
    * 생년월일

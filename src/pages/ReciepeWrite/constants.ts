@@ -56,32 +56,32 @@ export const COOK_TIME = [
   {
     value: '15분',
     item: '15분',
-    param: 15,
+    param: 'FIFTEEN',
   },
   {
     value: '30분',
     item: '30분',
-    param: 30,
+    param: 'THIRTY',
   },
   {
     value: '45분',
     item: '45분',
-    param: 45,
+    param: 'FORTY_FIVE',
   },
   {
     value: '1시간',
     item: '1시간',
-    param: 60,
+    param: 'SIXTY',
   },
   {
     value: '1시간 30분',
     item: '1시간 30분',
-    param: 90,
+    param: 'NINETY',
   },
   {
     value: '2시간',
     item: '2시간',
-    param: 120,
+    param: 'ONE_TWENTY',
   },
 ];
 
