@@ -8,16 +8,13 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
+import { getVisiblePages } from './util';
+
 export interface PaginationPropsType {
   /**
    * 총 페이지
    */
   totalPage: number;
-
-  /**
-   * 총 데이터 갯수
-   */
-  totalItem: number;
 
   /**
    * 현재 페이지
@@ -34,7 +31,9 @@ export interface PaginationPropsType {
  * Pagination 공통 컴포넌트
  */
 const CustomPagination = (props: PaginationPropsType) => {
-  const { totalItem, currentPage, totalPage, onPageChange } = props;
+  const { currentPage, totalPage, onPageChange } = props;
+
+  const visiblePage = getVisiblePages({ totalPage, currentPage });
 
   return (
     <div className="py-12">
@@ -42,29 +41,54 @@ const CustomPagination = (props: PaginationPropsType) => {
         <PaginationContent>
           <PaginationItem>
             <button
-              onClick={currentPage === 1 ? undefined : () => onPageChange(currentPage - 1)}
-              disabled={currentPage === 1}
+              onClick={currentPage === 0 ? undefined : () => onPageChange(currentPage - 1)}
+              disabled={currentPage === 0}
             >
               <PaginationPrevious />
             </button>
           </PaginationItem>
-          {Array.from({ length: totalPage }).map((_, i) => (
-            <PaginationItem key={i}>
-              <button onClick={() => onPageChange(i + 1)}>
-                <PaginationLink isActive={currentPage === i + 1 ? true : false}>{i + 1}</PaginationLink>
+
+          {/* 첫 페이지 표시 */}
+          {currentPage > 5 && totalPage > 10 && (
+            <>
+              <PaginationItem>
+                <button onClick={() => onPageChange(0)}>
+                  <PaginationLink isActive={currentPage === 0}>1</PaginationLink>
+                </button>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            </>
+          )}
+
+          {/* 현재 페이지와 근처의 페이지 표시 */}
+          {visiblePage.map((page) => (
+            <PaginationItem key={page}>
+              <button onClick={() => onPageChange(page - 1)}>
+                <PaginationLink isActive={currentPage === page - 1}>{page}</PaginationLink>
               </button>
             </PaginationItem>
           ))}
-          {totalItem > 60 ? (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          ) : null}
+
+          {/* 마지막 페이지 표시 */}
+          {currentPage < totalPage - 5 && totalPage > 10 && (
+            <>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <button onClick={() => onPageChange(totalPage - 1)}>
+                  <PaginationLink isActive={currentPage === totalPage - 1}>{totalPage}</PaginationLink>
+                </button>
+              </PaginationItem>
+            </>
+          )}
 
           <PaginationItem>
             <button
-              onClick={totalPage === currentPage ? undefined : () => onPageChange(currentPage + 1)}
-              disabled={currentPage === totalPage}
+              onClick={totalPage === currentPage - 1 ? undefined : () => onPageChange(currentPage + 1)}
+              disabled={currentPage === totalPage - 1}
             >
               <PaginationNext />
             </button>
