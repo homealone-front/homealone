@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { PATH, RECIEPE_PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
 
 import AuthRouter from './AuthRouter';
+import UserRouter from './UserRouter';
 
 import { MainPage } from '@/pages/Main';
 import { LoginPage } from '@/pages/Login';
@@ -10,6 +11,7 @@ import { RegisterPage } from '@/pages/Register';
 import { ReciepePage } from '@/pages/Reciepe';
 import { RoomPage } from '@/pages/Room';
 import { TalkPage } from '@/pages/Talk';
+import { Mypage } from '@/pages/Mypage';
 import { ReciepeDetailPage } from '@/pages/ReciepeDetail';
 import { RoomDetailPage } from '@/pages/RoomDetail';
 import { TalkDetailPage } from '@/pages/TalkDetail';
@@ -35,6 +37,10 @@ const Router = () => {
 
         <Route path={PATH.talk} element={<TalkPage />} />
         <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
+
+        <Route element={<UserRouter />}>
+          <Route path={PATH.mypage} element={<Mypage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
