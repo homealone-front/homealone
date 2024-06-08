@@ -1,4 +1,4 @@
-import { Clock, CreditCard } from 'lucide-react';
+import { Clock, User } from 'lucide-react';
 
 type PriceSlotPropsType = {
   cookInfo: {
@@ -8,9 +8,9 @@ type PriceSlotPropsType = {
     cookTime: string;
 
     /**
-     * 재료가격
+     * N인분
      */
-    cookPrice: string;
+    portions: number;
   };
 };
 
@@ -22,8 +22,8 @@ const PriceSlot = ({ cookInfo }: PriceSlotPropsType) => {
         <span className="text-sm font-light">{cookInfo?.cookTime}</span>
       </div>
       <div className="flex gap-1 items-center">
-        <CreditCard className="w-4 h-4" />
-        <span className="text-sm font-light">{cookInfo?.cookPrice}</span>
+        <User className="w-4 h-4" />
+        <span className="text-sm font-light">{cookInfo?.portions}인분</span>
       </div>
     </div>
   );

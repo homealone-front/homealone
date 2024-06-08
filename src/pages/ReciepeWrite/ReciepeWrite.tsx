@@ -1,7 +1,7 @@
 import { useState, useRef, ChangeEvent } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Image, Undo2 } from 'lucide-react';
+import { Image, Undo2, CircleXIcon, CircleCheck } from 'lucide-react';
 import * as yup from 'yup';
 
 import { Appbar } from '@/components/Appbar';
@@ -16,6 +16,9 @@ import { CookingOrderFields } from './components/CookingOrderFields';
 import { Spinner } from '@/components/Spinner';
 
 import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
+import { useToast } from '@/hooks/useToast';
+
+import { writeReciepePostFetch } from '@/api/reciepe/writeReciepePostFetch';
 
 import { getReciepeCleansingData } from './util';
 
@@ -23,6 +26,8 @@ import { FOOD_CATEGORIES, COOK_TIME, PORTIONS, RECIEPE_TYPE } from './constants'
 import { PATH } from '@/constants/paths';
 
 import { reciepeSchema } from './validator';
+import { isAxiosError } from 'axios';
+import { TOAST } from '@/constants/toast';
 
 export type ReciepeSchemaType = yup.InferType<typeof reciepeSchema>;
 
@@ -31,6 +36,8 @@ export type ReciepeSchemaType = yup.InferType<typeof reciepeSchema>;
  */
 const ReciepeWrite = () => {
   const navigate = usePageMoveHandler();
+
+  const { toast } = useToast();
 
   const [displaySpinner, setDisplaySpinner] = useState<boolean>(false);
 
@@ -103,11 +110,32 @@ const ReciepeWrite = () => {
   const handleSubmit = submit(async () => {
     try {
       setDisplaySpinner(true);
-      console.info('최종 파라미터를 확인한다.', await getReciepeCleansingData(getValues()));
+
+      const cleansingParams = await getReciepeCleansingData(getValues());
+
+      const writeRes = await writeReciepePostFetch(cleansingParams);
 
       setDisplaySpinner(false);
+
+      toast({
+        title: writeRes.data.message || '레시피를 등록했어요!',
+        icon: <CircleCheck />,
+        className: TOAST.success,
+      });
+
+      navigate(PATH.receipe);
     } catch (error) {
       console.error(error);
+
+      if (isAxiosError(error)) {
+        setDisplaySpinner(false);
+
+        toast({
+          title: error?.response?.data.message || '레시피 등록에 실패했어요.',
+          icon: <CircleXIcon />,
+          className: TOAST.error,
+        });
+      }
     }
   });
 

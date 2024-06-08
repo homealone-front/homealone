@@ -61,12 +61,12 @@ export const RECIEPE_PATH = Object.freeze({
 /**
  * room 상세
  */
-export const ROOM_PATH = Object.freeze({
+export const ROOM_PATH = {
   /**
    * generatePath
    */
   detail: '/room/:id' as const,
-});
+};
 
 /**
  * talk 상세
