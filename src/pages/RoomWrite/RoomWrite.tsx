@@ -111,7 +111,8 @@ const RoomWrite = () => {
       setDisplaySpinner(true);
       const writeRoomParams = await getRoomCleansingData(getValues());
       await writeRoomPostFetch(writeRoomParams);
-      // console.info('작성 파라미터를 확인한다.', getValues());
+      console.info('최종 파라미터를 확인한다.', writeRoomParams);
+      console.info('작성 파라미터를 확인한다.', getValues());
 
       toast({
         title: '방자랑 등록 성공',

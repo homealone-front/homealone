@@ -25,12 +25,10 @@ export const getRoomCleansingData = async (data: RoomSchemaType) => {
    */
   const cleansingRoomImage = (await Promise.all(
     roomImages
-      .filter((item) => Object.keys(item.image).length !== 0)
+      .filter((item) => item.image instanceof File)
       .map(async (item) => {
-        if (item.image instanceof File) {
-          const uploadedImage = await uploadImage(item.image);
-          return uploadedImage?.imageUrl;
-        }
+        const uploadedImage = await uploadImage(item.image);
+        return uploadedImage?.imageUrl;
       }),
   )) as PropType<WriteRoomPostFetchParams, 'roomImages'>;
 
