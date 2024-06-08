@@ -92,4 +92,4 @@ export interface WriteReciepeResponse extends ResponseModel {}
  * 레시피 작성 및 등록
  */
 export const writeReciepePostFetch = (params: WriteReciepePostFetchParams) =>
-  apiFetch.post<WriteReciepeResponse>('/reciepes', params);
+  apiFetch.post<WriteReciepeResponse>('/recipes', params);
