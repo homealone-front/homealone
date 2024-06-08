@@ -163,22 +163,20 @@ const RoomWrite = () => {
                     backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
                     backgroundSize: 'cover',
                   }}
-                  className={`rounded-xl w-full h-full opacity-90 flex items-center justify-center ${
-                    file && file instanceof File
-                      ? `bg-cover bg-center bg-no-repeat border border-gray300`
-                      : 'bg-[#f5f5f5]'
+                  className={`rounded-xl w-full h-full opacity-90 flex items-center justify-center group ${
+                    file.imageUrl ? `bg-cover bg-center bg-no-repeat border border-gray300` : 'bg-[#f5f5f5]'
                   }`}
                 >
-                  <div className="flex flex-col justify-center items-center">
+                  <Button
+                    className={`flex gap-4 ${
+                      file.imageUrl ? 'text-gray700 bg-white group-hover:flex hidden' : 'text-gray400'
+                    }`}
+                    variant="ghost"
+                    onClick={handleUploadImage}
+                  >
                     <Image size={16} color={`${file.imageUrl ? '#2d3748' : '#a0aec0'}`} strokeWidth={1.25} />
-                    <Button
-                      className={`${file.imageUrl ? 'text-gray700' : 'text-gray400'}`}
-                      variant="ghost"
-                      onClick={handleUploadImage}
-                    >
-                      대표이미지 {file.imageUrl && file.image instanceof File ? '수정' : '추가'}하기
-                    </Button>
-                  </div>
+                    <span>대표이미지 {file.imageUrl && file.image instanceof File ? '수정' : '추가'}하기</span>
+                  </Button>
                 </div>
                 {errors?.thumbnailUrl?.[0]?.imageUrl ? (
                   <p className="mt-2 text-sm text-red-600 text-left">{errors?.thumbnailUrl?.[0]?.imageUrl.message}</p>
@@ -197,6 +195,9 @@ const RoomWrite = () => {
               </div>
               <div className="mt-8 h-72">
                 <QuillEditor ref={quillRef} modules={modules} placeholder="방자랑 내용을 입력해주세요." />
+                {errors?.content ? (
+                  <p className="mt-16 text-sm text-red-600 text-left">{errors?.content.message}</p>
+                ) : null}
               </div>
               <div className="mt-20 text-center">
                 <Button className="rounded-lg w-24 text-lg" onClick={handleSubmit}>
