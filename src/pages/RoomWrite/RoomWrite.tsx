@@ -1,6 +1,6 @@
 import { ChangeEvent, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Image, Undo2 } from 'lucide-react';
+import { CircleCheck, CircleXIcon, Image, Undo2 } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import * as yup from 'yup';
 
@@ -18,8 +18,15 @@ import { QuillEditor } from '@/components/QuillEditor';
 
 import { roomSchema } from './validator';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { uploadImage } from '@/utils/uploadImage';
 import { getRoomCleansingData } from './util';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Card } from '@/components/ui/card';
+import { RoomImagesFields } from './components/RoomImagesFields';
+import { writeRoomPostFetch } from '@/api/room/writeRoomPostFetch';
+import { isAxiosError } from 'axios';
+import { useToast } from '@/hooks/useToast';
+import { TOAST } from '@/constants/toast';
+
 export type RoomSchemaType = yup.InferType<typeof roomSchema>;
 
 /**
@@ -28,6 +35,8 @@ export type RoomSchemaType = yup.InferType<typeof roomSchema>;
  */
 const RoomWrite = () => {
   const navigate = usePageMoveHandler();
+
+  const { toast } = useToast();
 
   const [displaySpinner, setDisplaySpinner] = useState<boolean>(false);
 
@@ -65,34 +74,6 @@ const RoomWrite = () => {
   const uploadRef = useRef<HTMLInputElement>(null);
   const quillRef = useRef<ReactQuill>(null);
 
-  const quillImageHandler = () => {
-    // 이미지 핸들러 시작
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-
-    input.addEventListener('change', async () => {
-      // 이미지 삽입
-      const file = input.files && input.files[0];
-
-      if (!file) return;
-
-      try {
-        const uploadedImage = await uploadImage(file);
-        const IMG_URL = uploadedImage?.imageUrl;
-
-        // 에디터에 보여주기
-        const editor = quillRef?.current?.getEditor(); // 에디터 객체 가져오기
-        const range = editor?.getSelection();
-        if (!range) return;
-        editor?.insertEmbed(range.index, 'image', IMG_URL);
-      } catch (error) {
-        console.error(error);
-      }
-    });
-  };
-
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -102,11 +83,8 @@ const RoomWrite = () => {
           ['blockquote'],
           [{ list: 'ordered' }, { list: 'bullet' }],
           [{ color: [] }, { background: [] }],
-          [{ align: [] }, 'link', 'image'],
+          [{ align: [] }, 'link'],
         ],
-        handlers: {
-          image: quillImageHandler,
-        },
       },
     };
   }, []);
@@ -121,11 +99,9 @@ const RoomWrite = () => {
 
     if (files && files.length > 0) {
       const uploadFile = files[0];
-
-      setValue(`thumbnailUrl.${0}.image`, uploadFile);
-
       const imageUrl = URL.createObjectURL(uploadFile);
 
+      setValue(`thumbnailUrl.${0}.image`, uploadFile);
       setValue(`thumbnailUrl.${0}.imageUrl`, imageUrl);
     }
   };
@@ -133,12 +109,28 @@ const RoomWrite = () => {
   const handleSubmit = submit(async () => {
     try {
       setDisplaySpinner(true);
-      console.info('최종 파라미터를 확인한다.', await getRoomCleansingData(getValues()));
+      const writeRoomParams = await getRoomCleansingData(getValues());
+      await writeRoomPostFetch(writeRoomParams);
       // console.info('작성 파라미터를 확인한다.', getValues());
+
+      toast({
+        title: '방자랑 등록 성공',
+        icon: <CircleCheck />,
+        className: TOAST.success,
+      });
 
       setDisplaySpinner(false);
     } catch (error) {
       console.error(error);
+
+      if (isAxiosError(error)) {
+        toast({
+          title: error?.response?.data.message || '방자랑 등록 실패',
+          icon: <CircleXIcon />,
+          className: TOAST.error,
+        });
+      }
+      setDisplaySpinner(false);
     }
   });
 
@@ -157,32 +149,63 @@ const RoomWrite = () => {
         <FormProvider {...method}>
           <div className="container w-11/12 mx-auto flex justify-between">
             <div className="w-full mb-8">
-              <div className="upload mt-8 w-1/2 mx-auto h-72">
-                <div
-                  style={{
-                    backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
-                    backgroundSize: 'cover',
-                  }}
-                  className={`rounded-xl w-full h-full opacity-90 flex items-center justify-center group ${
-                    file.imageUrl ? `bg-cover bg-center bg-no-repeat border border-gray300` : 'bg-[#f5f5f5]'
-                  }`}
-                >
-                  <Button
-                    className={`flex gap-4 ${
-                      file.imageUrl ? 'text-gray700 bg-white group-hover:flex hidden' : 'text-gray400'
-                    }`}
-                    variant="ghost"
-                    onClick={handleUploadImage}
-                  >
-                    <Image size={16} color={`${file.imageUrl ? '#2d3748' : '#a0aec0'}`} strokeWidth={1.25} />
-                    <span>대표이미지 {file.imageUrl && file.image instanceof File ? '수정' : '추가'}하기</span>
-                  </Button>
-                </div>
-                {errors?.thumbnailUrl?.[0]?.imageUrl ? (
-                  <p className="mt-2 text-sm text-red-600 text-left">{errors?.thumbnailUrl?.[0]?.imageUrl.message}</p>
-                ) : null}
-                <input ref={uploadRef} className="hidden" accept="image/*" type="file" onChange={handleFileChange} />
-              </div>
+              {/* 대표 이미지, 추가 이미지 업로드 */}
+              <Carousel
+                opts={{
+                  align: 'start',
+                }}
+                className="w-full"
+              >
+                <CarouselContent>
+                  <CarouselItem className="basis-1/3">
+                    <div className="p-1">
+                      <Card>
+                        <div className="flex aspect-square items-center justify-center">
+                          <div
+                            style={{
+                              backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
+                              backgroundSize: 'cover',
+                            }}
+                            className={`rounded-lg w-full h-full opacity-90 flex items-center justify-center group ${
+                              file.imageUrl ? `bg-cover bg-center bg-no-repeat` : 'bg-[#f5f5f5]'
+                            }`}
+                          >
+                            <Button
+                              className={`flex gap-4 ${
+                                file.imageUrl ? 'text-gray700 bg-white group-hover:flex hidden' : 'text-gray400'
+                              }`}
+                              variant="ghost"
+                              onClick={handleUploadImage}
+                            >
+                              <Image size={16} color={`${file.imageUrl ? '#2d3748' : '#a0aec0'}`} strokeWidth={1.25} />
+                              <span>
+                                대표 이미지 {file.imageUrl && file.image instanceof File ? '수정' : '추가'}하기
+                              </span>
+                            </Button>
+                          </div>
+                          <input
+                            ref={uploadRef}
+                            className="hidden"
+                            accept="image/*"
+                            type="file"
+                            onChange={handleFileChange}
+                          />
+                        </div>
+                      </Card>
+                      {errors?.thumbnailUrl?.[0]?.imageUrl ? (
+                        <p className="mt-2 text-sm text-red-600 text-left">
+                          {errors?.thumbnailUrl?.[0]?.imageUrl.message}
+                        </p>
+                      ) : null}
+                    </div>
+                  </CarouselItem>
+                  <RoomImagesFields />
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+
+              {/* 제목 */}
               <div className="mt-8">
                 <Input
                   control={control}
@@ -193,12 +216,16 @@ const RoomWrite = () => {
                   error={errors?.title}
                 />
               </div>
+
+              {/* 내용 */}
               <div className="mt-8 h-72">
                 <QuillEditor ref={quillRef} modules={modules} placeholder="방자랑 내용을 입력해주세요." />
                 {errors?.content ? (
                   <p className="mt-16 text-sm text-red-600 text-left">{errors?.content.message}</p>
                 ) : null}
               </div>
+
+              {/* 등록 버튼 */}
               <div className="mt-20 text-center">
                 <Button className="rounded-lg w-24 text-lg" onClick={handleSubmit}>
                   등록하기

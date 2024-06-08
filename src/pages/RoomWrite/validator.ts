@@ -14,13 +14,12 @@ export const roomSchema = yup.object().shape({
       imageUrl: yup.string().required('대표이미지를 선택해 주세요!'),
     }),
   ),
-  roomImages: yup.array().of(yup.string()),
-  // roomImages: yup.array().of(
-  //   yup.object().shape({
-  //     image: yup.mixed(), // Required 풀기
-  //     imageUrl: yup.string(), // Required 풀기
-  //   }),
-  // ),
+  roomImages: yup.array().of(
+    yup.object().shape({
+      image: yup.mixed(), // Required 풀기
+      imageUrl: yup.string(), // Required 풀기
+    }),
+  ),
   tags: yup.array().of(
     yup.object().shape({
       tagName: yup.string(), // Required 풀기
