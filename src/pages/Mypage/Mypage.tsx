@@ -17,7 +17,9 @@ import { Label } from '@/components/ui/label';
 
 import { memberSchema } from './validator';
 import { useUserStore } from '@/store/useUserStore';
-import { formatBirthDate } from './util';
+import { birthDateCleansing } from './util';
+// import { patchMemberDataCleansing } from './util';
+// import { memberInfoPatchFetch } from '@/api/member/memberInfoPatchFetch';
 
 export type MemberSchemaType = yup.InferType<typeof memberSchema>;
 
@@ -26,9 +28,10 @@ export type MemberSchemaType = yup.InferType<typeof memberSchema>;
  */
 
 /**
- * @todo 회원데이터바인딩(last), 프로필이미지 업로드 및 삭제, 변경사항 저장, 회원탈퇴 api
+ * @todo 회원데이터바인딩(lastAddress), 변경사항 저장, 회원탈퇴 api
  */
 const Mypage = () => {
+  const id = useUserStore((state) => state.id) as number;
   const name = useUserStore((state) => state.name) as string;
   const email = useUserStore((state) => state.email) as string;
   const address = useUserStore((state) => state.address) as string;
@@ -38,10 +41,11 @@ const Mypage = () => {
   const method = useForm<MemberSchemaType>({
     resolver: yupResolver(memberSchema),
     defaultValues: {
+      id: id,
       image: { image: null, imageUrl: imageUrl },
       name: name,
       email: email,
-      birth: formatBirthDate(birth),
+      birth: birthDateCleansing(birth),
       firstAddress: address,
       lastAddress: address,
     },
@@ -51,12 +55,22 @@ const Mypage = () => {
     handleSubmit: submit,
     control,
     setValue,
+    // getValues,
     clearErrors,
     watch,
     formState: { isSubmitting, errors },
   } = method;
 
-  const handleSubmit = submit(async () => {});
+  const handleSubmit = submit(async () => {
+    try {
+      // const params = await patchMemberDataCleansing(getValues());
+      // const response = await memberInfoPatchFetch(params);
+      //@todo fix patch fetch 403에러
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
   const values = watch();
 
   const uploadRef = useRef<HTMLInputElement>(null);
@@ -66,16 +80,20 @@ const Mypage = () => {
     clearErrors('image');
   };
 
+  const handleRemoveImage = () => {
+    setValue(`image.image`, null);
+    setValue(`image.imageUrl`, null);
+    clearErrors('image');
+  };
+
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { files = [] } = e.target;
 
     if (files && files.length > 0) {
       const uploadFile = files[0];
-
       setValue(`image.image`, uploadFile);
 
       const imageUrl = URL.createObjectURL(uploadFile);
-
       setValue(`image.imageUrl`, imageUrl);
     }
   };
@@ -122,7 +140,9 @@ const Mypage = () => {
                       type="file"
                       onChange={handleFileChange}
                     />
-                    <Button variant="ghost">삭제</Button>
+                    <Button variant="ghost" onClick={handleRemoveImage}>
+                      삭제
+                    </Button>
                   </div>
                 </div>
 
