@@ -9,6 +9,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
+import { PATH } from '@/constants/paths';
 
 export interface ProfileDropdownPropsType {
   userName?: string;
@@ -21,6 +23,8 @@ export interface ProfileDropdownPropsType {
  */
 const ProfileDropdown = (props: ProfileDropdownPropsType) => {
   const { userName, isOpen, onOpenChange } = props;
+
+  const navigate = usePageMoveHandler();
 
   const handleLogout = useLogout();
 
@@ -36,7 +40,9 @@ const ProfileDropdown = (props: ProfileDropdownPropsType) => {
         <DropdownMenuSeparator />
         <Button className="flex items-center justify-center m-auto" variant="ghost">
           <Users className="w-4 h-4" />
-          <DropdownMenuLabel className="text-center font-light text-sm">나의 정보 </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-center font-light text-sm" onClick={() => navigate(PATH.mypage)}>
+            나의 정보{' '}
+          </DropdownMenuLabel>
         </Button>
         <Button className="flex items-center justify-center m-auto" variant="ghost">
           <NotebookPen className="w-4 h-4" />
