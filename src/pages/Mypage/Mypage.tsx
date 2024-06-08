@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
 import { memberSchema } from './validator';
+import { useUserStore } from '@/store/useUserStore';
+import { formatBirthDate } from './util';
 
 export type MemberSchemaType = yup.InferType<typeof memberSchema>;
 
@@ -24,17 +26,24 @@ export type MemberSchemaType = yup.InferType<typeof memberSchema>;
  */
 
 /**
- * @todo 회원데이터바인딩, 프로필이미지 변경 및 삭제, 변경사항 저장, 회원탈퇴 api
+ * @todo 회원데이터바인딩(last), 프로필이미지 업로드 및 삭제, 변경사항 저장, 회원탈퇴 api
  */
 const Mypage = () => {
+  const name = useUserStore((state) => state.name) as string;
+  const email = useUserStore((state) => state.email) as string;
+  const address = useUserStore((state) => state.address) as string;
+  const imageUrl = useUserStore((state) => state.image_url) as string;
+  const birth = useUserStore((state) => state.birth) as string;
+
   const method = useForm<MemberSchemaType>({
     resolver: yupResolver(memberSchema),
-    values: {
-      email: '',
-      birth: '',
-      name: '',
-      firstAddress: '',
-      lastAddress: '',
+    defaultValues: {
+      image: { image: null, imageUrl: imageUrl },
+      name: name,
+      email: email,
+      birth: formatBirthDate(birth),
+      firstAddress: address,
+      lastAddress: address,
     },
   });
 
@@ -43,16 +52,18 @@ const Mypage = () => {
     control,
     setValue,
     clearErrors,
+    watch,
     formState: { isSubmitting, errors },
   } = method;
 
   const handleSubmit = submit(async () => {});
+  const values = watch();
 
   const uploadRef = useRef<HTMLInputElement>(null);
 
   const handleUploadImage = () => {
     uploadRef.current?.click();
-    clearErrors('images');
+    clearErrors('image');
   };
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,11 +72,11 @@ const Mypage = () => {
     if (files && files.length > 0) {
       const uploadFile = files[0];
 
-      setValue(`images.${0}.image`, uploadFile);
+      setValue(`image.image`, uploadFile);
 
       const imageUrl = URL.createObjectURL(uploadFile);
 
-      setValue(`images.${0}.imageUrl`, imageUrl);
+      setValue(`image.imageUrl`, imageUrl);
     }
   };
 
@@ -97,7 +108,7 @@ const Mypage = () => {
                     프로필 이미지
                   </Label>
                   <Avatar className="w-[6.25rem] h-[6.25rem] my-4">
-                    <AvatarImage src="https://github.com/shadcn.png" alt="프로필 이미지" />
+                    <AvatarImage src={values.image.imageUrl || 'https://github.com/shadcn.png'} alt="프로필 이미지" />
                     <AvatarFallback>nickname state</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-row gap-1">
@@ -115,9 +126,17 @@ const Mypage = () => {
                   </div>
                 </div>
 
-                <Input name="name" control={control} type="text" label="닉네임" error={errors?.name} />
+                <Input
+                  name="name"
+                  value={values.name}
+                  control={control}
+                  type="text"
+                  label="닉네임"
+                  error={errors?.name}
+                />
                 <Input
                   name="birth"
+                  value={values.birth}
                   control={control}
                   type="text"
                   extractNumber={true}
@@ -128,6 +147,7 @@ const Mypage = () => {
                 />
                 <Input
                   name="email"
+                  value={values.email}
                   control={control}
                   type="email"
                   extractNumber={false}
