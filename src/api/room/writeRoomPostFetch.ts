@@ -15,7 +15,7 @@ export interface WriteRoomPostFetchParams {
   /**
    * 방자랑 썸네일 이미지
    */
-  thumbnailUrl: string | string[];
+  thumbnailUrl: string;
 
   /**
    * 방자랑 컨텐츠 이미지 리스트
