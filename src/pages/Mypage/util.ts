@@ -11,7 +11,7 @@ export const patchMemberDataCleansing = async (data: MemberSchemaType) => {
 
   return {
     ...rest,
-    imageUrl: cleansingImage?.imageUrl,
+    image_url: cleansingImage?.imageUrl,
     address: `${firstAddress} ${lastAddress}`.trim(),
     birth: dayjs(birth).format('YYYY-MM-DD'),
   };

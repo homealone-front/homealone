@@ -10,7 +10,7 @@ export interface MemberInfoPatchFetchParams {
   /**
    * 프로필 이미지 url
    */
-  imageUrl: string;
+  image_url: string;
 
   /**
    * 사용할 닉네임(이름)
@@ -33,11 +33,6 @@ export interface MemberInfoPatchFetchParams {
    * - firstAddress + lastAddress
    */
   address: string;
-
-  /**
-   * 프로필 이미지
-   */
-  image_url: string;
 }
 
 export interface MemberInfoPatchResponse extends ResponseModel {}
