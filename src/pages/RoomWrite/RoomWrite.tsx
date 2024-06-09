@@ -30,22 +30,6 @@ import { TOAST } from '@/constants/toast';
 export type RoomSchemaType = yup.InferType<typeof roomSchema>;
 
 /**
- * QuillEditor 모듈 설정
- */
-const modules = {
-  toolbar: {
-    container: [
-      [{ header: [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ color: [] }, { background: [] }],
-      [{ align: [] }, 'link'],
-    ],
-  },
-};
-
-/**
  * 방자랑 작성 페이지
  *
  */
@@ -61,12 +45,10 @@ const RoomWrite = () => {
     defaultValues: {
       title: '',
       content: '',
-      thumbnailUrl: [
-        {
-          image: {} as File,
-          imageUrl: '',
-        },
-      ],
+      thumbnailUrl: {
+        image: {} as File,
+        imageUrl: '',
+      },
       roomImages: [],
       tags: [
         {
@@ -86,7 +68,7 @@ const RoomWrite = () => {
     formState: { errors },
   } = method;
 
-  const file = watch(`thumbnailUrl.${0}`);
+  const thumbnailFile = watch(`thumbnailUrl`);
   const uploadRef = useRef<HTMLInputElement>(null);
   const quillRef = useRef<ReactQuill>(null);
 
@@ -102,8 +84,8 @@ const RoomWrite = () => {
       const uploadFile = files[0];
       const imageUrl = URL.createObjectURL(uploadFile);
 
-      setValue(`thumbnailUrl.${0}.image`, uploadFile);
-      setValue(`thumbnailUrl.${0}.imageUrl`, imageUrl);
+      setValue(`thumbnailUrl.image`, uploadFile);
+      setValue(`thumbnailUrl.imageUrl`, imageUrl);
     }
   };
 
@@ -112,7 +94,8 @@ const RoomWrite = () => {
       setDisplaySpinner(true);
       const writeRoomParams = await getRoomCleansingData(getValues());
       await writeRoomPostFetch(writeRoomParams);
-      console.info('최종 파라미터를 확인한다.', writeRoomParams);
+
+      // console.info('최종 파라미터를 확인한다.', writeRoomParams);
       console.info('작성 파라미터를 확인한다.', getValues());
 
       toast({
@@ -165,23 +148,30 @@ const RoomWrite = () => {
                         <div className="flex aspect-square items-center justify-center">
                           <div
                             style={{
-                              backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
+                              backgroundImage: thumbnailFile.imageUrl ? `url(${thumbnailFile.imageUrl})` : 'none',
                               backgroundSize: 'cover',
                             }}
                             className={`rounded-lg w-full h-full opacity-90 flex items-center justify-center group ${
-                              file.imageUrl ? `bg-cover bg-center bg-no-repeat` : 'bg-[#f5f5f5]'
+                              thumbnailFile.imageUrl ? `bg-cover bg-center bg-no-repeat` : 'bg-[#f5f5f5]'
                             }`}
                           >
                             <Button
                               className={`flex gap-4 ${
-                                file.imageUrl ? 'text-gray700 bg-white group-hover:flex hidden' : 'text-gray400'
+                                thumbnailFile.imageUrl
+                                  ? 'text-gray700 bg-white group-hover:flex hidden'
+                                  : 'text-gray400'
                               }`}
                               variant="ghost"
                               onClick={handleUploadImage}
                             >
-                              <Image size={16} color={`${file.imageUrl ? '#2d3748' : '#a0aec0'}`} strokeWidth={1.25} />
+                              <Image
+                                size={16}
+                                color={`${thumbnailFile.imageUrl ? '#2d3748' : '#a0aec0'}`}
+                                strokeWidth={1.25}
+                              />
                               <span>
-                                대표 이미지 {file.imageUrl && file.image instanceof File ? '수정' : '추가'}하기
+                                대표 이미지{' '}
+                                {thumbnailFile.imageUrl && thumbnailFile.image instanceof File ? '수정' : '추가'}하기
                               </span>
                             </Button>
                           </div>
@@ -194,10 +184,8 @@ const RoomWrite = () => {
                           />
                         </div>
                       </Card>
-                      {errors?.thumbnailUrl?.[0]?.imageUrl ? (
-                        <p className="mt-2 text-sm text-red-600 text-left">
-                          {errors?.thumbnailUrl?.[0]?.imageUrl.message}
-                        </p>
+                      {errors?.thumbnailUrl?.imageUrl ? (
+                        <p className="mt-2 text-sm text-red-600 text-left">{errors?.thumbnailUrl?.imageUrl.message}</p>
                       ) : null}
                     </div>
                   </CarouselItem>
@@ -242,3 +230,19 @@ const RoomWrite = () => {
 };
 
 export default RoomWrite;
+
+/**
+ * QuillEditor 모듈 설정
+ */
+const modules = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }, 'link'],
+    ],
+  },
+};
