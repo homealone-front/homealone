@@ -18,8 +18,8 @@ import { Label } from '@/components/ui/label';
 import { memberSchema } from './validator';
 import { useUserStore } from '@/store/useUserStore';
 import { birthDateCleansing } from './util';
-// import { patchMemberDataCleansing } from './util';
-// import { memberInfoPatchFetch } from '@/api/member/memberInfoPatchFetch';
+import { patchMemberDataCleansing } from './util';
+import { useMemberInfoMutation } from '@/services/member/useMemberInfoMutation';
 
 export type MemberSchemaType = yup.InferType<typeof memberSchema>;
 
@@ -28,26 +28,24 @@ export type MemberSchemaType = yup.InferType<typeof memberSchema>;
  */
 
 /**
- * @todo 회원데이터바인딩(lastAddress), 변경사항 저장, 회원탈퇴 api
+ * @todo 회원탈퇴 api
  */
 const Mypage = () => {
-  const id = useUserStore((state) => state.id) as number;
   const name = useUserStore((state) => state.name) as string;
   const email = useUserStore((state) => state.email) as string;
   const address = useUserStore((state) => state.address) as string;
-  const imageUrl = useUserStore((state) => state.image_url) as string;
+  const imageUrl = useUserStore((state) => state.imageUrl) as string;
   const birth = useUserStore((state) => state.birth) as string;
 
   const method = useForm<MemberSchemaType>({
     resolver: yupResolver(memberSchema),
     defaultValues: {
-      id: id,
       image: { image: null, imageUrl: imageUrl },
       name: name,
       email: email,
       birth: birthDateCleansing(birth),
       firstAddress: address,
-      lastAddress: address,
+      secondAddress: address,
     },
   });
 
@@ -55,20 +53,17 @@ const Mypage = () => {
     handleSubmit: submit,
     control,
     setValue,
-    // getValues,
+    getValues,
     clearErrors,
     watch,
     formState: { isSubmitting, errors },
   } = method;
 
+  const { mutate } = useMemberInfoMutation();
+
   const handleSubmit = submit(async () => {
-    try {
-      // const params = await patchMemberDataCleansing(getValues());
-      // const response = await memberInfoPatchFetch(params);
-      //@todo fix patch fetch 403에러
-    } catch (error) {
-      console.error(error);
-    }
+    const params = await patchMemberDataCleansing(getValues());
+    mutate(params);
   });
 
   const values = watch();
@@ -130,7 +125,7 @@ const Mypage = () => {
                     <AvatarFallback>nickname state</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-row gap-1">
-                    <Button variant="outline" onClick={handleUploadImage}>
+                    <Button type="button" variant="outline" onClick={handleUploadImage}>
                       이미지 변경
                     </Button>
                     <input
@@ -173,16 +168,12 @@ const Mypage = () => {
                   extractNumber={false}
                   label="이메일"
                   placeholder="example@example.com"
-                  addon={{
-                    buttonText: '중복확인',
-                    color: '#000',
-                    onSubmit: () => {},
-                  }}
                   error={errors?.email}
+                  readOnly
                 />
                 <AddressSearch
                   name="firstAddress"
-                  lastName="lastAddress"
+                  lastName="secondAddress"
                   control={control}
                   errors={errors?.firstAddress as FieldError}
                   onAddressChange={handleChangeAddress}
@@ -203,7 +194,7 @@ const Mypage = () => {
                   탈퇴 시 작성하신 게시글 및 댓글이 모두 삭제되며 복구되지 않습니다.
                 </span>
               </div>
-              <Button className="ml-auto" variant="destructive">
+              <Button className="ml-auto" variant="destructive" onClick={() => {}}>
                 회원탈퇴
               </Button>
             </div>
