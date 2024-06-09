@@ -6,14 +6,14 @@ export default defineConfig(({ mode }) => ({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 8060,
+    port: 3000,
     watch: {
       usePolling: true,
     },
     cors: true,
     proxy: {
       '/api': {
-        target: 'http://34.64.55.198/',
+        target: 'http://localhost:8080/',
         changeOrigin: true,
       },
     },

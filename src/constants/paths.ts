@@ -43,6 +43,11 @@ export const PATH = Object.freeze({
   talk: '/talk' as const,
 
   /**
+  * 채팅방 목록 페이지
+  */
+  chattings: '/chattings' as const,
+
+  /**
    * 마이페이지
    */
   mypage: '/mypage' as const,
@@ -76,6 +81,16 @@ export const TALK_PATH = Object.freeze({
    * generatePath
    */
   detail: '/talk/:id' as const,
+});
+
+/**
+ * chat 채팅방 상세
+ */
+export const CHAT_PATH = Object.freeze({
+  /**
+   * generatePath
+   */
+  detail: '/chatting/:id' as const,
 });
 
 export type PathValue = ValueOf<typeof PATH>;

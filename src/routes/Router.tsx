@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { PATH, RECIEPE_PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
+import { PATH, RECIEPE_PATH, ROOM_PATH, TALK_PATH, CHAT_PATH } from '@/constants/paths';
 
 import AuthRouter from './AuthRouter';
 import UserRouter from './UserRouter';
@@ -17,6 +17,9 @@ import { RoomDetailPage } from '@/pages/RoomDetail';
 import { TalkDetailPage } from '@/pages/TalkDetail';
 import { ReciepeWritePage } from '@/pages/ReciepeWrite';
 import { RoomWritePage } from '@/pages/RoomWrite';
+import { ChattingsPage } from '@/pages/Chattings';
+import { ChattingPage } from '@/pages/Chatting';
+
 
 const Router = () => {
   return (
@@ -43,6 +46,10 @@ const Router = () => {
         <Route element={<UserRouter />}>
           <Route path={PATH.mypage} element={<Mypage />} />
         </Route>
+
+        <Route path={PATH.chattings} element={<ChattingsPage />} />
+        <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
+
       </Routes>
     </BrowserRouter>
   );
