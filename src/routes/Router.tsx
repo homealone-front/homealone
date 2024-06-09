@@ -17,6 +17,7 @@ import { RoomDetailPage } from '@/pages/RoomDetail';
 import { TalkDetailPage } from '@/pages/TalkDetail';
 import { ReciepeWritePage } from '@/pages/ReciepeWrite';
 import { RoomWritePage } from '@/pages/RoomWrite';
+import { NotFoundPage } from '@/pages/NotFound';
 
 const Router = () => {
   return (
@@ -43,6 +44,7 @@ const Router = () => {
         <Route element={<UserRouter />}>
           <Route path={PATH.mypage} element={<Mypage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
