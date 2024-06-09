@@ -13,7 +13,8 @@ import { Layout } from '@/layout';
 import { CATEGORY_OPTIONS } from '../Main/constants';
 import { ListTitle } from '../Main/components/ListTitle';
 import { DateSlot } from '../Main/components/DateSlot';
-import { TALK_PATH } from '@/constants/paths';
+import { PATH, TALK_PATH } from '@/constants/paths';
+import { Button } from '@/components/ui/button';
 
 /**
  * 혼잣말 페이지
@@ -38,11 +39,16 @@ const Talk = () => {
             </div>
           </div>
         </FormProvider>
-        <ListTitle
-          imgPath="/icons/single_ment.png"
-          title="케빈들의 잡담"
-          description="케빈들은 지금 무슨 생각을 하고 있을까요?"
-        />
+        <div className="flex justify-between items-center">
+          <ListTitle
+            imgPath="/icons/single_ment.png"
+            title="케빈들의 잡담"
+            description="케빈들은 지금 무슨 생각을 하고 있을까요?"
+          />
+          <Button className="rounded-full" onClick={() => navigate(PATH.talkWrite)}>
+            새 글 작성
+          </Button>
+        </div>
         <div className="grid grid-cols-4 gap-6 place-items-start">
           {Array.from({ length: 20 }).map((_, i) => (
             <TextCard

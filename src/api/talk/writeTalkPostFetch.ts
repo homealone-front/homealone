@@ -13,11 +13,19 @@ export interface WriteTalkPostFetchParams {
   content: string;
 
   /**
-   * Talk 이미지 배열
+   * 혼잣말 컨텐츠 이미지 리스트
    */
-  talkImages: string[];
+  talkImages?: string[] | undefined;
+
+  /**
+   * 혼잣말 태그 리스트
+   */
+  tags?:
+    | {
+        tagName?: string | undefined;
+      }[]
+    | undefined;
 }
-[];
 
 export interface WriteTalkResponse extends ResponseModel {}
 
