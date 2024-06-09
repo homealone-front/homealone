@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CircleCheck, CircleXIcon, Image, Undo2 } from 'lucide-react';
 import ReactQuill from 'react-quill';
@@ -28,6 +28,22 @@ import { useToast } from '@/hooks/useToast';
 import { TOAST } from '@/constants/toast';
 
 export type RoomSchemaType = yup.InferType<typeof roomSchema>;
+
+/**
+ * QuillEditor 모듈 설정
+ */
+const modules = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }, 'link'],
+    ],
+  },
+};
 
 /**
  * 방자랑 작성 페이지
@@ -73,21 +89,6 @@ const RoomWrite = () => {
   const file = watch(`thumbnailUrl.${0}`);
   const uploadRef = useRef<HTMLInputElement>(null);
   const quillRef = useRef<ReactQuill>(null);
-
-  const modules = useMemo(() => {
-    return {
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, false] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ color: [] }, { background: [] }],
-          [{ align: [] }, 'link'],
-        ],
-      },
-    };
-  }, []);
 
   const handleUploadImage = () => {
     uploadRef.current?.click();
