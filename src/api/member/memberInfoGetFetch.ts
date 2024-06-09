@@ -31,7 +31,7 @@ export interface MemberInfoResponse extends ResponseModel {
   /**
    * 유저 프로필 이미지 url
    */
-  image_url: string;
+  imageUrl: string;
 
   /**
    * 회원가입 일자
