@@ -18,6 +18,8 @@ import { TalkDetailPage } from '@/pages/TalkDetail';
 import { ReciepeWritePage } from '@/pages/ReciepeWrite';
 import { RoomWritePage } from '@/pages/RoomWrite';
 import { NotFoundPage } from '@/pages/NotFound';
+import { TalkWritePage } from '@/pages/TalkWrite';
+
 
 const Router = () => {
   return (
@@ -39,6 +41,7 @@ const Router = () => {
         <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
 
         <Route path={PATH.talk} element={<TalkPage />} />
+        <Route path={PATH.talkWrite} element={<TalkWritePage />} />
         <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
 
         <Route element={<UserRouter />}>
