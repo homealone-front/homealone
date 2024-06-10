@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { roomListGetFetch, RoomListGetFetchParams } from '@/api/room/roomListGetFetch';
 
@@ -23,4 +23,5 @@ export const useRoomListQuery = (params: RoomListGetFetchParams) =>
       };
     },
     staleTime: 5000,
+    placeholderData: keepPreviousData,
   });
