@@ -20,7 +20,7 @@ interface AlertPropsType {
   /**
    * 열거에요?
    */
-  isOpen: boolean;
+  isOpen?: boolean;
 
   /**
    * 버튼을 눌렀을 때 실행하는 함수
@@ -39,7 +39,7 @@ interface AlertPropsType {
     />
  */
 const Alert = (props: AlertPropsType) => {
-  const { title, content, submitButtonText, isOpen, onSubmit } = props;
+  const { title, content, submitButtonText, isOpen = true, onSubmit } = props;
 
   return (
     <Dialog open={isOpen}>

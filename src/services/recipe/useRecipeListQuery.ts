@@ -33,9 +33,5 @@ export const useRecipeListQuery = (params: RecipeListGetFetchParmas) =>
         ],
       };
     },
-    select: (data) => ({
-      ...data,
-      totalPages: data.totalPages,
-    }),
     staleTime: 5000,
   });

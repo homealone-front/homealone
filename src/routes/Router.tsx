@@ -17,9 +17,9 @@ import { RoomDetailPage } from '@/pages/RoomDetail';
 import { TalkDetailPage } from '@/pages/TalkDetail';
 import { ReciepeWritePage } from '@/pages/ReciepeWrite';
 import { RoomWritePage } from '@/pages/RoomWrite';
+import { KakaoCallbackPage } from '@/pages/KakaoCallback';
 import { NotFoundPage } from '@/pages/NotFound';
 import { TalkWritePage } from '@/pages/TalkWrite';
-
 
 const Router = () => {
   return (
@@ -30,6 +30,7 @@ const Router = () => {
         <Route element={<AuthRouter />}>
           <Route path={PATH.login} element={<LoginPage />} />
           <Route path={PATH.register} element={<RegisterPage />} />
+          <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
         </Route>
 
         <Route path={PATH.receipe} element={<ReciepePage />} />

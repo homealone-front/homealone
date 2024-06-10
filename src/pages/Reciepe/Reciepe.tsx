@@ -64,34 +64,36 @@ const Receipe = () => {
           </Button>
         </div>
 
-        {/* <div className="grid grid-cols-4 gap-6 place-items-start">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card
-              title="배고파요"
-              description="진짜 너무너무 배고파요...."
-              userName="홍길동"
-              onPageMove={() =>
-                navigate(
-                  generatePath(RECIEPE_PATH.detail, {
-                    id: i.toString(),
-                  }),
-                )
-              }
-              key={i}
-              imageUrl="https://github.com/shadcn.png"
-              lineClamp={1}
-              slot={
-                <PriceSlot
-                  cookInfo={{
-                    portions: 2,
-                    cookTime: '30분',
-                  }}
+        <div className="grid grid-cols-4 gap-6 place-items-start">
+          {isLoading || isFetching
+            ? Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)
+            : data?.content?.slice(13, 17).map((card, i) => (
+                <Card
+                  key={i}
+                  title={card?.title}
+                  description={card?.description}
+                  userName={card?.userName}
+                  imageUrl={card?.imageUrl}
+                  lineClamp={1}
+                  slot={
+                    <PriceSlot
+                      cookInfo={{
+                        portions: card?.portions,
+                        cookTime: card?.recipeTime,
+                      }}
+                    />
+                  }
+                  likes={40}
+                  onPageMove={() =>
+                    navigate(
+                      generatePath(RECIEPE_PATH.detail, {
+                        id: card.id.toString(),
+                      }),
+                    )
+                  }
                 />
-              }
-              likes={40}
-            />
-          ))}
-        </div> */}
+              ))}
+        </div>
         <ListTitle imgPath="/icons/receipe_icon.png" title="모든 레시피" />
         <div className="grid grid-cols-4 gap-6 place-items-start py-12">
           {isLoading || isFetching

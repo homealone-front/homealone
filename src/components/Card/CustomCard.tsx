@@ -64,7 +64,11 @@ const CustomCard = (props: CustomCardPropsType) => {
         className={`relative rounded-t-lg p-1 ${
           imageUrl ? `h-56 bg-[url('${imageUrl}')] bg-cover bg-no-repeat grid place-items-center` : 'hidden'
         }`}
-        style={{ backgroundImage: imageUrl ? `url('${imageUrl}')` : 'none' }}
+        style={{
+          backgroundImage: imageUrl
+            ? `url('${!imageUrl.includes('http') ? '/images/no_image.jpeg' : imageUrl}')`
+            : 'none',
+        }}
       >
         {imageUrl && likes ? (
           <div className="flex gap-1 items-center rounded-2xl bg-gray400 opacity-70 px-2 py-1 mt-auto ml-auto">

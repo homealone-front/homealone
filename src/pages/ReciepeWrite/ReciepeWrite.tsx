@@ -90,6 +90,7 @@ const ReciepeWrite = () => {
 
   const handleUploadImage = () => {
     uploadRef.current?.click();
+
     clearErrors('images');
   };
 
@@ -111,9 +112,9 @@ const ReciepeWrite = () => {
     try {
       setDisplaySpinner(true);
 
-      const cleansingParams = await getReciepeCleansingData(getValues());
+      const writeParams = await getReciepeCleansingData(getValues());
 
-      const writeRes = await writeReciepePostFetch(cleansingParams);
+      const writeRes = await writeReciepePostFetch(writeParams);
 
       setDisplaySpinner(false);
 
@@ -193,16 +194,20 @@ const ReciepeWrite = () => {
                   backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
                   backgroundSize: 'cover',
                 }}
-                className={`rounded-xl w-full h-full opacity-90 flex items-center justify-center ${
+                className={`group rounded-xl w-full h-full opacity-90 flex items-center justify-center ${
                   file && file instanceof File
                     ? `bg-cover bg-center bg-no-repeat border border-gray300`
                     : 'bg-[#f5f5f5]'
                 }`}
               >
                 <div className="flex flex-col justify-center items-center">
-                  <Image size={16} color={`${file.imageUrl ? '#2d3748' : '#a0aec0'}`} strokeWidth={1.25} />
+                  {file.imageUrl && file.image instanceof File ? null : (
+                    <Image size={16} color={`${file.imageUrl ? '#2d3748' : '#a0aec0'}`} strokeWidth={1.25} />
+                  )}
                   <Button
-                    className={`${file.imageUrl ? 'text-gray700' : 'text-gray400'}`}
+                    className={`flex gap-4 ${
+                      file.imageUrl ? 'text-gray700 bg-white hidden group-hover:block' : 'text-gray400'
+                    }`}
                     variant="ghost"
                     onClick={handleUploadImage}
                   >

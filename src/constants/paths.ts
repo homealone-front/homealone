@@ -51,6 +51,11 @@ export const PATH = Object.freeze({
    * 마이페이지
    */
   mypage: '/mypage' as const,
+
+  /**
+   * 카카오 로그인 redirect uri
+   */
+  kakao: '/kakao/callback' as const,
 });
 
 /**
