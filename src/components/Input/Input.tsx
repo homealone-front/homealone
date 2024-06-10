@@ -18,7 +18,7 @@ interface CustomInputPropsType<T extends FieldValues> {
   /**
    * onlyNumber
    */
-  extractNumber: boolean;
+  extractNumber?: boolean;
 
   addon?: InputButtonPropsType;
 
@@ -26,13 +26,14 @@ interface CustomInputPropsType<T extends FieldValues> {
   placeholder?: string;
   maxLength?: number;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 /**
  * ReactHookForm 과 같이 사용하기 위한 Tailwind InputForm 컴포넌트
  */
 const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
-  const { name, label, addon, control, type, error, helperText, extractNumber, ...rest } = props;
+  const { name, label, addon, control, type, error, helperText, extractNumber = false, ...rest } = props;
 
   const handleExtractNumber = useExtractNumberHandler();
 

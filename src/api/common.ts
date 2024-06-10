@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-//TODO: .env baseURL 세팅 및 request, response interceptor 작성
+import { useUserStore } from '@/store/useUserStore';
 
 export const baseURL = import.meta.env.VITE_APP_BASE_URL;
 
@@ -12,9 +11,14 @@ export const apiFetch = axios.create({
   withCredentials: true,
 });
 
+export const kakaoFetch = axios.create({
+  headers: {
+    'Content-type': ' application/x-www-form-urlencoded;charset=utf-8',
+  },
+});
+
 apiFetch.interceptors.request.use((config) => {
-  //TODO: accessToken 전역상태 변수로 교체
-  const accessToken = '';
+  const { accessToken } = useUserStore.getState();
 
   if (accessToken) {
     config.headers.set('Authorization', accessToken);

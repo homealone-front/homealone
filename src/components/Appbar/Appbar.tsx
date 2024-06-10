@@ -20,7 +20,9 @@ import { PATH } from '@/constants/paths';
  * 전체 페이지에서 쓰이는 header 컴포넌트
  */
 const Appbar = () => {
-  const accessToken = useUserStore((state) => state.token);
+  const accessToken = useUserStore((state) => state.accessToken);
+  const name = useUserStore((state) => state.name);
+  const imgUrl = useUserStore((state) => state.image_url);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = usePageMoveHandler();
@@ -31,18 +33,18 @@ const Appbar = () => {
         <div className="header-left flex items-center">
           <h1 className="cursor-pointer" onClick={() => navigate(PATH.root)}>
             <span className="block indent-[-9999px] absolute">나홀로 집에서(자취 커뮤니티)</span>
-            <img src="#" alt="프로젝트 로고" />
+            <img className="w-[4rem] h-[4rem]" src="/icons/logo_svg_square.svg" alt="프로젝트 로고" />
           </h1>
           <nav className="ml-10">
             <ul className="flex items-center gap-4">
-              <List>
-                <span className="text-lg">레시피</span>
+              <List path={PATH.receipe} onPageMove={() => navigate(PATH.receipe)}>
+                레시피
               </List>
-              <List>
-                <span className="text-lg">방자랑</span>
+              <List path={PATH.room} onPageMove={() => navigate(PATH.room)}>
+                방자랑
               </List>
-              <List>
-                <span className="text-lg">혼잣말</span>
+              <List path={PATH.talk} onPageMove={() => navigate(PATH.talk)}>
+                혼잣말
               </List>
             </ul>
           </nav>
@@ -54,7 +56,7 @@ const Appbar = () => {
                 <li>
                   <div className="flex items-center gap-2 cursor-pointer relative" onClick={isOpen ? onClose : onOpen}>
                     <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                      <AvatarImage src={imgUrl || 'https://github.com/shadcn.png'} alt="프로필 이미지" />
                       <AvatarFallback>nickname state</AvatarFallback>
                     </Avatar>
                     <ChevronDown
@@ -63,7 +65,7 @@ const Appbar = () => {
                   </div>
                 </li>
                 <li>
-                  <ProfileDropdown isOpen={isOpen} onOpenChange={onClose} />
+                  <ProfileDropdown isOpen={isOpen} onOpenChange={onClose} userName={name} />
                 </li>
               </>
             ) : (

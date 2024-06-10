@@ -6,13 +6,13 @@ interface ConfirmPropsType {
   content: string;
   submitButtonText: string;
 
-  isOpen: boolean;
+  isOpen?: boolean;
   onSubmit: () => void;
   onClose: () => void;
 }
 
 const Confirm = (props: ConfirmPropsType) => {
-  const { title, content, submitButtonText, isOpen, onSubmit, onClose } = props;
+  const { title, content, submitButtonText, isOpen = true, onSubmit, onClose } = props;
 
   return (
     <Dialog open={isOpen}>

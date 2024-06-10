@@ -15,11 +15,18 @@ import { PATH } from '@/constants/paths';
 
 import { registerSchema } from './validator';
 import { getRegisterDataCleansing } from './util';
+import { useToast } from '@/hooks/useToast';
+import { isAxiosError } from 'axios';
+import { CircleCheck, CircleXIcon } from 'lucide-react';
+import { TOAST } from '@/constants/toast';
+import { doubleCheckEmailGetFetch } from '@/api/member/doubleCheckEmailGetFetch';
+import { memberRegisterPostFetch } from '@/api/member/memberRegisterPostFetch';
 
 export type RegisterSchemaType = yup.InferType<typeof registerSchema>;
 
 const Register = () => {
   const navigate = usePageMoveHandler();
+  const { toast } = useToast();
 
   const method = useForm<RegisterSchemaType>({
     resolver: yupResolver(registerSchema),
@@ -37,6 +44,7 @@ const Register = () => {
   const {
     handleSubmit: submit,
     control,
+    trigger,
     getValues,
     setValue,
     clearErrors,
@@ -45,13 +53,55 @@ const Register = () => {
 
   const handleSubmit = submit(async () => {
     try {
-      console.info(getRegisterDataCleansing(getValues()));
+      const { data } = await memberRegisterPostFetch(getRegisterDataCleansing(getValues()));
 
-      navigate(PATH.root);
+      toast({
+        title: data.message || '회원가입 성공',
+        icon: <CircleCheck />,
+        className: TOAST.success,
+      });
+
+      navigate(PATH.login);
     } catch (error) {
       console.error(error);
+
+      if (isAxiosError(error)) {
+        toast({
+          title: error.response?.data.message || '회원가입 실패',
+          icon: <CircleXIcon />,
+          className: TOAST.error,
+        });
+
+        return;
+      }
     }
   });
+
+  const handleDoubleCheckEmail = async () => {
+    try {
+      if (!(await trigger('email'))) return;
+
+      const email = getValues('email');
+
+      const { data } = await doubleCheckEmailGetFetch({ email });
+
+      toast({
+        title: data.message || '사용 가능한 이메일 입니다.',
+        icon: <CircleCheck />,
+        className: TOAST.success,
+      });
+    } catch (error) {
+      console.error(error);
+
+      if (isAxiosError(error)) {
+        toast({
+          title: error?.response?.data.message || '중복확인 실패',
+          icon: <CircleXIcon />,
+          className: TOAST.error,
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -75,9 +125,7 @@ const Register = () => {
                 addon={{
                   buttonText: '중복확인',
                   color: '#000',
-                  onSubmit: () => {
-                    //TODO: 이메일 중복확인 api 달기
-                  },
+                  onSubmit: handleDoubleCheckEmail,
                 }}
               />
             </div>
@@ -90,13 +138,6 @@ const Register = () => {
                 label="이름"
                 placeholder="홍길동"
                 error={errors?.name}
-                addon={{
-                  buttonText: '중복확인',
-                  color: '#000',
-                  onSubmit: () => {
-                    //TODO: 이름 중복확인 api 달기
-                  },
-                }}
               />
             </div>
             <div className="my-8">
@@ -134,6 +175,8 @@ const Register = () => {
               />
             </div>
             <AddressSearch
+              name="firstAddress"
+              lastName="lastAddress"
               control={control}
               errors={errors?.firstAddress as FieldError}
               onAddressChange={(addr) => {

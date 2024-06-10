@@ -9,7 +9,7 @@ const renderChunks = (deps: Record<string, string>) => {
   const chunks: { [key: string]: string[] } = {};
 
   Object.keys(deps).forEach((key) => {
-    if (['react', 'react-router-dom', 'react-dom', 'pretendard'].includes(key)) {
+    if (['react', 'react-router-dom', 'react-dom', 'pretendard', 'firebase'].includes(key)) {
       return;
     }
     chunks[key] = [key];
@@ -18,55 +18,49 @@ const renderChunks = (deps: Record<string, string>) => {
   return chunks;
 };
 
-/**
- * @see https://vitejs.dev/config/
- */
-export default ({ mode }: { mode: 'development' | 'production' }) =>
-  defineConfig({
-    plugins: [react()],
-    server: {
-      host: '0.0.0.0',
-      port: 8080,
-      watch: {
-        usePolling: true,
+export default defineConfig(({ mode }) => ({
+  plugins: [react()],
+  server: {
+    host: '0.0.0.0',
+    port: 8060,
+    watch: {
+      usePolling: true,
+    },
+    cors: true,
+    proxy: {
+      '/api': {
+        target: 'http://34.64.55.198/',
+        changeOrigin: true,
       },
-      cors: true,
-      proxy: {
-        '/JohnDoe': {
-          target: '타겟 설정 필요',
-          changeOrigin: true,
+    },
+  },
+  define: {
+    'import.meta.env.DEV': mode === 'development',
+    'import.meta.env.PROD': mode === 'production',
+  },
+  build: {
+    outDir: 'build',
+    sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production',
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-router-dom', 'react-dom'],
+          ...renderChunks(dependencies),
         },
       },
     },
-
-    define: {
-      'import.meta.env.DEV': mode === 'development' ? true : false,
-      'import.meta.env.PROD': mode === 'development' ? false : true,
+  },
+  assetsInclude: ['**/*.node'],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
     },
-
-    build: {
-      outDir: 'build',
-      sourcemap: false,
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: mode === 'development' ? false : true,
-          drop_debugger: mode === 'development' ? false : true,
-        },
-      },
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            vendor: ['react', 'react-router-dom', 'react-dom'],
-            ...renderChunks(dependencies),
-          },
-        },
-      },
-    },
-
-    assetsInclude: ['**/*.node'],
-
-    resolve: {
-      alias: { '@': resolve(__dirname, './src') },
-    },
-  });
+  },
+}));
