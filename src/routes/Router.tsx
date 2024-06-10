@@ -20,6 +20,9 @@ import { RoomWritePage } from '@/pages/RoomWrite';
 import { ChattingsPage } from '@/pages/Chattings';
 import { ChattingPage } from '@/pages/Chatting';
 
+import { NotFoundPage } from '@/pages/NotFound';
+import { TalkWritePage } from '@/pages/TalkWrite';
+
 
 const Router = () => {
   return (
@@ -41,6 +44,7 @@ const Router = () => {
         <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
 
         <Route path={PATH.talk} element={<TalkPage />} />
+        <Route path={PATH.talkWrite} element={<TalkWritePage />} />
         <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
 
         <Route element={<UserRouter />}>
@@ -50,6 +54,7 @@ const Router = () => {
         <Route path={PATH.chattings} element={<ChattingsPage />} />
         <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
 
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

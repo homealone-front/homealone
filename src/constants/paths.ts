@@ -43,6 +43,11 @@ export const PATH = Object.freeze({
   talk: '/talk' as const,
 
   /**
+   * 혼잣말 작성페이지
+   */
+  talkWrite: '/talk/write' as const,
+
+  /**
   * 채팅방 목록 페이지
   */
   chattings: '/chattings' as const,
