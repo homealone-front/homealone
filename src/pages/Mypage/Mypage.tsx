@@ -20,6 +20,7 @@ import { useUserStore } from '@/store/useUserStore';
 import { birthDateCleansing } from './util';
 import { patchMemberDataCleansing } from './util';
 import { useMemberInfoMutation } from '@/services/member/useMemberInfoMutation';
+import { Leave } from './components/Leave';
 
 export type MemberSchemaType = yup.InferType<typeof memberSchema>;
 
@@ -27,9 +28,6 @@ export type MemberSchemaType = yup.InferType<typeof memberSchema>;
  * 마이페이지 컴포넌트
  */
 
-/**
- * @todo 회원탈퇴 api
- */
 const Mypage = () => {
   const name = useUserStore((state) => state.name) as string;
   const email = useUserStore((state) => state.email) as string;
@@ -137,7 +135,7 @@ const Mypage = () => {
                       type="file"
                       onChange={handleFileChange}
                     />
-                    <Button variant="ghost" onClick={handleRemoveImage}>
+                    <Button type="button" variant="ghost" onClick={handleRemoveImage}>
                       삭제
                     </Button>
                   </div>
@@ -189,17 +187,7 @@ const Mypage = () => {
               </div>
             </form>
 
-            <div className="flex py-9 mb-20">
-              <div>
-                <div className="text-sm mb-0.5 text-gray-600">회원탈퇴</div>
-                <span className="text-sm text-gray-400">
-                  탈퇴 시 작성하신 게시글 및 댓글이 모두 삭제되며 복구되지 않습니다.
-                </span>
-              </div>
-              <Button className="ml-auto" variant="destructive" onClick={() => {}}>
-                회원탈퇴
-              </Button>
-            </div>
+            <Leave />
           </div>
         </div>
       </Layout>
