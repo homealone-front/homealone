@@ -82,23 +82,24 @@ const TalkWrite = () => {
       console.info('작성 파라미터를 확인한다.', getValues());
 
       toast({
-        title: '혼잣말 등록 성공',
+        title: '혼잣말을 등록했어요!',
         icon: <CircleCheck />,
         className: TOAST.success,
       });
 
-      setDisplaySpinner(false);
+      navigate(PATH.talk);
     } catch (error) {
       console.error(error);
 
       if (isAxiosError(error)) {
+        setDisplaySpinner(false);
+
         toast({
           title: error?.response?.data.message || '혼잣말 등록 실패',
           icon: <CircleXIcon />,
           className: TOAST.error,
         });
       }
-      setDisplaySpinner(false);
     }
   });
 
