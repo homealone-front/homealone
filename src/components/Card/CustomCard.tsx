@@ -16,7 +16,7 @@ export interface CustomCardPropsType {
   /**
    * 카드내용
    */
-  description: string;
+  description?: string;
 
   /**
    * 없으면 텍스트 카드
@@ -31,7 +31,7 @@ export interface CustomCardPropsType {
   /**
    * n줄 효과
    */
-  lineClamp: 1 | 2;
+  lineClamp?: 1 | 2;
 
   /**
    * 좋아요 갯수
@@ -79,9 +79,12 @@ const CustomCard = (props: CustomCardPropsType) => {
       </CardHeader>
       <CardContent className="py-2 px-3 box-border">
         <h3 className="mb-2 text-lg font-semibold truncate">{title}</h3>
-        <p className={`text-md text-gray500 max-w-xs mb-4  ${lineClamp === 1 ? 'truncate' : 'line-clamp-2'}`}>
-          {description}
-        </p>
+
+        {description && (
+          <p className={`text-md text-gray500 max-w-xs mb-4  ${lineClamp === 1 ? 'truncate' : 'line-clamp-2'}`}>
+            {description}
+          </p>
+        )}
 
         <div className="mb-2">{slot}</div>
         {userName ? <Separator /> : null}
