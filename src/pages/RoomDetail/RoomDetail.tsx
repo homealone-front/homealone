@@ -21,6 +21,7 @@ import { Eye, MessageSquareMore } from 'lucide-react';
  */
 const RoomDetail = () => {
   const { id: roomId } = useParams();
+  // TODO: isNaN roomId 404페이지로 이동시키기
   console.info('🚀 ~ RoomDetail ~ roomId:', roomId);
 
   // if (roomId) {
