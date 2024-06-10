@@ -33,7 +33,8 @@ export type MemberSchemaType = yup.InferType<typeof memberSchema>;
 const Mypage = () => {
   const name = useUserStore((state) => state.name) as string;
   const email = useUserStore((state) => state.email) as string;
-  const address = useUserStore((state) => state.address) as string;
+  const firstAddress = useUserStore((state) => state.firstAddress) as string;
+  const secondAddress = useUserStore((state) => state.secondAddress) as string;
   const imageUrl = useUserStore((state) => state.imageUrl) as string;
   const birth = useUserStore((state) => state.birth) as string;
 
@@ -44,8 +45,8 @@ const Mypage = () => {
       name: name,
       email: email,
       birth: birthDateCleansing(birth),
-      firstAddress: address,
-      secondAddress: address,
+      firstAddress: firstAddress,
+      secondAddress: secondAddress,
     },
   });
 
@@ -63,6 +64,7 @@ const Mypage = () => {
 
   const handleSubmit = submit(async () => {
     const params = await patchMemberDataCleansing(getValues());
+
     mutate(params);
   });
 

@@ -85,11 +85,22 @@ const AddressSearch = <T extends FieldValues>(props: AddressSearchProps<T>) => {
             />
           )}
         />
-
         <input ref={searchRef} className="hidden" type="button" onClick={execDaumPostcode} value="주소검색" />
       </div>
-      <Input name={lastName} control={control} type="text" placeholder="상세주소 입력" extractNumber={false} />
-
+      <Controller
+        name={lastName}
+        control={control}
+        render={({ field: { value } }) => (
+          <Input
+            name={lastName}
+            control={control}
+            type="text"
+            placeholder="상세주소 입력"
+            extractNumber={false}
+            value={value}
+          />
+        )}
+      />
       <div className="w-full h-80 relative border border-black my-1 hidden" ref={wrapRef}>
         <img
           src="//t1.daumcdn.net/postcode/resource/images/close.png"
