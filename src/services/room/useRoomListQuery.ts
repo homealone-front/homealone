@@ -22,9 +22,5 @@ export const useRoomListQuery = (params: RoomListGetFetchParams) =>
         content,
       };
     },
-    select: (data) => ({
-      ...data,
-      totalPages: data.totalPages,
-    }),
     staleTime: 5000,
   });
