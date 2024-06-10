@@ -10,7 +10,7 @@ type TRoomCardSlot = {
 const RoomCardSlot = ({ createdAt, commentCount }: TRoomCardSlot) => {
   return (
     <div className="flex justify-between items-center">
-      <DateSlot dateTime={dayjs(createdAt).format('YYYY-MM-DD')} />
+      <DateSlot dateTime={dayjs(createdAt).format('YYYY년 MM월 DD일')} />
       <div className="flex gap-1 items-center">
         <MessageCircle className="w-4 h-4" />
         <span className="text-sm font-light">{commentCount}</span>
