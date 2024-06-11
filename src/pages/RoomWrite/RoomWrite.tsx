@@ -10,8 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Layout } from '@/layout';
 import { ListTitle } from '../Main/components/ListTitle';
 
-import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
-
 import { PATH } from '@/constants/paths';
 import { Input } from '@/components/Input';
 import { QuillEditor } from '@/components/QuillEditor';
@@ -26,6 +24,7 @@ import { writeRoomPostFetch } from '@/api/room/writeRoomPostFetch';
 import { isAxiosError } from 'axios';
 import { useToast } from '@/hooks/useToast';
 import { TOAST } from '@/constants/toast';
+import { useNavigate } from 'react-router-dom';
 
 export type RoomSchemaType = yup.InferType<typeof roomSchema>;
 
@@ -34,7 +33,8 @@ export type RoomSchemaType = yup.InferType<typeof roomSchema>;
  *
  */
 const RoomWrite = () => {
-  const navigate = usePageMoveHandler();
+  // TODO: 비회원 접근 불가 라우트 설정하기
+  const navigate = useNavigate();
 
   const { toast } = useToast();
 
@@ -91,12 +91,13 @@ const RoomWrite = () => {
 
   const handleSubmit = submit(async () => {
     try {
-      setDisplaySpinner(true);
-      const writeRoomParams = await getRoomCleansingData(getValues());
-      await writeRoomPostFetch(writeRoomParams);
-
       // console.info('최종 파라미터를 확인한다.', writeRoomParams);
       console.info('작성 파라미터를 확인한다.', getValues());
+
+      setDisplaySpinner(true);
+      const writeRoomParams = await getRoomCleansingData(getValues());
+      const response = await writeRoomPostFetch(writeRoomParams);
+      const createRoomId = response.data.id;
 
       toast({
         title: '방자랑 등록 성공',
@@ -105,6 +106,9 @@ const RoomWrite = () => {
       });
 
       setDisplaySpinner(false);
+
+      // 등록 성공 후, 해당 게시글로 이동
+      navigate(`${PATH.room}/${createRoomId}`);
     } catch (error) {
       console.error(error);
 

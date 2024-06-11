@@ -30,7 +30,9 @@ export interface WriteRoomPostFetchParams {
   }[];
 }
 
-export interface WriteRoomResponse extends ResponseModel {}
+export interface WriteRoomResponse extends ResponseModel {
+  id: number;
+}
 
 /**
  * 방자랑 게시글 작성 및 등록
