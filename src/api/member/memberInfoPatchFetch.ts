@@ -3,14 +3,9 @@ import { ResponseModel } from '../model';
 
 export interface MemberInfoPatchFetchParams {
   /**
-   * 유저 아이디
-   */
-  id: number;
-
-  /**
    * 프로필 이미지 url
    */
-  imageUrl: string;
+  imageUrl?: string;
 
   /**
    * 사용할 닉네임(이름)
@@ -29,15 +24,14 @@ export interface MemberInfoPatchFetchParams {
   email: string;
 
   /**
-   * 주소
-   * - firstAddress + lastAddress
+   * 주소 앞
    */
-  address: string;
+  firstAddress: string;
 
   /**
-   * 프로필 이미지
+   * 주소 뒤
    */
-  image_url: string;
+  secondAddress?: string;
 }
 
 export interface MemberInfoPatchResponse extends ResponseModel {}

@@ -24,14 +24,19 @@ export interface MemberInfoResponse extends ResponseModel {
   email: string;
 
   /**
-   * 주소
+   * 주소 앞
    */
-  address: string;
+  firstAddress: string;
+
+  /**
+   * 주소 뒤
+   */
+  secondAddress: string;
 
   /**
    * 유저 프로필 이미지 url
    */
-  image_url: string;
+  imageUrl: string;
 
   /**
    * 회원가입 일자
