@@ -12,22 +12,72 @@ import { EmblaCarousel } from './components/EmblaCarousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import dayjs from 'dayjs';
 import { Eye, MessageSquareMore } from 'lucide-react';
-
-// import { Comment } from '@/components/Comment';
-// import { CommentForm } from '@/components/CommentForm';
+import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { commentSchema } from '../ReciepeDetail/validator';
+import { addCommentPostFetch } from '@/api/comment/addCommentPostFetch';
+import { CommentForm } from '@/components/CommentForm';
+import { SkeletonComment } from '@/components/SkeletonComment';
+import { Comment } from '@/components/Comment';
+import { useUserStore } from '@/store/useUserStore';
 
 /**
  * 방자랑 게시글 상세페이지
  */
 const RoomDetail = () => {
   const { id: roomId } = useParams();
+  const userId = useUserStore((state) => state.id);
+  // TODO: 작성자 이미지 응답값 들어오면 붙이기
+  // const imageUrl = useUserStore((state) => state.image_url);
 
   // TODO: isNaN roomId 404페이지로 이동시키기
-  console.info('🚀 ~ RoomDetail ~ roomId:', roomId);
+  // console.info('🚀 ~ RoomDetail ~ roomId:', roomId);
   if (!roomId) return;
 
   const { data } = useRoomDetailQuery({ roomId });
   console.info('🚀 ~ RoomDetail ~ data:', data);
+
+  const {
+    data: commentData,
+    refetch: commentRefetch,
+    isFetching: commentFetching,
+  } = useCommentListQuery({ postId: roomId });
+
+  const method = useForm({
+    resolver: yupResolver(commentSchema),
+    values: {
+      content: '',
+    },
+  });
+
+  const {
+    handleSubmit: submit,
+    control,
+    getValues,
+    watch,
+    setValue,
+    formState: { errors },
+  } = method;
+
+  const handleSubmit = submit(async () => {
+    try {
+      const content = getValues('content').trim();
+
+      const addParams = {
+        content,
+        postId: parseInt(roomId, 10),
+      };
+
+      await addCommentPostFetch(addParams);
+
+      setValue('content', '');
+
+      await commentRefetch();
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
   const OPTIONS: EmblaOptionsType = {};
   const SLIDES = data?.imagesUrl;
@@ -35,6 +85,7 @@ const RoomDetail = () => {
   return (
     <>
       <Appbar />
+
       <Layout>
         <Marks
           onLikesSubmit={() => alert('좋아요 반영 핸들러')}
@@ -44,55 +95,72 @@ const RoomDetail = () => {
           isBookmark={true}
         />
         <div className="w-3/4 mx-auto flex flex-col gap-8 pb-8">
-          <h3 className="text-3xl font-semibold border-b pb-4">{data?.title}</h3>
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2 items-center text-lg">
+          {/* TODO: 작성자 id값 조건주기 */}
+          <section className="border-b pb-4 flex justify-between items-center">
+            <h3 className="text-3xl font-semibold">{data?.title}</h3>
+            <div className="flex gap-4">
+              <Button variant="secondary">수정</Button>
+              <Button variant="secondary">삭제</Button>
+            </div>
+          </section>
+          <section className="flex items-center justify-between">
+            <div className="flex gap-2 items-center text-sm">
               <Avatar>
-                <AvatarImage
-                  src={
-                    'https://firebasestorage.googleapis.com/v0/b/homealone-adce9.appspot.com/o/images%2F2024-06-08_3cbdb5af-525e-4420-b291-4fc200e3038b.png?alt=media&token=9a750c95-5b35-4ead-9798-1d90a0727941'
-                  }
-                />
+                <AvatarImage src={''} />
                 <AvatarFallback>{data?.memberName}</AvatarFallback>
               </Avatar>
-              By <span className="text-sm font-light">{data?.memberName}</span>
+              By <span className="text-lg">{data?.memberName}</span>
             </div>
-            <div>
-              <span className="text-gray500 text-sm font-light">
-                {dayjs(data?.createdAt).format('YYYY년 MM월 DD일')}
-              </span>
-            </div>
-          </div>
+            <span className="text-gray500 text-sm">{dayjs(data?.createdAt).format('YYYY년 MM월 DD일')}</span>
+          </section>
+
           <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+
           <div className="no-tailwind">{parse(`${data?.content}`)}</div>
-          <div className="flex items-center justify-between border-t pt-4">
-            <div className="flex gap-2 items-center text-gray500 text-sm font-light">
-              <div className="flex items-center gap-1">
-                <Eye strokeWidth="1.5" />
-                <span>조회수</span>
-                <span>{data?.view}</span>
-              </div>
-              <span>·</span>
-              <div className="flex items-center gap-1">
-                <MessageSquareMore strokeWidth="1.5" />
-                <span>댓글</span>
-                <span>{data?.commentCount}</span>
-              </div>
+
+          <div className="flex gap-2 items-center justify-end text-gray500 text-sm border-t pt-5">
+            <div className="flex items-center gap-1">
+              <Eye strokeWidth="1.5" />
+              <span>조회수</span>
+              <span>{data?.view}</span>
             </div>
-            <div>
-              <Button variant="link" className="text-gray-400">
-                수정
-              </Button>
-              <Button variant="link" className="text-gray-400">
-                삭제
-              </Button>
+            <span>·</span>
+            <div className="flex items-center gap-1">
+              <MessageSquareMore strokeWidth="1.5" />
+              <span>댓글</span>
+              <span>{data?.commentCount}</span>
             </div>
           </div>
+
+          <CommentForm
+            name="content"
+            control={control}
+            imageUrl={''}
+            error={errors?.content}
+            onSubmit={handleSubmit}
+            value={watch('content')}
+          />
+          {commentFetching ? (
+            <div className="flex flex-col justify-center gap-2">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <SkeletonComment key={i} />
+              ))}
+            </div>
+          ) : commentData && commentData.length > 0 ? (
+            commentData?.map((item) => (
+              <Comment key={item.id} write={userId === item?.memberId} commentRefetch={commentRefetch} {...item} />
+            ))
+          ) : (
+            <div className="min-h-40 flex items-center justify-around p-4 border border-gray-300 shadow-md rounded-xl">
+              <div>
+                <p className="leading-8  text-lg text-primary font-semibold">
+                  아직 댓글이 없는 게시글이에요. <br />첫 댓글의 주인공이 되어보세요!
+                </p>
+              </div>
+              <img className="w-32 h-32" src="/icons/notFound.svg" alt="" />
+            </div>
+          )}
         </div>
-        {/* <CommentForm />
-        {Array.from({ length: 14 }).map((_, index) => (
-          <Comment key={index} />
-        ))} */}
       </Layout>
     </>
   );
