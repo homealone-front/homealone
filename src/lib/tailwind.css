@@ -76,3 +76,46 @@
     @apply bg-background text-foreground;
   }
 }
+
+.no-tailwind h1 {
+  @apply text-2xl;
+}
+.no-tailwind h2 {
+  @apply text-xl;
+}
+.no-tailwind h3 {
+  @apply text-lg;
+}
+
+.no-tailwind blockquote {
+  @apply border-l-4 border-[#CCCCCC] mb-[5px] mt-[5px] pl-4;
+}
+
+.no-tailwind a {
+  @apply text-inherit no-underline text-sky-500 hover:text-sky-600;
+}
+
+.no-tailwind strong {
+  @apply font-bold;
+}
+
+.no-tailwind ol,
+.no-tailwind ul {
+  @apply m-0 p-0 list-inside;
+}
+.no-tailwind ol {
+  @apply list-decimal;
+}
+.no-tailwind ul {
+  @apply list-disc;
+}
+
+.no-tailwind .ql-align-right {
+  @apply text-right;
+}
+.no-tailwind .ql-align-center {
+  @apply text-center;
+}
+.no-tailwind .ql-align-justify {
+  @apply text-justify;
+}
