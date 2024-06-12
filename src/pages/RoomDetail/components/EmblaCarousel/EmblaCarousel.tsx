@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { Thumb } from './EmblaCarouselThumbsButton.tsx';
 
 type PropType = {
-  slides: number[];
+  slides: string[] | undefined;
   options?: EmblaOptionsType;
 };
 
@@ -43,9 +43,12 @@ const EmblaCarousel = (props: PropType) => {
     <div className="embla">
       <div className="overflow-hidden" ref={emblaMainRef}>
         <div className="embla__container">
-          {slides.map((index) => (
+          {slides?.map((slide, index) => (
             <div className="embla__slide" key={index}>
-              <div className="embla__slide__number rounded-2xl border shadow-sm">{index + 1}</div>
+              <div
+                style={{ background: `url(${slide}) no-repeat center`, backgroundSize: 'cover' }}
+                className="embla__slide__number rounded-2xl border shadow-sm"
+              ></div>
             </div>
           ))}
         </div>
@@ -54,8 +57,8 @@ const EmblaCarousel = (props: PropType) => {
       <div className="embla-thumbs">
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container">
-            {slides.map((index) => (
-              <Thumb key={index} onClick={() => onThumbClick(index)} selected={index === selectedIndex} index={index} />
+            {slides?.map((slide, index) => (
+              <Thumb key={index} image={slide} onClick={() => onThumbClick(index)} selected={index === selectedIndex} />
             ))}
           </div>
         </div>
