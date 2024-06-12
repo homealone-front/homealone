@@ -12,14 +12,13 @@ import { Card as TextCard } from '@/components/Card';
 import { Layout } from '@/layout';
 import { CATEGORY_OPTIONS } from '../Main/constants';
 import { ListTitle } from '../Main/components/ListTitle';
-import { DateSlot } from '../Main/components/DateSlot';
 import { PATH, TALK_PATH } from '@/constants/paths';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useTalkListQuery } from '@/services/talk/useTalkListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
 
-import dayjs from 'dayjs';
+import { RoomCardSlot } from '../Room/components/RoomCardSlot';
 
 /**
  * 혼잣말 페이지(목록 조회)
@@ -62,36 +61,18 @@ const Talk = () => {
             새 글 작성
           </Button>
         </div>
-        {/* <div className="grid grid-cols-4 gap-6 place-items-start">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <TextCard
-              key={i}
-              description="바꼈어요"
-              lineClamp={2}
-              slot={<DateSlot dateTime="2024년 5월 31일" />}
-              likes={40}
-              onPageMove={() =>
-                navigate(
-                  generatePath(TALK_PATH.detail, {
-                    id: i.toString(),
-                  }),
-                )
-              }
-            />
-          ))}
-        </div> */}
         <div className="grid grid-cols-4 gap-6 place-items-start py-12">
           {isLoading || isFetching
             ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
             : data?.content?.map((card) => (
                 <TextCard
                   key={card?.id}
-                  description="내용"
+                  description={card?.contentSummary}
                   title={card?.title}
                   userName={card?.memberName}
-                  lineClamp={2}
-                  slot={<DateSlot dateTime={dayjs(card?.createdAt).format('YYYY-MM-DD')} />}
-                  likes={40}
+                  lineClamp={1}
+                  slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
+                  likes={card?.likeCount}
                   onPageMove={() =>
                     navigate(
                       generatePath(TALK_PATH.detail, {

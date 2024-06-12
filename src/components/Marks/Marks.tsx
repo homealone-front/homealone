@@ -1,15 +1,16 @@
+import { memo } from 'react';
 import { HeartIcon, BookmarkIcon } from './Icons';
 
 export type MarksPropsType = {
-  postId: number;
-  likes: number;
-  isLike: boolean;
-  isBookmark: boolean;
+  likeCount: number | undefined;
+  scrapCount: number | undefined;
+  isLike: boolean | undefined;
+  isBookmark: boolean | undefined;
   onLikeSubmit: () => void;
   onBookmarkSubmit: () => void;
 };
 
-const Marks = ({ likes, isLike, isBookmark, onLikeSubmit, onBookmarkSubmit }: MarksPropsType) => {
+const Marks = ({ likeCount, scrapCount, isLike, isBookmark, onLikeSubmit, onBookmarkSubmit }: MarksPropsType) => {
   return (
     <div className="w-11 h-28 border border-solid bg-white border-slate-300 rounded-xl flex flex-col justify-evenly items-center fixed z-10 ml-3">
       <div className="w-4/5 h-2/5 flex flex-col justify-center items-center">
@@ -19,7 +20,7 @@ const Marks = ({ likes, isLike, isBookmark, onLikeSubmit, onBookmarkSubmit }: Ma
         >
           <HeartIcon filled={isLike} />
         </button>
-        <span className="text-xs text-slate-500 mt-0.5">{likes}</span>
+        <span className="text-xs text-slate-500 mt-0.5">{likeCount}</span>
       </div>
       <div className="w-4/5 h-1/5 flex justify-center items-center">
         <button
@@ -28,9 +29,10 @@ const Marks = ({ likes, isLike, isBookmark, onLikeSubmit, onBookmarkSubmit }: Ma
         >
           <BookmarkIcon filled={isBookmark} />
         </button>
+        <span className="text-xs text-slate-500 mt-0.5">{scrapCount}</span>
       </div>
     </div>
   );
 };
 
-export default Marks;
+export default memo(Marks);

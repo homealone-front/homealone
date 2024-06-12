@@ -27,6 +27,11 @@ export interface TalkListResponse extends ResponseModel {
     title: string;
 
     /**
+     * 혼잣말 내용 요약
+     */
+    contentSummary: string;
+
+    /**
      * 유저 닉네임
      */
     memberName: string;
@@ -35,6 +40,11 @@ export interface TalkListResponse extends ResponseModel {
      * 댓글 개수
      */
     commentCount: number;
+
+    /**
+     * 좋아요 개수
+     */
+    likeCount: number;
 
     /**
      * 작성일자
