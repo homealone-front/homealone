@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 
 import { Appbar } from '@/components/Appbar';
-import { Marks } from '@/components/Marks';
+// import { Marks } from '@/components/Marks';
 import { Layout } from '@/layout';
 import { useRoomDetailQuery } from '@/services/room/useRoomDetailQuery';
 
@@ -29,8 +29,7 @@ import { Spinner } from '@/components/Spinner';
 const RoomDetail = () => {
   const { id: roomId } = useParams();
   const userId = useUserStore((state) => state.id);
-  // TODO: 작성자 이미지 응답값 들어오면 붙이기
-  // const imageUrl = useUserStore((state) => state.image_url);
+  const userProfileImage = useUserStore((state) => state.imageUrl);
 
   // TODO: isNaN roomId 404페이지로 이동시키기
   // console.info('🚀 ~ RoomDetail ~ roomId:', roomId);
@@ -81,7 +80,7 @@ const RoomDetail = () => {
   });
 
   const OPTIONS: EmblaOptionsType = {};
-  const SLIDES = data?.imagesUrl;
+  const SLIDES = data?.contentImages;
 
   return (
     <>
@@ -89,26 +88,28 @@ const RoomDetail = () => {
       <Layout>
         {!isFetching ? (
           <>
-            <Marks
+            {/* TODO: 좋아요, 북마크 완료되면 붙이기 */}
+            {/* <Marks
               onLikesSubmit={() => alert('좋아요 반영 핸들러')}
               onBookmarkSubmit={() => alert('북마크 반영 핸들러')}
-              likes={40}
-              isLike={true}
-              isBookmark={true}
-            />
+              likes={data?.likeCount}
+              isLike={data?.likeCount}
+              isBookmark={data?.scrapCount}
+            /> */}
             <div className="w-3/4 mx-auto flex flex-col gap-8 pb-8">
-              {/* TODO: 작성자 id값 조건주기 */}
               <section className="border-b pb-4 flex justify-between items-center">
                 <h3 className="text-3xl font-semibold">{data?.title}</h3>
-                <div className="flex gap-4">
-                  <Button variant="secondary">수정</Button>
-                  <Button variant="secondary">삭제</Button>
-                </div>
+                {userId === data?.memberId && (
+                  <div className="flex gap-4">
+                    <Button variant="secondary">수정</Button>
+                    <Button variant="secondary">삭제</Button>
+                  </div>
+                )}
               </section>
               <section className="flex items-center justify-between">
                 <div className="flex gap-2 items-center text-sm">
                   <Avatar>
-                    <AvatarImage src={''} />
+                    <AvatarImage src={data?.imageUrl} />
                     <AvatarFallback>{data?.memberName}</AvatarFallback>
                   </Avatar>
                   By <span className="text-lg">{data?.memberName}</span>
@@ -137,7 +138,7 @@ const RoomDetail = () => {
               <CommentForm
                 name="content"
                 control={control}
-                imageUrl={''}
+                imageUrl={userProfileImage}
                 error={errors?.content}
                 onSubmit={handleSubmit}
                 value={watch('content')}

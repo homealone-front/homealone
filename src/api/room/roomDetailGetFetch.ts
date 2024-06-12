@@ -16,6 +16,16 @@ export interface RoomDetailResponse extends ResponseModel, WriteRoomPostFetchPar
   memberName: string;
 
   /**
+   * 작성자 프로필 이미지
+   */
+  imageUrl: string;
+
+  /**
+   * 작성자 id
+   */
+  memberId: number;
+
+  /**
    * 댓글 수
    */
   commentCount: number;
