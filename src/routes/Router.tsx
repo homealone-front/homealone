@@ -38,7 +38,6 @@ const Router = () => {
         <Route path={RECIEPE_PATH.detail} element={<ReciepeDetailPage />} />
 
         <Route path={PATH.room} element={<RoomPage />} />
-        <Route path={PATH.roomWrite} element={<RoomWritePage />} />
         <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
 
         <Route path={PATH.talk} element={<TalkPage />} />
@@ -46,6 +45,7 @@ const Router = () => {
         <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
 
         <Route element={<UserRouter />}>
+          <Route path={PATH.roomWrite} element={<RoomWritePage />} />
           <Route path={PATH.mypage} element={<Mypage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
