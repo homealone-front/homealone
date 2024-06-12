@@ -37,6 +37,11 @@ export interface RoomListResponse extends ResponseModel {
     commentCount: number;
 
     /**
+     * 좋아요 갯수
+     */
+    likeCount: number;
+
+    /**
      * 작성 날짜
      */
     createdAt: string;
@@ -45,6 +50,11 @@ export interface RoomListResponse extends ResponseModel {
      * 대표 이미지 URL
      */
     thumbnailUrl: string;
+
+    /**
+     * 컨텐츠 요약
+     */
+    contentSummary: string;
   }[];
 
   /**

@@ -69,7 +69,7 @@ const Room = () => {
             : data?.content?.map((card, i) => (
                 <Card
                   key={i}
-                  description=""
+                  likes={card?.likeCount}
                   title={card?.title}
                   userName={card?.memberName}
                   imageUrl={card?.thumbnailUrl}
