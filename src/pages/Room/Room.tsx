@@ -20,12 +20,14 @@ import { useRoomListQuery } from '@/services/room/useRoomListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
 
 import { RoomCardSlot } from './components/RoomCardSlot';
+import { useUserStore } from '@/store/useUserStore';
 
 /**
  * 방자랑 페이지 컴포넌트
  */
 const Room = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const accessToken = useUserStore((state) => state.accessToken);
 
   const { data, isLoading, isFetching } = useRoomListQuery({ page: currentPage, size: 20 });
 
@@ -58,9 +60,11 @@ const Room = () => {
             title="케빈들의 아지트"
             description="다른사람들의 아지트를 확인해보세요!"
           />
-          <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
-            새 글 작성
-          </Button>
+          {accessToken && (
+            <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
+              새 글 작성
+            </Button>
+          )}
         </div>
 
         <div className="grid grid-cols-4 gap-6 place-items-start">
