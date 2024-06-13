@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { myRecipeListGetFetch, MyRecipeListGetFetchParmas } from '@/api/reciepe/myRecipeListGetFetch';
+import { myRecipeListGetFetch, MyRecipeListGetFetchParmas } from '@/api/recipe/myRecipeListGetFetch';
 
 import { COOK_TIME } from '@/pages/ReciepeWrite/constants';
 

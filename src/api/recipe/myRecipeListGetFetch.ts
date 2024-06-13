@@ -1,5 +1,5 @@
 import { apiFetch } from '../common';
-import { RecipeListResponse, RecipeListGetFetchParmas } from './recipeListGetFetch';
+import { RecipeListResponse, RecipeListGetFetchParmas } from '@/api/reciepe/recipeListGetFetch';
 
 export interface MyRecipeListGetFetchParmas extends RecipeListGetFetchParmas {}
 export interface MyRecipeListResponse extends RecipeListResponse {}
