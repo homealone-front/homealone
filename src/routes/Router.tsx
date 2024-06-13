@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { PATH, Recipe_PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
+import { PATH, RECIPE_PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
 
 import AuthRouter from './AuthRouter';
 import UserRouter from './UserRouter';
@@ -20,6 +20,8 @@ import { RoomWritePage } from '@/pages/RoomWrite';
 import { KakaoCallbackPage } from '@/pages/KakaoCallback';
 import { NotFoundPage } from '@/pages/NotFound';
 import { TalkWritePage } from '@/pages/TalkWrite';
+import { NaverCallbackPage } from '@/pages/NaverCallback';
+// import { RecipeEditPage } from '@/pages/RecipeEdit';
 import { MyPosts } from '@/pages/MyPosts';
 
 const Router = () => {
@@ -32,11 +34,12 @@ const Router = () => {
           <Route path={PATH.login} element={<LoginPage />} />
           <Route path={PATH.register} element={<RegisterPage />} />
           <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
+          <Route path={PATH.naver} element={<NaverCallbackPage />} />
         </Route>
 
-        <Route path={PATH.receipe} element={<RecipePage />} />
-        <Route path={PATH.receipeWrite} element={<RecipeWritePage />} />
-        <Route path={Recipe_PATH.detail} element={<RecipeDetailPage />} />
+        <Route path={PATH.recipe} element={<RecipePage />} />
+        <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
+        <Route path={RECIPE_PATH.detail} element={<RecipeDetailPage />} />
 
         <Route path={PATH.room} element={<RoomPage />} />
         <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />

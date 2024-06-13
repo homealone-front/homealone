@@ -124,7 +124,7 @@ export const PORTIONS = [
 /**
  * 조리 유형 RecipeType
  */
-export const Recipe_TYPE = [
+export const RECIPE_TYPE = [
   {
     value: '밥/죽/떡',
     item: '밥/죽/떡',

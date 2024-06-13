@@ -21,13 +21,13 @@ export interface WriteRecipePostFetchParams {
    * 레시피 유형
    * - 시간이 없어요.. 어떤 리터럴인지 constants 봐주세요..
    */
-  RecipeType: string;
+  recipeType: string;
 
   /**
    * 조리 시간.
    * - 22..
    */
-  RecipeTime: string;
+  recipeTime: string;
 
   /**
    * 어디 나라 음식?

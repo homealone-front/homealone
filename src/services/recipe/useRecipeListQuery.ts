@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { recipeListGetFetch, RecipeListGetFetchParams } from '@/api/recipe/recipeListGetFetch';
 import { COOK_TIME } from '@/pages/RecipeWrite/constants';
 
@@ -32,4 +32,5 @@ export const useRecipeListQuery = (params: RecipeListGetFetchParams) =>
       };
     },
     staleTime: 5000,
+    placeholderData: keepPreviousData,
   });

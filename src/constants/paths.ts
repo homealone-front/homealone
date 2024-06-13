@@ -20,12 +20,12 @@ export const PATH = Object.freeze({
   /**
    * 레시피 페이지
    */
-  receipe: '/Recipe' as const,
+  recipe: '/recipe' as const,
 
   /**
    * 레시피 작성페이지
    */
-  receipeWrite: '/Recipe/write' as const,
+  recipeWrite: '/Recipe/write' as const,
 
   /**
    * 방자랑 페이지
@@ -61,16 +61,21 @@ export const PATH = Object.freeze({
    * 카카오 로그인 redirect uri
    */
   kakao: '/kakao/callback' as const,
+
+  /**
+   * 네이버 로그인 redirect uri
+   */
+  naver: '/naver/login' as const,
 });
 
 /**
  * Recipe 상세
  */
-export const Recipe_PATH = Object.freeze({
+export const RECIPE_PATH = Object.freeze({
   /**
    * generatePath
    */
-  detail: '/Recipe/:id' as const,
+  detail: '/recipe/:id' as const,
 });
 
 /**
@@ -80,7 +85,7 @@ export const ROOM_PATH = {
   /**
    * generatePath
    */
-  detail: '/room/:id' as const,
+  detail: '/room/:id',
 };
 
 /**
@@ -90,7 +95,7 @@ export const TALK_PATH = Object.freeze({
   /**
    * generatePath
    */
-  detail: '/talk/:id' as const,
+  detail: '/talk/:id',
 });
 
 export type PathValue = ValueOf<typeof PATH>;

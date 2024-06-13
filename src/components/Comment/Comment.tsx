@@ -63,16 +63,16 @@ const Comment = (props: CommentPropsType) => {
 
       const content = getValues('content');
 
-      const updateParmas = {
+      const updateParams = {
         id: rest.id,
         content,
         postId: rest.postId,
       };
 
-      const udpateResponse = await updateCommentPatchFetch(updateParmas);
+      const updateResponse = await updateCommentPatchFetch(updateParams);
 
       toast({
-        title: udpateResponse.data.message || '댓글이 수정되었어요.',
+        title: updateResponse.data.message || '댓글이 수정되었어요.',
         icon: <CircleCheck />,
         className: TOAST.success,
       });

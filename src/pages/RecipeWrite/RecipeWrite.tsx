@@ -22,7 +22,7 @@ import { writeRecipePostFetch } from '@/api/recipe/writeRecipePostFetch';
 
 import { getRecipeCleansingData } from './util';
 
-import { FOOD_CATEGORIES, COOK_TIME, PORTIONS, Recipe_TYPE } from './constants';
+import { FOOD_CATEGORIES, COOK_TIME, PORTIONS, RECIPE_TYPE } from './constants';
 import { PATH } from '@/constants/paths';
 
 import { RecipeSchema } from './validator';
@@ -47,8 +47,8 @@ const RecipeWrite = () => {
       title: '',
       description: '',
       cuisine: '한식',
-      RecipeType: '밥/죽/떡',
-      RecipeTime: '15분',
+      recipeType: '밥/죽/떡',
+      recipeTime: '15분',
       portions: '1인분',
       images: [
         {
@@ -124,7 +124,7 @@ const RecipeWrite = () => {
         className: TOAST.success,
       });
 
-      navigate(PATH.receipe);
+      navigate(PATH.recipe);
     } catch (error) {
       console.error(error);
 
@@ -145,7 +145,7 @@ const RecipeWrite = () => {
       {displaySpinner ? <Spinner>레시피를 등록 중 이에요 ... </Spinner> : null}
       <Appbar />
       <Layout>
-        <Button variant="ghost" className="flex items-center gap-2" onClick={() => navigate(PATH.receipe)}>
+        <Button variant="ghost" className="flex items-center gap-2" onClick={() => navigate(PATH.recipe)}>
           <Undo2 />
           <span className="text-xl">돌아갈래요</span>
         </Button>
@@ -179,10 +179,10 @@ const RecipeWrite = () => {
                 <Select name="cuisine" id="cuisine" label="카테고리" options={FOOD_CATEGORIES} />
               </div>
               <div className="mt-8">
-                <Select name="RecipeType" id="RecipeType" label="요리 유형" options={Recipe_TYPE} />
+                <Select name="recipeType" id="recipeType" label="요리 유형" options={RECIPE_TYPE} />
               </div>
               <div className="mt-8">
-                <Select name="RecipeTime" id="RecipeTime" label="조리시간" options={COOK_TIME} />
+                <Select name="recipeTime" id="recipeTime" label="조리시간" options={COOK_TIME} />
               </div>
               <div className="mt-8">
                 <Select name="portions" id="portions" label="👨🏿‍🦳인분" options={PORTIONS} />

@@ -1,10 +1,10 @@
-import { COOK_TIME, Recipe_TYPE, PORTIONS, FOOD_CATEGORIES } from './constants';
+import { COOK_TIME, RECIPE_TYPE, PORTIONS, FOOD_CATEGORIES } from './constants';
 import { uploadImage } from '@/utils/uploadImage';
-import { WriteRecipePostFetchParams } from '@/api/Recipe/writeRecipePostFetch';
+import { WriteRecipePostFetchParams } from '@/api/recipe/writeRecipePostFetch';
 import { RecipeSchemaType } from './RecipeWrite';
 
 /**
- * 레시피등록 파라미터를 포맷팅한다.
+ * 레시피 수정 및 등록 파라미터를 포맷팅한다.
  */
 export const getRecipeCleansingData = async (data: RecipeSchemaType) => {
   const { images = [], details = [], ...rest } = data;
@@ -12,7 +12,7 @@ export const getRecipeCleansingData = async (data: RecipeSchemaType) => {
   /**
    * 대표이미지를 업로드하고 params 형식에 맞춘다.
    */
-  const cleasingMainImage = (await Promise.all(
+  const cleansingMainImage = (await Promise.all(
     images.map(async (item) => {
       if (item.image instanceof File) {
         const uploadedImage = await uploadImage(item.image);
@@ -47,14 +47,14 @@ export const getRecipeCleansingData = async (data: RecipeSchemaType) => {
   return {
     ...rest,
     cuisine: FOOD_CATEGORIES.find((c) => c.value === rest.cuisine)?.param as string,
-    RecipeTime: COOK_TIME.find((t) => t.value === rest.RecipeTime)?.param as string,
-    RecipeType: Recipe_TYPE.find((t) => t.value === rest.RecipeType)?.param as string,
+    recipeTime: COOK_TIME.find((t) => t.value === rest.recipeTime)?.param as string,
+    recipeType: RECIPE_TYPE.find((t) => t.value === rest.recipeType)?.param as string,
     ingredients: rest.ingredients.map((item) => ({
       ...item,
       quantity: parseInt(item.quantity, 10),
     })),
     portions: PORTIONS.find((p) => p.value === rest.portions)?.param as number,
-    images: [...cleasingMainImage],
+    images: [...cleansingMainImage],
     details: [...cleansingDetailsImage],
   };
 };

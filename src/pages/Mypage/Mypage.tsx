@@ -4,10 +4,12 @@ import { Layout } from '@/layout';
 import { Appbar } from '@/components/Appbar';
 import { Footer } from '@/components/Footer';
 import { memberSchema } from './validator';
+
 import { Leave } from './components/Leave';
 import { EditForm } from './components/EditForm';
 
 export type MemberSchemaType = yup.InferType<typeof memberSchema>;
+
 /**
  * 마이페이지 컴포넌트
  */

@@ -29,16 +29,34 @@ export interface RecipeDetailResponse extends ResponseModel, WriteRecipePostFetc
     tagName: string;
   }[];
 
+  /**
+   * 좋아요 북마크 갯수
+   */
   relatedDto: {
+    /**
+     * 조아요
+     */
     likeCount: number;
-    scrapCount: number;
+
+    /**
+     * 유저가 누름?
+     */
     likeByCurrentUser: boolean;
+
+    /**
+     * 북마크
+     */
     bookmarked: boolean;
   };
+
+  /**
+   * 조회수
+   */
+  view: number;
 }
 
 /**
- * 레시피 상세조회ㅏ
+ * 레시피 상세조회
  */
 export const recipeDetailGetFetch = ({ id }: RecipeDetailGetFetchParams) =>
   apiFetch.get<RecipeDetailResponse>(`/recipes/${id}`);

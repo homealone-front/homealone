@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { recipeDetailGetFetch, RecipeDetailGetFetchParams } from '@/api/Recipe/recipeDetailGetFetch';
+import { recipeDetailGetFetch, RecipeDetailGetFetchParams } from '@/api/recipe/recipeDetailGetFetch';
+
 /**
  * 레시피 상세 조회
  */
@@ -13,6 +14,7 @@ export const useRecipeDetailQuery = ({ id }: RecipeDetailGetFetchParams) =>
 
       return data;
     },
-
+    enabled: !!id,
     staleTime: 5000,
+    refetchOnWindowFocus: true,
   });
