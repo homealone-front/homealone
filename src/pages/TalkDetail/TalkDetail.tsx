@@ -32,8 +32,9 @@ const TalkDetail = () => {
   const userId = useUserStore((state) => state.id);
   const imageUrl = useUserStore((state) => state.imageUrl);
 
-  const { data, refetch: detailRefetch, isLoading: detailFetching } = useTalkDetailQuery({ id });
+  const { data, refetch: detailRefetch, isLoading: detailLoading } = useTalkDetailQuery({ id });
 
+  console.info(data);
   const {
     data: commentData,
     refetch: commentRefetch,
@@ -79,7 +80,7 @@ const TalkDetail = () => {
     <>
       <Appbar />
       <Layout>
-        {!detailFetching && data ? (
+        {!detailLoading && data ? (
           <>
             <Marks postId={Number(id)} data={data} refetch={detailRefetch} />
             <div className="w-3/4 mx-auto pb-24">
