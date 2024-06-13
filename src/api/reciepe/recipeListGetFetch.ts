@@ -60,6 +60,14 @@ export interface RecipeListResponse extends ResponseModel {
      * 유저 이름
      */
     userName: string;
+
+    relatedDto: {
+      likeCount: number;
+      scrapCount: number;
+      commentCount: number;
+      likeByCurrentUser: boolean;
+      bookmarked: boolean;
+    };
   }[];
 
   /**

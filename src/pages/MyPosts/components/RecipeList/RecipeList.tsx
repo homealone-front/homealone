@@ -55,7 +55,7 @@ const RecipeList = () => {
                         }}
                       />
                     }
-                    likes={40}
+                    likes={card.relatedDto.likeCount}
                     onPageMove={() =>
                       navigate(
                         generatePath(RECIEPE_PATH.detail, {
