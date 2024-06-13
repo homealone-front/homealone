@@ -32,6 +32,11 @@ export interface RoomListResponse extends ResponseModel {
     memberName: string;
 
     /**
+     * 작성자 프로필 이미지
+     */
+    imageUrl: string;
+
+    /**
      * 댓글 갯수
      */
     commentCount: number;

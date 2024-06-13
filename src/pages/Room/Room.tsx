@@ -76,6 +76,7 @@ const Room = () => {
                   likes={card?.likeCount}
                   title={card?.title}
                   userName={card?.memberName}
+                  userImage={card?.imageUrl}
                   imageUrl={card?.thumbnailUrl}
                   lineClamp={1}
                   slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
