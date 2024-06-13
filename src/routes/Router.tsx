@@ -20,9 +20,10 @@ import { RoomWritePage } from '@/pages/RoomWrite';
 import { ChattingsPage } from '@/pages/Chattings';
 import { ChattingPage } from '@/pages/Chatting';
 
+import { KakaoCallbackPage } from '@/pages/KakaoCallback';
 import { NotFoundPage } from '@/pages/NotFound';
 import { TalkWritePage } from '@/pages/TalkWrite';
-
+import { MyPosts } from '@/pages/MyPosts';
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
         <Route element={<AuthRouter />}>
           <Route path={PATH.login} element={<LoginPage />} />
           <Route path={PATH.register} element={<RegisterPage />} />
+          <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
         </Route>
 
         <Route path={PATH.receipe} element={<ReciepePage />} />
@@ -40,7 +42,6 @@ const Router = () => {
         <Route path={RECIEPE_PATH.detail} element={<ReciepeDetailPage />} />
 
         <Route path={PATH.room} element={<RoomPage />} />
-        <Route path={PATH.roomWrite} element={<RoomWritePage />} />
         <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
 
         <Route path={PATH.talk} element={<TalkPage />} />
@@ -48,7 +49,9 @@ const Router = () => {
         <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
 
         <Route element={<UserRouter />}>
+          <Route path={PATH.roomWrite} element={<RoomWritePage />} />
           <Route path={PATH.mypage} element={<Mypage />} />
+          <Route path={PATH.myPosts} element={<MyPosts />} />
         </Route>
 
         <Route path={PATH.chattings} element={<ChattingsPage />} />

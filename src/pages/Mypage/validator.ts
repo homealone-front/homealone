@@ -59,5 +59,5 @@ export const memberSchema = yup.object().shape({
   /**
    * 주소 뒤
    */
-  lastAddress: yup.string(),
+  secondAddress: yup.string(),
 });

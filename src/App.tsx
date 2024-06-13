@@ -1,12 +1,17 @@
 import Routes from '@/routes/Router';
 import { Toaster } from '@/components/ui/toaster';
+import { useModalStore } from '@/store/useModalStore';
 
 function App() {
+  const isOpen = useModalStore((state) => state.isOpen);
+  const Modal = useModalStore((state) => state.Modal);
+
   return (
-    <>
+    <div className="bg-[#F9F7F4]">
+      {isOpen ? Modal : null}
       <Toaster />
       <Routes />
-    </>
+    </div>
   );
 }
 

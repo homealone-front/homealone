@@ -22,7 +22,7 @@ import { PATH } from '@/constants/paths';
 const Appbar = () => {
   const accessToken = useUserStore((state) => state.accessToken);
   const name = useUserStore((state) => state.name);
-  const imgUrl = useUserStore((state) => state.image_url);
+  const imgUrl = useUserStore((state) => state.imageUrl);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = usePageMoveHandler();

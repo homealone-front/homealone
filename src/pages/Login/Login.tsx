@@ -19,9 +19,12 @@ import { loginSchema } from './validator';
 import { useUserStore } from '@/store/useUserStore';
 import { useToast } from '@/hooks/useToast';
 import { TOAST } from '@/constants/toast';
-import { CircleCheck } from 'lucide-react';
-import { CircleXIcon } from 'lucide-react';
+import { CircleCheck, CircleXIcon } from 'lucide-react';
+
 import { memberInfoGetFetch } from '@/api/member/memberInfoGetFetch';
+
+import { KakaoButton } from '@/components/KakaoButton';
+import { KakaoAuthUrlGetFetch } from '@/api/member/kakaoAuthUrlGetFetch';
 
 const Login = () => {
   const navigate = usePageMoveHandler();
@@ -43,9 +46,6 @@ const Login = () => {
     handleSubmit: submit,
     control,
     getValues,
-    // setValue,
-    // trigger,
-    // watch,
     formState: { errors },
   } = method;
 
@@ -83,6 +83,28 @@ const Login = () => {
     }
   });
 
+  const handleKakaoLogin = async () => {
+    try {
+      const urlResponse = await KakaoAuthUrlGetFetch();
+
+      const kakaoUrl = document.createElement('a');
+
+      kakaoUrl.setAttribute('href', urlResponse.data);
+
+      kakaoUrl.click();
+    } catch (error) {
+      console.error(error);
+
+      if (isAxiosError(error)) {
+        toast({
+          title: error?.response?.data.message || '카카오 로그인 실패',
+          icon: <CircleXIcon />,
+          className: TOAST.error,
+        });
+      }
+    }
+  };
+
   console.info('파라미터 확인', getValues());
 
   return (
@@ -95,33 +117,32 @@ const Login = () => {
             <p className="text-lg text-center text-gray400">이메일로 로그인</p>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <div>
-              <Input
-                control={control}
-                name="email"
-                type="text"
-                label="이메일"
-                placeholder="example@example.com"
-                error={errors?.email}
-              />
-            </div>
+          <div>
+            <Input
+              control={control}
+              name="email"
+              type="text"
+              label="이메일"
+              placeholder="example@example.com"
+              error={errors?.email}
+            />
+          </div>
 
-            <div className="my-8">
-              <Input
-                control={control}
-                name="password"
-                type="password"
-                label="비밀번호"
-                placeholder="영어 대소문자, 특수문자 1자를 포함"
-                error={errors?.password}
-              />
-            </div>
+          <div className="my-8">
+            <Input
+              control={control}
+              name="password"
+              type="password"
+              label="비밀번호"
+              placeholder="영어 대소문자, 특수문자 1자를 포함"
+              error={errors?.password}
+            />
+          </div>
 
-            <Button className="w-full" type="submit">
-              로그인
-            </Button>
-          </form>
+          <Button className="w-full mb-2" onClick={handleSubmit}>
+            로그인
+          </Button>
+          <KakaoButton buttonText="카카오로 시작하기" onSubmit={handleKakaoLogin} />
           <div className="text-center mt-8 font-light">
             아직 회원이 아니신가요?{' '}
             <span onClick={() => navigate(PATH.register)} className="ml-2 underline text-blue500 cursor-pointer">

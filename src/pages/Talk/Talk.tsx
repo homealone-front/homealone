@@ -12,19 +12,31 @@ import { Card as TextCard } from '@/components/Card';
 import { Layout } from '@/layout';
 import { CATEGORY_OPTIONS } from '../Main/constants';
 import { ListTitle } from '../Main/components/ListTitle';
-import { DateSlot } from '../Main/components/DateSlot';
 import { PATH, TALK_PATH } from '@/constants/paths';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { useTalkListQuery } from '@/services/talk/useTalkListQuery';
+import { SkeletonCard } from '@/components/Skeleton';
+
+import { RoomCardSlot } from '../Room/components/RoomCardSlot';
 
 /**
- * 혼잣말 페이지
+ * 혼잣말 페이지(목록 조회)
  */
 const Talk = () => {
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
+  const { data, isLoading, isFetching } = useTalkListQuery({ page: currentPage, size: 20 });
+
   const navigate = useNavigate();
 
   const method = useForm({
     values: { category: '전체', query: '' },
   });
+
+  const handlePageMove = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -49,25 +61,29 @@ const Talk = () => {
             새 글 작성
           </Button>
         </div>
-        <div className="grid grid-cols-4 gap-6 place-items-start">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <TextCard
-              key={i}
-              description="바꼈어요"
-              lineClamp={2}
-              slot={<DateSlot dateTime="2024년 5월 31일" />}
-              likes={40}
-              onPageMove={() =>
-                navigate(
-                  generatePath(TALK_PATH.detail, {
-                    id: i.toString(),
-                  }),
-                )
-              }
-            />
-          ))}
+        <div className="grid grid-cols-4 gap-6 place-items-start py-12">
+          {isLoading || isFetching
+            ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
+            : data?.content?.map((card) => (
+                <TextCard
+                  key={card?.id}
+                  description={card?.contentSummary}
+                  title={card?.title}
+                  userName={card?.memberName}
+                  lineClamp={1}
+                  slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
+                  likes={card?.likeCount}
+                  onPageMove={() =>
+                    navigate(
+                      generatePath(TALK_PATH.detail, {
+                        id: card.id.toString(),
+                      }),
+                    )
+                  }
+                />
+              ))}
         </div>
-        <Pagination totalPage={4} currentPage={1} onPageChange={() => alert('페이지네이션 로직 필요')} />
+        <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
       </Layout>
       <Footer />
     </>

@@ -38,6 +38,26 @@ export interface CommentListResponse extends ResponseModel {
    * 댓글 작성 및 수정 시간
    */
   modifiedAt: string;
+
+  /**
+   * 좋아요 수
+   */
+  likeCount: number;
+
+  /**
+   * 게시글 제목
+   */
+  postTitle: string;
+
+  /**
+   * 게시글 작성자 닉네임
+   */
+  postMemberName: string;
+
+  /**
+   * 게시글 종류
+   */
+  postType: 'RECIPE' | 'ROOM' | 'TALK' | 'USEDTRADE';
 }
 
 /**

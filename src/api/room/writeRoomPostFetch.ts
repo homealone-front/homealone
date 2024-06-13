@@ -15,7 +15,7 @@ export interface WriteRoomPostFetchParams {
   /**
    * 방자랑 썸네일 이미지
    */
-  thumbnailUrl: string | string[];
+  thumbnailUrl: string;
 
   /**
    * 방자랑 컨텐츠 이미지 리스트
@@ -30,7 +30,9 @@ export interface WriteRoomPostFetchParams {
   }[];
 }
 
-export interface WriteRoomResponse extends ResponseModel {}
+export interface WriteRoomResponse extends ResponseModel {
+  id: number;
+}
 
 /**
  * 방자랑 게시글 작성 및 등록

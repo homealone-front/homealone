@@ -12,20 +12,34 @@ import { Card } from '@/components/Card';
 import { Layout } from '@/layout';
 import { CATEGORY_OPTIONS } from '../Main/constants';
 import { ListTitle } from '../Main/components/ListTitle';
-import { DateSlot } from '../Main/components/DateSlot';
 
 import { PATH, ROOM_PATH } from '@/constants/paths';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { useRoomListQuery } from '@/services/room/useRoomListQuery';
+import { SkeletonCard } from '@/components/Skeleton';
+
+import { RoomCardSlot } from './components/RoomCardSlot';
+import { useUserStore } from '@/store/useUserStore';
 
 /**
  * 방자랑 페이지 컴포넌트
  */
 const Room = () => {
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  const { data, isLoading, isFetching } = useRoomListQuery({ page: currentPage, size: 20 });
+
   const navigate = useNavigate();
 
   const method = useForm({
     values: { category: '전체', query: '' },
   });
+
+  const handlePageMove = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -46,30 +60,37 @@ const Room = () => {
             title="케빈들의 아지트"
             description="다른사람들의 아지트를 확인해보세요!"
           />
-          <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
-            새 글 작성
-          </Button>
+          {accessToken && (
+            <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
+              새 글 작성
+            </Button>
+          )}
         </div>
+
         <div className="grid grid-cols-4 gap-6 place-items-start">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <Card
-              description="할리스 페스토햄"
-              onPageMove={() =>
-                navigate(
-                  generatePath(ROOM_PATH.detail, {
-                    id: i.toString(),
-                  }),
-                )
-              }
-              key={i}
-              imageUrl="https://github.com/shadcn.png"
-              lineClamp={1}
-              slot={<DateSlot dateTime="2024년 5월 31일" />}
-              likes={40}
-            />
-          ))}
+          {isLoading || isFetching
+            ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
+            : data?.content?.map((card, i) => (
+                <Card
+                  key={i}
+                  likes={card?.likeCount}
+                  title={card?.title}
+                  userName={card?.memberName}
+                  userImage={card?.imageUrl}
+                  imageUrl={card?.thumbnailUrl}
+                  lineClamp={1}
+                  slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
+                  onPageMove={() =>
+                    navigate(
+                      generatePath(ROOM_PATH.detail, {
+                        id: card.id.toString(),
+                      }),
+                    )
+                  }
+                />
+              ))}
         </div>
-        <Pagination totalPage={4} currentPage={1} onPageChange={() => alert('페이지네이션 로직 필요')} />
+        <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
       </Layout>
       <Footer />
     </>

@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CircleCheck, CircleXIcon, Image, Undo2 } from 'lucide-react';
 import ReactQuill from 'react-quill';
@@ -9,8 +9,6 @@ import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Layout } from '@/layout';
 import { ListTitle } from '../Main/components/ListTitle';
-
-import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
 
 import { PATH } from '@/constants/paths';
 import { Input } from '@/components/Input';
@@ -26,6 +24,7 @@ import { writeRoomPostFetch } from '@/api/room/writeRoomPostFetch';
 import { isAxiosError } from 'axios';
 import { useToast } from '@/hooks/useToast';
 import { TOAST } from '@/constants/toast';
+import { useNavigate } from 'react-router-dom';
 
 export type RoomSchemaType = yup.InferType<typeof roomSchema>;
 
@@ -34,7 +33,8 @@ export type RoomSchemaType = yup.InferType<typeof roomSchema>;
  *
  */
 const RoomWrite = () => {
-  const navigate = usePageMoveHandler();
+  // TODO: 비회원 접근 불가 라우트 설정하기
+  const navigate = useNavigate();
 
   const { toast } = useToast();
 
@@ -45,12 +45,10 @@ const RoomWrite = () => {
     defaultValues: {
       title: '',
       content: '',
-      thumbnailUrl: [
-        {
-          image: {} as File,
-          imageUrl: '',
-        },
-      ],
+      thumbnailUrl: {
+        image: {} as File,
+        imageUrl: '',
+      },
       roomImages: [],
       tags: [
         {
@@ -70,24 +68,9 @@ const RoomWrite = () => {
     formState: { errors },
   } = method;
 
-  const file = watch(`thumbnailUrl.${0}`);
+  const thumbnailFile = watch(`thumbnailUrl`);
   const uploadRef = useRef<HTMLInputElement>(null);
   const quillRef = useRef<ReactQuill>(null);
-
-  const modules = useMemo(() => {
-    return {
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, false] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ color: [] }, { background: [] }],
-          [{ align: [] }, 'link'],
-        ],
-      },
-    };
-  }, []);
 
   const handleUploadImage = () => {
     uploadRef.current?.click();
@@ -101,26 +84,32 @@ const RoomWrite = () => {
       const uploadFile = files[0];
       const imageUrl = URL.createObjectURL(uploadFile);
 
-      setValue(`thumbnailUrl.${0}.image`, uploadFile);
-      setValue(`thumbnailUrl.${0}.imageUrl`, imageUrl);
+      setValue(`thumbnailUrl.image`, uploadFile);
+      setValue(`thumbnailUrl.imageUrl`, imageUrl);
     }
   };
 
   const handleSubmit = submit(async () => {
     try {
+      // console.info('최종 파라미터를 확인한다.', writeRoomParams);
+      console.info('작성 파라미터를 확인한다.', getValues());
+
       setDisplaySpinner(true);
       const writeRoomParams = await getRoomCleansingData(getValues());
-      await writeRoomPostFetch(writeRoomParams);
-      console.info('최종 파라미터를 확인한다.', writeRoomParams);
-      console.info('작성 파라미터를 확인한다.', getValues());
+      const response = await writeRoomPostFetch(writeRoomParams);
+      const createRoomId = response.data.id;
 
       toast({
         title: '방자랑 등록 성공',
         icon: <CircleCheck />,
         className: TOAST.success,
       });
+      // TODO: 방자랑 등록 후, 상세 페이지로 이동
 
       setDisplaySpinner(false);
+
+      // 등록 성공 후, 해당 게시글로 이동
+      navigate(`${PATH.room}/${createRoomId}`);
     } catch (error) {
       console.error(error);
 
@@ -164,23 +153,30 @@ const RoomWrite = () => {
                         <div className="flex aspect-square items-center justify-center">
                           <div
                             style={{
-                              backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
+                              backgroundImage: thumbnailFile.imageUrl ? `url(${thumbnailFile.imageUrl})` : 'none',
                               backgroundSize: 'cover',
                             }}
                             className={`rounded-lg w-full h-full opacity-90 flex items-center justify-center group ${
-                              file.imageUrl ? `bg-cover bg-center bg-no-repeat` : 'bg-[#f5f5f5]'
+                              thumbnailFile.imageUrl ? `bg-cover bg-center bg-no-repeat` : 'bg-[#f5f5f5]'
                             }`}
                           >
                             <Button
                               className={`flex gap-4 ${
-                                file.imageUrl ? 'text-gray700 bg-white group-hover:flex hidden' : 'text-gray400'
+                                thumbnailFile.imageUrl
+                                  ? 'text-gray700 bg-white group-hover:flex hidden'
+                                  : 'text-gray400'
                               }`}
                               variant="ghost"
                               onClick={handleUploadImage}
                             >
-                              <Image size={16} color={`${file.imageUrl ? '#2d3748' : '#a0aec0'}`} strokeWidth={1.25} />
+                              <Image
+                                size={16}
+                                color={`${thumbnailFile.imageUrl ? '#2d3748' : '#a0aec0'}`}
+                                strokeWidth={1.25}
+                              />
                               <span>
-                                대표 이미지 {file.imageUrl && file.image instanceof File ? '수정' : '추가'}하기
+                                대표 이미지{' '}
+                                {thumbnailFile.imageUrl && thumbnailFile.image instanceof File ? '수정' : '추가'}하기
                               </span>
                             </Button>
                           </div>
@@ -193,10 +189,8 @@ const RoomWrite = () => {
                           />
                         </div>
                       </Card>
-                      {errors?.thumbnailUrl?.[0]?.imageUrl ? (
-                        <p className="mt-2 text-sm text-red-600 text-left">
-                          {errors?.thumbnailUrl?.[0]?.imageUrl.message}
-                        </p>
+                      {errors?.thumbnailUrl?.imageUrl ? (
+                        <p className="mt-2 text-sm text-red-600 text-left">{errors?.thumbnailUrl?.imageUrl.message}</p>
                       ) : null}
                     </div>
                   </CarouselItem>
@@ -241,3 +235,19 @@ const RoomWrite = () => {
 };
 
 export default RoomWrite;
+
+/**
+ * QuillEditor 모듈 설정
+ */
+const modules = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }, 'link'],
+    ],
+  },
+};
