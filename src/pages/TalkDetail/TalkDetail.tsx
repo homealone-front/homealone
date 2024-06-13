@@ -38,7 +38,7 @@ const TalkDetail = () => {
     data: commentData,
     refetch: commentRefetch,
     isFetching: commentFetching,
-  } = useCommentListQuery({ postId: parseInt(id, 10) });
+  } = useCommentListQuery({ postId: id });
 
   const method = useForm({
     resolver: yupResolver(commentSchema),
