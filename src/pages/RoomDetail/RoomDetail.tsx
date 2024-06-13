@@ -15,7 +15,7 @@ import { Eye, MessageSquareMore } from 'lucide-react';
 import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { commentSchema } from '../ReciepeDetail/validator';
+import { commentSchema } from '../RecipeDetail/validator';
 import { addCommentPostFetch } from '@/api/comment/addCommentPostFetch';
 import { CommentForm } from '@/components/CommentForm';
 import { SkeletonComment } from '@/components/SkeletonComment';

@@ -16,7 +16,7 @@ import { CATEGORY_OPTIONS } from '../Main/constants';
 import { Pagination } from '@/components/Pagination';
 
 import { useNavigate, generatePath } from 'react-router-dom';
-import { PATH, RECIEPE_PATH } from '@/constants/paths';
+import { PATH, Recipe_PATH } from '@/constants/paths';
 import { Button } from '@/components/ui/button';
 
 import { useRecipeListQuery } from '@/services/recipe/useRecipeListQuery';
@@ -86,7 +86,7 @@ const Receipe = () => {
                   likes={40}
                   onPageMove={() =>
                     navigate(
-                      generatePath(RECIEPE_PATH.detail, {
+                      generatePath(Recipe_PATH.detail, {
                         id: card.id.toString(),
                       }),
                     )
@@ -117,7 +117,7 @@ const Receipe = () => {
                   likes={40}
                   onPageMove={() =>
                     navigate(
-                      generatePath(RECIEPE_PATH.detail, {
+                      generatePath(Recipe_PATH.detail, {
                         id: card.id.toString(),
                       }),
                     )

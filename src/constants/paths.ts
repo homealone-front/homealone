@@ -20,12 +20,12 @@ export const PATH = Object.freeze({
   /**
    * 레시피 페이지
    */
-  receipe: '/reciepe' as const,
+  receipe: '/Recipe' as const,
 
   /**
    * 레시피 작성페이지
    */
-  receipeWrite: '/reciepe/write' as const,
+  receipeWrite: '/Recipe/write' as const,
 
   /**
    * 방자랑 페이지
@@ -64,13 +64,13 @@ export const PATH = Object.freeze({
 });
 
 /**
- * Reciepe 상세
+ * Recipe 상세
  */
-export const RECIEPE_PATH = Object.freeze({
+export const Recipe_PATH = Object.freeze({
   /**
    * generatePath
    */
-  detail: '/reciepe/:id' as const,
+  detail: '/Recipe/:id' as const,
 });
 
 /**

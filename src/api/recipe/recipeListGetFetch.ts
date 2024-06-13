@@ -1,7 +1,7 @@
 import { apiFetch } from '../common';
 import { ResponseModel } from '../model';
 
-export interface RecipeListGetFetchParmas {
+export interface RecipeListGetFetchParams {
   /**
    * 요청할 페이지 번호
    * - 0 이 1번째
@@ -99,7 +99,7 @@ export interface RecipeListResponse extends ResponseModel {
 /**
  * 레시피 게시글 조회 (페이지네이션)
  */
-export const recipeListGetFetch = (params: RecipeListGetFetchParmas) => {
+export const recipeListGetFetch = (params: RecipeListGetFetchParams) => {
   const { page = 0, size = 20 } = params;
 
   return apiFetch.get<RecipeListResponse>(`/recipes?page=${page}&size=${size}&sort=createdAt,desc`);

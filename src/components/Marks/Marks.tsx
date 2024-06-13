@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { HeartIcon, BookmarkIcon } from './Icons';
 import { likePostFetch } from '@/api/marks/likePostFetch';
 import { TalkDetailResponse } from '@/api/talk/talkDetailGetFetch';
-import { RecipeDetailResponse } from '@/api/reciepe/recipeDetailGetFetch';
+import { RecipeDetailResponse } from '@/api/Recipe/recipeDetailGetFetch';
 import { RoomDetailResponse } from '@/api/room/roomDetailGetFetch';
 import { scrapPostFetch } from '@/api/marks/scrapPostFetch';
 import { useUserStore } from '@/store/useUserStore';

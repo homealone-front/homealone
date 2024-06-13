@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { myRecipeListGetFetch, MyRecipeListGetFetchParmas } from '@/api/recipe/myRecipeListGetFetch';
 
-import { COOK_TIME } from '@/pages/ReciepeWrite/constants';
+import { COOK_TIME } from '@/pages/RecipeWrite/constants';
 
 /**
  *내가 작성한 레시피 조회

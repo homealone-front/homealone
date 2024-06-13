@@ -1,6 +1,6 @@
 import { apiFetch } from '../common';
 import { ResponseModel } from '../model';
-import { WriteReciepePostFetchParams } from './writeReciepePostFetch';
+import { WriteRecipePostFetchParams } from '@/api/recipe/writeRecipePostFetch';
 
 export interface RecipeDetailGetFetchParams {
   /**
@@ -9,7 +9,12 @@ export interface RecipeDetailGetFetchParams {
   id: string;
 }
 
-export interface RecipeDetailResponse extends ResponseModel, WriteReciepePostFetchParams {
+export interface RecipeDetailResponse extends ResponseModel, WriteRecipePostFetchParams {
+  /**
+   * 게시물 식별값
+   */
+  id: number;
+
   /**
    * 게시물 작성자 식별값
    */

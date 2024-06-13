@@ -8,7 +8,7 @@ import { QueryObserverResult } from '@tanstack/react-query';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/ui/button';
-import { commentSchema } from '@/pages/ReciepeDetail/validator';
+import { commentSchema } from '@/pages/RecipeDetail/validator';
 
 import { useToast } from '@/hooks/useToast';
 
