@@ -18,11 +18,9 @@ const Mypage = () => {
           <img src="/icons/arrow_svg_rightdown.svg" alt="arrow_icon" />
           <span className="text-xl font-semibold text-gray-800">나의 정보</span>
         </div>
-        <div className="flex gap-10">
-          <div className="min-w-[53.25rem] mx-auto">
-            <EditForm />
-            <Leave />
-          </div>
+        <div className="flex flex-col max-w-[53.25rem] min-w-[30rem] mx-auto">
+          <EditForm />
+          <Leave />
         </div>
       </Layout>
       <Footer />
