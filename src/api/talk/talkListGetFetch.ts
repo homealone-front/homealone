@@ -16,6 +16,7 @@ export interface TalkListGetFetchParms {
 
 export interface TalkListResponse extends ResponseModel {
   content: {
+    memberImageUrl: string | undefined;
     /**
      * 유저 식별값
      */
@@ -78,6 +79,11 @@ export interface TalkListResponse extends ResponseModel {
    * 현재 보여주는 갯수
    */
   size: number;
+
+  /**
+   * 작성자 프로필 이미지 URL
+   */
+  memberImageUrl: string;
 }
 
 /**
