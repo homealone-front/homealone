@@ -8,7 +8,9 @@ export interface LikeParams {
   postId: number;
 }
 
-export interface LikeResponse extends ResponseModel {}
+export interface LikeResponse extends ResponseModel {
+  totalCount: number | undefined;
+}
 
 /**
  * 좋아요 추가/삭제
