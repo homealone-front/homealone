@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, FormEvent } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, generatePath  } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { Client, IMessage } from '@stomp/stompjs';
 import { Appbar } from '@/components/Appbar';
@@ -13,7 +13,7 @@ interface Message {
   sendDate: string;
   sendTime: string;
   memberId: number;
-  chatRoomId: number;
+  chatRoomId: string;
   sender: string | null;
   chatting: string | null;
 }
@@ -21,6 +21,7 @@ interface Message {
 const Chatting = () => {
   const { id } = useParams<{ id: string }>();
   const chatroomId = parseInt(id, 10);
+  const navigate = useNavigate();
 
   const [chatroomName, setChatroomName] = useState<string>('');
   const [senderName, setSenderName] = useState<string>('');
@@ -50,6 +51,8 @@ const Chatting = () => {
           setSenderId(response.data.senderId || '');
           setReceiverId(response.data.receiverId || '');
           setCurrentMemberId(response.data.currentId || '');
+
+          console.log('현재 회원의 memberId : ' + response.data.currentId);
         })
         .catch((error) => console.log('채팅방 정보 가져오기 실패! : ' + error));
     };
@@ -60,12 +63,9 @@ const Chatting = () => {
       brokerURL: 'ws://localhost:8080/ws/websocket',
       reconnectDelay: 5000,
       onConnect: () => {
-        client.subscribe(`/topic/public/${chatroomId}`, (message: IMessage) => {
-          const newMessage = JSON.parse(message.body);
-          setMemberMessages((prevMessages) => {
-            const isDuplicate = prevMessages.some((msg) => msg.id === newMessage.id);
-            return isDuplicate ? prevMessages : [...prevMessages, newMessage];
-          });
+        client.subscribe(`/topic/public/${chatroomId}`, (message) => {
+          const sendMessage = JSON.parse(message.body);
+          console.log('보낸 메시지 : ' + sendMessage.content);
         });
       },
     });
@@ -104,11 +104,12 @@ const Chatting = () => {
         chatroomId: chatroomId,
         type: 'CHAT',
       };
+      console.log('메시지 보낼때 memberId : ' + currentMemberId);
       stompClient.publish({
         destination: `/app/chat-sendMessage/${chatroomId}`,
         body: JSON.stringify(chatMessage),
       });
-      // Update local state to immediately reflect the new message
+
       const messageToAdd: Message = {
         id: Date.now(), // or some unique ID
         content: newMessage,
@@ -120,17 +121,25 @@ const Chatting = () => {
         chatting: null,
       };
 
+      console.log('메시지 시간 및 날짜 : ' + messageToAdd.sendDate);
       setMemberMessages((prevMessages) => [...prevMessages, messageToAdd]);
       setNewMessage('');
     }
   };
 
   const exitChatroom = () => {
-    axios
-      .delete(`http://localhost:8080/api/chatting/${chatroomId}`)
-      .then(console.log('채팅방을 나갔습니다!'))
-      .catch((error) => console.log('채팅방 나가기 실패! : ' + error));
+    if(window.confirm("정말로 채팅방을 나가시겠습니까?")) {
+        axios
+            .delete(`http://localhost:8080/api/chatting/${chatroomId}`)
+            .then((response) => {
+              console.log(response.data.message);
+              navigate("/");
+            })
+            .catch((error) => console.log('채팅방 나가기 실패! : ' + error));
+    }
+
   };
+
 
   return (
     <>
@@ -189,9 +198,9 @@ const Chatting = () => {
                     color: '#988DB3',
                   }}
                 >
-                  <div style={{ flex: '1' }}>{leftUser}</div>
-                  <div style={{ flex: '8' }}></div>
-                  <div style={{ flex: '1' }}>{rightUser}</div>
+                  <div style={{ flex: '2' }}>{leftUser}</div>
+                  <div style={{ flex: '6' }}></div>
+                  <div style={{ flex: '2' }}>{rightUser}</div>
                 </div>
               </div>
 
