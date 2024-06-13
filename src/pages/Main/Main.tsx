@@ -45,7 +45,7 @@ const Main = () => {
           imgPath="/icons/receipe_icon.png"
           title="트렌드 레시피"
           description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
-          onPageMove={() => navigate(PATH.receipe)}
+          onPageMove={() => navigate(PATH.recipe)}
         />
 
         <div className="grid grid-cols-4 gap-6 place-items-start">
@@ -92,7 +92,7 @@ const Main = () => {
           description="혼잣말은 일상생활에 힘이 됩니다."
           onPageMove={() => navigate(PATH.talk)}
         />
-        <div className="grid grid-cols-4 gap-6 place-items-start mb-20">
+        <div className="grid grid-cols-4 gap-6 mb-20 place-items-start">
           {Array.from({ length: 8 }).map((_, i) => (
             <TextCard
               key={i}
