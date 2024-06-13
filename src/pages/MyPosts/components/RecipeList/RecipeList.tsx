@@ -29,10 +29,14 @@ const RecipeList = () => {
   return (
     <>
       {!data?.content.length ? (
-        <NoContents tab={NAV_TABS.recipe} />
+        <NoContents {...NAV_TABS.recipe} />
       ) : (
-        <>
-          <div className="grid grid-cols-4 gap-6 place-items-start py-12">
+        <div className="min-h-[38rem] flex flex-col justify-between mt-10">
+          <div className="mb-4 flex items-center">
+            <span className="text-medium text-gray700 mr-1">전체</span>
+            <span className="text-sm font-light text-gray400">{data.totalElements}</span>
+          </div>
+          <div className="grid grid-cols-4 gap-6 place-items-start pb-12">
             {isLoading || isFetching
               ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
               : data?.content?.map((card, i) => (
@@ -63,7 +67,7 @@ const RecipeList = () => {
                 ))}
           </div>
           <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
-        </>
+        </div>
       )}
     </>
   );

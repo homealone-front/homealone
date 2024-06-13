@@ -30,32 +30,42 @@ const TalkList = () => {
   return (
     <>
       {!data?.content.length ? (
-        <NoContents tab={NAV_TABS.talk} />
+        <NoContents {...NAV_TABS.talk} />
       ) : (
-        <div className="min-h-[38rem] flex flex-col justify-between">
-          <div className="grid grid-cols-4 gap-6 place-items-start py-12">
-            {isLoading || isFetching
-              ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-              : data?.content?.map((card) => (
-                  <TextCard
-                    key={card?.id}
-                    description="내용"
-                    title={card?.title}
-                    userName={card?.memberName}
-                    lineClamp={2}
-                    slot={<DateSlot dateTime={dayjs(card?.createdAt).format('YYYY-MM-DD')} />}
-                    likes={40}
-                    onPageMove={() =>
-                      navigate(
-                        generatePath(TALK_PATH.detail, {
-                          id: card.id.toString(),
-                        }),
-                      )
-                    }
-                  />
-                ))}
+        <div className="w-full min-h-[38rem] flex flex-col justify-between mt-10">
+          <div className="mb-4 flex items-center">
+            <span className="text-medium text-gray700 mr-1">전체</span>
+            <span className="text-sm font-light text-gray400">{data.totalElements}</span>
           </div>
-          <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
+          <div className="min-h-[38rem] flex flex-col justify-between">
+            <div className="grid grid-cols-4 gap-6 place-items-start pb-12">
+              {isLoading || isFetching
+                ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
+                : data?.content?.map((card) => (
+                    <TextCard
+                      key={card?.id}
+                      description="내용"
+                      title={card?.title}
+                      userName={card?.memberName}
+                      lineClamp={2}
+                      slot={<DateSlot dateTime={dayjs(card?.createdAt).format('YYYY-MM-DD')} />}
+                      likes={40}
+                      onPageMove={() =>
+                        navigate(
+                          generatePath(TALK_PATH.detail, {
+                            id: card.id.toString(),
+                          }),
+                        )
+                      }
+                    />
+                  ))}
+            </div>
+            <Pagination
+              totalPage={data?.totalPages as number}
+              currentPage={currentPage}
+              onPageChange={handlePageMove}
+            />
+          </div>
         </div>
       )}
     </>
