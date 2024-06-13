@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { talkListGetFetch, TalkListGetFetchParms } from '@/api/talk/talkListGetFetch';
 
 /**
@@ -24,5 +24,6 @@ export const useTalkListQuery = (params: TalkListGetFetchParms) =>
         content,
       };
     },
+    placeholderData: keepPreviousData,
     staleTime: 5000,
   });
