@@ -4,6 +4,10 @@ import { likePostFetch } from '@/api/marks/likePostFetch';
 import { TalkDetailResponse } from '@/api/talk/talkDetailGetFetch';
 import { RecipeDetailResponse } from '@/api/reciepe/recipeDetailGetFetch';
 import { scrapPostFetch } from '@/api/marks/scrapPostFetch';
+import { useUserStore } from '@/store/useUserStore';
+import { toast } from '../ui/use-toast';
+import { CircleCheck } from 'lucide-react';
+import { TOAST } from '@/constants/toast';
 
 export type MarksPropsType = {
   // TODO: RoomDetailResponse 추가
@@ -13,21 +17,61 @@ export type MarksPropsType = {
 };
 
 const Marks = ({ postId, data, refetch }: MarksPropsType) => {
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  const showToast = (title: string) => {
+    toast({
+      title: title,
+      icon: <CircleCheck />,
+      className: TOAST.success,
+    });
+  };
+
   const handleLikesBtn = async () => {
-    try {
-      await likePostFetch({ postId: postId });
-      refetch();
-    } catch (error) {
-      alert('좋아요 실패');
+    if (accessToken) {
+      try {
+        await likePostFetch({ postId: postId });
+        refetch();
+        if (data) {
+          const title =
+            'like' in data
+              ? data.like
+                ? '좋아요 취소'
+                : '이 게시물을 좋아해요.'
+              : data.relatedDto.likeByCurrentUser
+              ? '좋아요 취소'
+              : '이 게시물을 좋아합니다.';
+          showToast(title);
+        }
+      } catch (error) {
+        alert('좋아요 실패');
+      }
+    } else {
+      alert('로그인이 필요해요.');
     }
   };
 
   const handleScrapBtn = async () => {
-    try {
-      await scrapPostFetch({ postId: postId });
-      refetch();
-    } catch (error) {
-      alert('북마크 실패');
+    if (accessToken) {
+      try {
+        await scrapPostFetch({ postId: postId });
+        refetch();
+        if (data) {
+          const title =
+            'like' in data
+              ? data.scrap
+                ? '북마크 취소'
+                : '북마크가 완료되었어요.'
+              : data.relatedDto.bookmarked
+              ? '북마크 취소'
+              : '북마크가 완료되었어요.';
+          showToast(title);
+        }
+      } catch (error) {
+        alert('북마크 실패');
+      }
+    } else {
+      alert('로그인이 필요해요.');
     }
   };
 
