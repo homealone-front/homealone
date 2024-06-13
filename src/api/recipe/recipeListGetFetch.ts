@@ -94,6 +94,11 @@ export interface RecipeListResponse extends ResponseModel {
    * 총 페이지 갯수
    */
   totalPages: number;
+
+  /**
+   * 현재 보여주는 갯수
+   */
+  size: number;
 }
 
 /**
@@ -103,4 +108,11 @@ export const recipeListGetFetch = (params: RecipeListGetFetchParams) => {
   const { page = 0, size = 20 } = params;
 
   return apiFetch.get<RecipeListResponse>(`/recipes?page=${page}&size=${size}&sort=createdAt,desc`);
+};
+
+/**
+ * 트렌드 레시피 조회
+ */
+export const trendsRecipeListGetFetch = () => {
+  return apiFetch.get<RecipeListResponse>('/recipes/trends?page=0');
 };
