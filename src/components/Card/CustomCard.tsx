@@ -29,6 +29,11 @@ export interface CustomCardPropsType {
   userName?: string;
 
   /**
+   * 유저 프로필이미지
+   */
+  userImage?: string;
+
+  /**
    * n줄 효과
    */
   lineClamp?: 1 | 2;
@@ -53,7 +58,7 @@ export interface CustomCardPropsType {
  * 테일윈드 background url 속성이 안먹어서 일단은 인라인 스타일로 처리했습니다..
  */
 const CustomCard = (props: CustomCardPropsType) => {
-  const { className, title, description, userName, imageUrl, lineClamp, likes, slot, onPageMove } = props;
+  const { className, title, description, userName, userImage, imageUrl, lineClamp, likes, slot, onPageMove } = props;
 
   return (
     <Card
@@ -93,7 +98,7 @@ const CustomCard = (props: CustomCardPropsType) => {
         {userName ? (
           <div className="flex items-center gap-2">
             <Avatar className="w-4 h-4">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarImage src={userImage ? userImage : 'https://github.com/shadcn.png'} alt="@shadcn" />
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
             <span className="font-extralight text-sm">{userName}</span>
