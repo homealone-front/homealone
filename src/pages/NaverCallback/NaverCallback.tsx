@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  getKakaoAccessTokenPostFetch,
-  GetKakaoAccessTokenPostFetchParams,
-} from '@/api/kakao/getKakaoAccessTokenPostFetch';
+  getNaverAccessTokenPostFetch,
+  GetNaverAccessTokenPostFetchParams,
+} from '@/api/naver/getNaverAccessTokenPostFetch';
 
-import { memberKakaoLoginPostFetch } from '@/api/member/memberKakaoLoginGetFetch';
 import { memberInfoGetFetch } from '@/api/member/memberInfoGetFetch';
 
 import { useUserStore } from '@/store/useUserStore';
@@ -16,9 +15,10 @@ import { useToast } from '@/hooks/useToast';
 import { CircleCheck, CircleXIcon } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { Spinner } from '@/components/Spinner';
+import { memberNaverLoginPostFetch } from '@/api/member/memberNaverLoginPostFetch';
 import dayjs from 'dayjs';
 
-const KakaoCallback = () => {
+const NaverCallback = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -32,31 +32,31 @@ const KakaoCallback = () => {
       try {
         const queryParams = new URLSearchParams(location.search);
         const code = queryParams.get('code');
+        const state = queryParams.get('state');
 
-        if (code) {
-          const parmas: GetKakaoAccessTokenPostFetchParams = {
+        if (code && state) {
+          const params: GetNaverAccessTokenPostFetchParams = {
             grant_type: 'authorization_code',
-            client_id: import.meta.env.VITE_APP_KAKAO_CLIENT_ID,
-            redirect_uri: import.meta.env.VITE_APP_KAKAO_REDIRECT_URI,
+            client_id: import.meta.env.VITE_APP_NAVER_CLIENT_ID,
+            client_secret: import.meta.env.VITE_APP_NAVER_CLIENT_SECRET,
             code,
+            state,
           };
 
-          const getAccessTokenResponse = await getKakaoAccessTokenPostFetch(parmas);
+          const getAccessTokenResponse = await getNaverAccessTokenPostFetch(params);
 
           const { data } = getAccessTokenResponse;
 
-          const kakaoLoginResponse = await memberKakaoLoginPostFetch({ accessToken: `Bearer ${data.access_token}` });
+          const naverLoginResponse = await memberNaverLoginPostFetch({ accessToken: data.access_token });
 
-          setAccessToken(kakaoLoginResponse.data.accessToken);
+          setAccessToken(naverLoginResponse.data.accessToken);
 
           const userInfoResponse = await memberInfoGetFetch();
 
-          const birth = !userInfoResponse.data.birth ? '' : dayjs(userInfoResponse.data.birth).format('YYYYMMDD');
-
-          setUserInfo({ ...userInfoResponse.data, birth });
+          setUserInfo({ ...userInfoResponse.data, birth: dayjs(userInfoResponse.data.birth).format('YYYYMMDD') });
 
           toast({
-            title: '카카오로 로그인 했어요!',
+            title: '네이버로 로그인 했어요!',
             icon: <CircleCheck />,
             className: TOAST.success,
           });
@@ -68,7 +68,7 @@ const KakaoCallback = () => {
 
         if (isAxiosError(error)) {
           toast({
-            title: '카카오 로그인에 실패했어요 ...',
+            title: '네이버 로그인에 실패했어요 ...',
             icon: <CircleXIcon />,
             className: TOAST.error,
           });
@@ -84,4 +84,4 @@ const KakaoCallback = () => {
   return <Spinner>로그인 중이에요 ...</Spinner>;
 };
 
-export default KakaoCallback;
+export default NaverCallback;
