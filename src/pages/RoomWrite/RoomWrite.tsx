@@ -104,6 +104,7 @@ const RoomWrite = () => {
         icon: <CircleCheck />,
         className: TOAST.success,
       });
+      // TODO: 방자랑 등록 후, 상세 페이지로 이동
 
       setDisplaySpinner(false);
 
