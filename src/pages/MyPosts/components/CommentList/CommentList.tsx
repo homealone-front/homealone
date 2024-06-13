@@ -28,21 +28,27 @@ const CommentList = () => {
       {!data?.content.length ? (
         <NoContents {...NAV_TABS.comment} />
       ) : (
-        <div className="w-full min-h-[38rem] flex flex-col justify-between mt-10">
+        <div className="w-full flex flex-col justify-between mt-10">
           <div>
             <div className="mb-4 flex items-center">
               <span className="text-medium text-gray700 mr-1">전체</span>
               <span className="text-sm font-light text-gray400">{data.totalElements}</span>
             </div>
-            <div className="flex flex-col place-items-start border-x border-t">
+            <div className="flex flex-col place-items-start border-x border-t mb-10">
               {isLoading || isFetching
-                ? Array.from({ length: 20 }).map((_, index) => (
+                ? Array.from({ length: data.content.length }).map((_, index) => (
                     <Skeleton key={index} className="h-[6rem] w-full mb-2" />
                   ))
                 : data?.content?.map((item) => <CommentCard {...item} />)}
             </div>
           </div>
-          <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
+          {data?.totalPages > 1 && (
+            <Pagination
+              totalPage={data?.totalPages as number}
+              currentPage={currentPage}
+              onPageChange={handlePageMove}
+            />
+          )}
         </div>
       )}
     </>

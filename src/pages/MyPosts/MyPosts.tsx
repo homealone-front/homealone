@@ -19,7 +19,7 @@ const MyPosts = () => {
             <img className="w-7" src="/icons/arrow_icon.svg" alt="arrow_icon" />
             <span className="text-2xl font-normal text-gray-800">작성한 글</span>
           </div>
-          <div className="flex flex-col min-h-[49rem] mx-auto">
+          <div className="flex flex-col min-h-[42rem] mx-auto">
             <div className=" bg-white border border-gray200 rounded-lg px-8 pt-4 mb-24 grow ">
               <Tabs defaultValue={Object.values(NAV_TABS)[0].name}>
                 <TabsList>

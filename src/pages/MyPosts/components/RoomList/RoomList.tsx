@@ -33,12 +33,12 @@ const RoomList = () => {
       {!data?.content.length ? (
         <NoContents {...NAV_TABS.room} />
       ) : (
-        <div className="min-h-[38rem] flex flex-col justify-between mt-10">
+        <div className="flex flex-col justify-between mt-10">
           <div className="mb-4 flex items-center">
             <span className="text-medium text-gray700 mr-1">전체</span>
             <span className="text-sm font-light text-gray400">{data.totalElements}</span>
           </div>
-          <div className="grid grid-cols-4 gap-6 place-items-start">
+          <div className="grid grid-cols-4 gap-6 place-items-start pb-10">
             {isLoading || isFetching
               ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
               : data?.content?.map((card, i) => (
@@ -47,6 +47,7 @@ const RoomList = () => {
                     description=""
                     title={card?.title}
                     userName={card?.memberName}
+                    userImage={card?.imageUrl}
                     imageUrl={card?.thumbnailUrl}
                     lineClamp={1}
                     likes={card.likeCount}
@@ -61,7 +62,13 @@ const RoomList = () => {
                   />
                 ))}
           </div>
-          <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
+          {data?.totalPages > 1 && (
+            <Pagination
+              totalPage={data?.totalPages as number}
+              currentPage={currentPage}
+              onPageChange={handlePageMove}
+            />
+          )}
         </div>
       )}
     </>
