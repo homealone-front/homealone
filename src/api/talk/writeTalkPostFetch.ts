@@ -27,7 +27,12 @@ export interface WriteTalkPostFetchParams {
     | undefined;
 }
 
-export interface WriteTalkResponse extends ResponseModel {}
+export interface WriteTalkResponse extends ResponseModel {
+  /**
+   * Talk 아이디
+   */
+  id: number;
+}
 
 /**
  * Talk 작성 및 등록

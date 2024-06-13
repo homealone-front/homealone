@@ -10,8 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Layout } from '@/layout';
 import { ListTitle } from '../Main/components/ListTitle';
 
-import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
-
 import { PATH } from '@/constants/paths';
 import { Input } from '@/components/Input';
 import { QuillEditor } from '@/components/QuillEditor';
@@ -22,6 +20,7 @@ import { writeTalkPostFetch } from '@/api/talk/writeTalkPostFetch';
 import { isAxiosError } from 'axios';
 import { useToast } from '@/hooks/useToast';
 import { TOAST } from '@/constants/toast';
+import { useNavigate } from 'react-router-dom';
 
 export type TalkSchemaType = yup.InferType<typeof talkSchema>;
 
@@ -30,7 +29,7 @@ export type TalkSchemaType = yup.InferType<typeof talkSchema>;
  *
  */
 const TalkWrite = () => {
-  const navigate = usePageMoveHandler();
+  const navigate = useNavigate();
 
   const { toast } = useToast();
 
@@ -77,9 +76,9 @@ const TalkWrite = () => {
     try {
       setDisplaySpinner(true);
       const writeTalkParams = await getValues();
-      await writeTalkPostFetch(writeTalkParams);
-      console.info('최종 파라미터를 확인한다.', writeTalkParams);
-      console.info('작성 파라미터를 확인한다.', getValues());
+      const response = await writeTalkPostFetch(writeTalkParams);
+      // console.info('최종 파라미터를 확인한다.', writeTalkParams);
+      // console.info('작성 파라미터를 확인한다.', getalues());
 
       toast({
         title: '혼잣말을 등록했어요!',
@@ -87,7 +86,7 @@ const TalkWrite = () => {
         className: TOAST.success,
       });
 
-      navigate(PATH.talk);
+      navigate(`${PATH.talk}/${response.data.id}`);
     } catch (error) {
       console.error(error);
 
