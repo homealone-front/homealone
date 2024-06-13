@@ -101,7 +101,7 @@ const Marks = ({ postId, data, refetch }: MarksPropsType) => {
                   <BookmarkIcon filled={'like' in data ? data.scrap : data.relatedDto.bookmarked} />
                 </button>
                 <span className="text-xs text-slate-500 mt-0.5">
-                  {'like' in data ? data.scrapCount : data.relatedDto.scrapCount}
+                  {'like' in data ? data.scrapCount : data.relatedDto?.scrapCount}
                 </span>
               </div>
             </>

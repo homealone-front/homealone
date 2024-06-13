@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Badge } from '@/components/ui/badge';
@@ -16,8 +16,7 @@ import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
-// import { COOK_TIME } from '../ReciepeWrite/constants';
-import { useToast } from '@/hooks/useToast';
+// import { COOK_TIME } from '../RecipeWrite/constants';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { commentSchema } from './validator';
 import { addCommentPostFetch } from '@/api/comment/addCommentPostFetch';
@@ -25,30 +24,16 @@ import { Card } from '@/components/Card';
 import { ListTitle } from '../Main/components/ListTitle';
 import { Spinner } from '@/components/Spinner';
 import { SkeletonComment } from '@/components/SkeletonComment';
-import { useModalStore } from '@/store/useModalStore';
-import { Confirm } from '@/components/Confirm';
-import { isAxiosError } from 'axios';
-import { CircleCheckIcon, CircleXIcon } from 'lucide-react';
-import { TOAST } from '@/constants/toast';
-import { removeRecipeDeleteFetch } from '@/api/recipe/removeRecipeDeleteFetch';
-import { PATH } from '@/constants/paths';
 
 /**
  * 레시피 게시글 상세페이지
  */
 const RecipeDetail = () => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const { toast } = useToast();
 
   const id = pathname.split('/')[2];
-
   const userId = useUserStore((state) => state.id);
   const imageUrl = useUserStore((state) => state.imageUrl);
-
-  const setModal = useModalStore((state) => state.setModal);
-  const onOpen = useModalStore((state) => state.onOpen);
-  const onClose = useModalStore((state) => state.onClose);
 
   const { data, refetch: detailRefetch, isFetching: detailFetching } = useRecipeDetailQuery({ id });
 
@@ -93,36 +78,6 @@ const RecipeDetail = () => {
     }
   });
 
-  const handleRemoveRecipe = async () => {
-    try {
-      await removeRecipeDeleteFetch({ id });
-
-      onClose();
-
-      toast({
-        title: '레시피를 삭제했어요.',
-        icon: <CircleCheckIcon />,
-        className: TOAST.success,
-      });
-
-      navigate(PATH.recipe);
-    } catch (error) {
-      console.error(error);
-
-      if (isAxiosError(error)) {
-        toast({
-          title: '레시피를 삭제하지 못했어요.',
-          icon: <CircleXIcon />,
-          className: TOAST.error,
-        });
-
-        return;
-      }
-    }
-  };
-
-  const detailUserId = data?.userId;
-
   return (
     <>
       <Appbar />
@@ -132,62 +87,16 @@ const RecipeDetail = () => {
           <>
             <Marks postId={parseInt(id, 10)} data={data} refetch={detailRefetch} />
             <div className="w-3/4 pb-24 mx-auto">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-lg">
-                  <Avatar>
-                    <AvatarImage
-                      src={
-                        'https://firebasestorage.googleapis.com/v0/b/homealone-adce9.appspot.com/o/images%2F2024-06-08_3cbdb5af-525e-4420-b291-4fc200e3038b.png?alt=media&token=9a750c95-5b35-4ead-9798-1d90a0727941'
-                      }
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  By <span className="text-sm font-light">{data?.userName}</span>
-                </div>
-
-                {userId === detailUserId ? (
-                  <ul className="flex gap-2 ml-auto text-xs text-gray400">
-                    <li
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setModal(
-                          <Confirm
-                            title="게시글 수정"
-                            content="레시피 수정페이지로 이동하시겠어요?"
-                            submitButtonText="이동"
-                            onClose={onClose}
-                            onSubmit={() => {
-                              onClose();
-                              navigate(`${PATH.recipe}/${id}/edit`);
-                            }}
-                          />,
-                        );
-
-                        onOpen();
-                      }}
-                    >
-                      수정
-                    </li>
-                    <li
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setModal(
-                          <Confirm
-                            title="게시글 삭제"
-                            content="정말 삭제하시겠어요?"
-                            submitButtonText="삭제"
-                            onClose={onClose}
-                            onSubmit={handleRemoveRecipe}
-                          />,
-                        );
-
-                        onOpen();
-                      }}
-                    >
-                      삭제
-                    </li>
-                  </ul>
-                ) : null}
+              <div className="flex items-center gap-2 text-lg">
+                <Avatar>
+                  <AvatarImage
+                    src={
+                      'https://firebasestorage.googleapis.com/v0/b/homealone-adce9.appspot.com/o/images%2F2024-06-08_3cbdb5af-525e-4420-b291-4fc200e3038b.png?alt=media&token=9a750c95-5b35-4ead-9798-1d90a0727941'
+                    }
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                By <span className="text-sm font-light">{data?.userName}</span>
               </div>
 
               <div className="flex flex-col justify-center gap-2 mt-8">

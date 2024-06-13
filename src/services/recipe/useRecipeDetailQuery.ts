@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { recipeDetailGetFetch, RecipeDetailGetFetchParams } from '@/api/recipe/recipeDetailGetFetch';
 
 /**
@@ -14,7 +14,6 @@ export const useRecipeDetailQuery = ({ id }: RecipeDetailGetFetchParams) =>
 
       return data;
     },
-    enabled: !!id,
+    placeholderData: keepPreviousData,
     staleTime: 5000,
-    refetchOnWindowFocus: true,
   });

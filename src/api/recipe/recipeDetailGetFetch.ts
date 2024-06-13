@@ -47,6 +47,11 @@ export interface RecipeDetailResponse extends ResponseModel, WriteRecipePostFetc
      * 북마크
      */
     bookmarked: boolean;
+
+    /**
+     * 스크랩카운트?
+     */
+    scrapCount: string;
   };
 
   /**
