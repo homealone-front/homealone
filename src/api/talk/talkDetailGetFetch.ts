@@ -12,7 +12,12 @@ export interface TalkDetailResponse extends ResponseModel {
   /**
    * 혼잣말 게시물 아이디
    */
-  id: string;
+  id: number;
+
+  /**
+   * 작성자 아이디
+   */
+  memberId: number;
 
   /**
    * 게시물 제목
@@ -53,6 +58,11 @@ export interface TalkDetailResponse extends ResponseModel {
    * 게시물 작성일자
    */
   createdAt: string;
+
+  /**
+   * 댓글 수
+   */
+  commentCount: number;
 
   /**
    * 게시물 조회수

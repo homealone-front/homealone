@@ -1,8 +1,8 @@
 import { TalkDetailGetFetchParams, talkDetailGetFetch } from '@/api/talk/talkDetailGetFetch';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 /**
- * 레시피 상세 조회
+ * 혼잣말 상세 조회
  */
 export const useTalkDetailQuery = ({ id }: TalkDetailGetFetchParams) =>
   useQuery({
@@ -14,6 +14,6 @@ export const useTalkDetailQuery = ({ id }: TalkDetailGetFetchParams) =>
 
       return data;
     },
-
+    placeholderData: keepPreviousData,
     staleTime: 5000,
   });
