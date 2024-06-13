@@ -20,6 +20,7 @@ import { RoomWritePage } from '@/pages/RoomWrite';
 import { KakaoCallbackPage } from '@/pages/KakaoCallback';
 import { NotFoundPage } from '@/pages/NotFound';
 import { TalkWritePage } from '@/pages/TalkWrite';
+import { MyPosts } from '@/pages/MyPosts';
 
 const Router = () => {
   return (
@@ -47,6 +48,7 @@ const Router = () => {
         <Route element={<UserRouter />}>
           <Route path={PATH.roomWrite} element={<RoomWritePage />} />
           <Route path={PATH.mypage} element={<Mypage />} />
+          <Route path={PATH.myPosts} element={<MyPosts />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
