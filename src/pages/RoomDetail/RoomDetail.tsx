@@ -101,8 +101,18 @@ const RoomDetail = () => {
                 <h3 className="text-3xl font-semibold">{data?.title}</h3>
                 {userId === data?.memberId && (
                   <div className="flex gap-4">
-                    <Button variant="secondary">수정</Button>
-                    <Button variant="secondary">삭제</Button>
+                    <Button
+                      className="rounded-none text-gray700  hover:bg-white hover:border-gray400"
+                      variant="outline"
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      className="rounded-none text-gray700  hover:bg-white hover:border-gray400"
+                      variant="outline"
+                    >
+                      삭제
+                    </Button>
                   </div>
                 )}
               </section>
