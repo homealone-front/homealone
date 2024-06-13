@@ -23,6 +23,13 @@ export interface RecipeDetailResponse extends ResponseModel, WriteReciepePostFet
   postTags: {
     tagName: string;
   }[];
+
+  relatedDto: {
+    likeCount: number;
+    scrapCount: number;
+    likeByCurrentUser: boolean;
+    bookmarked: boolean;
+  };
 }
 
 /**

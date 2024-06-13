@@ -35,7 +35,7 @@ const ReciepeDetail = () => {
   const userId = useUserStore((state) => state.id);
   const imageUrl = useUserStore((state) => state.image_url);
 
-  const { data, isFetching: detailFetching } = useRecipeDetailQuery({ id });
+  const { data, refetch: detailRefetch, isFetching: detailFetching } = useRecipeDetailQuery({ id });
 
   const {
     data: commentData,
@@ -85,13 +85,7 @@ const ReciepeDetail = () => {
       <Layout>
         {!detailFetching ? (
           <>
-            <Marks
-              onLikesSubmit={() => alert('좋아요 반영 핸들러')}
-              onBookmarkSubmit={() => alert('북마크 반영 핸들러')}
-              likes={40}
-              isLike={true}
-              isBookmark={true}
-            />
+            <Marks postId={Number(id)} data={data} refetch={detailRefetch} />
             <div className="w-3/4 mx-auto pb-24">
               <div className="flex gap-2 items-center text-lg">
                 <Avatar>
