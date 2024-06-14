@@ -56,7 +56,7 @@ const Appbar = () => {
                 <li>
                   <div className="relative flex items-center gap-2 cursor-pointer" onClick={isOpen ? onClose : onOpen}>
                     <Avatar>
-                      <AvatarImage src={imgUrl || 'https://github.com/shadcn.png'} alt="프로필 이미지" />
+                      <AvatarImage src={imgUrl || '/icons/no_image.png'} alt="프로필 이미지" />
                       <AvatarFallback>nickname state</AvatarFallback>
                     </Avatar>
                     <ChevronDown

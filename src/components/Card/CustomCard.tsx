@@ -98,7 +98,7 @@ const CustomCard = (props: CustomCardPropsType) => {
         {userName ? (
           <div className="flex items-center gap-2">
             <Avatar className="w-4 h-4">
-              <AvatarImage src={userImage ? userImage : 'https://github.com/shadcn.png'} alt="@shadcn" />
+              <AvatarImage src={userImage ? userImage : '/icons/no_image.png'} alt="@shadcn" />
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
             <span className="text-sm font-extralight">{userName}</span>
