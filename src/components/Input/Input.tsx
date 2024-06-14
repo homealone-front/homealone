@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InputButtonPropsType } from '../InputButton/InputButton';
 import { InputButton } from '../InputButton';
+import { forwardRef } from 'react';
 
 interface CustomInputPropsType<T extends FieldValues> {
   name: Path<T>;
@@ -32,7 +33,8 @@ interface CustomInputPropsType<T extends FieldValues> {
 /**
  * ReactHookForm 과 같이 사용하기 위한 Tailwind InputForm 컴포넌트
  */
-const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const CustomInput = forwardRef<HTMLInputElement, CustomInputPropsType<FieldValues>>((props, ref) => {
   const { name, label, addon, control, type, error, helperText, extractNumber = false, ...rest } = props;
 
   const handleExtractNumber = useExtractNumberHandler();
@@ -81,15 +83,15 @@ const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
               ) : null}
             </div>
             {error ? (
-              <p className="mt-2 text-sm text-red-600 text-left">{error?.message}</p>
+              <p className="mt-2 text-sm text-left text-red-600">{error?.message}</p>
             ) : helperText ? (
-              <p className="mt-2 text-sm text-gray-500 text-left">{helperText}</p>
+              <p className="mt-2 text-sm text-left text-gray-500">{helperText}</p>
             ) : null}
           </div>
         )}
       />
     </div>
   );
-};
+});
 
 export default CustomInput;

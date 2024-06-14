@@ -23,8 +23,9 @@ const Searchbar = ({ onSearch }: SearchBarProps) => {
           control={control}
           render={({ field }) => (
             <Input
-              control={control}
               {...field}
+              control={control}
+              name="query"
               type="text"
               extractNumber={false}
               placeholder="검색어를 입력해주세요!"
