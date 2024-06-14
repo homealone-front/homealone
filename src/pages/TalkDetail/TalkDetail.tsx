@@ -24,6 +24,7 @@ import { Confirm } from '@/components/Confirm';
 import { useModalStore } from '@/store/useModalStore';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserAvatar } from '@/components/UserAvatar';
+import { queryClient } from '@/services/quries';
 
 /**
  * 혼잣말 게시글 상세페이지
@@ -43,8 +44,6 @@ const TalkDetail = () => {
   const { mutate } = useTalkDeleteMutation();
 
   const { data, refetch: detailRefetch, isLoading: detailLoading } = useTalkDetailQuery({ id });
-
-  console.info(data);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -86,6 +85,8 @@ const TalkDetail = () => {
       setValue('content', '');
 
       await commentRefetch();
+
+      queryClient.invalidateQueries({ queryKey: ['@talk-detail', id] });
     } catch (error) {
       console.error(error);
     }
@@ -95,7 +96,6 @@ const TalkDetail = () => {
     mutate({ talkId: id });
     onClose();
   };
-
   return (
     <>
       <Appbar />
