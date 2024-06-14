@@ -96,6 +96,30 @@ const Talk = () => {
             새 글 작성
           </Button>
         </div>
+        <div className="grid grid-cols-4 gap-6 place-items-start py-12">
+          {isLoading
+            ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
+            : data?.content?.map((card) => (
+                <TextCard
+                  key={card?.id}
+                  description={card?.contentSummary}
+                  title={card?.title}
+                  userName={card?.memberName}
+                  lineClamp={1}
+                  userImageUrl={card?.imageUrl}
+                  slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
+                  likes={card?.likeCount}
+                  onPageMove={() =>
+                    navigate(
+                      generatePath(TALK_PATH.detail, {
+                        id: card.id.toString(),
+                      }),
+                    )
+                  }
+                />
+              ))}
+        </div>
+        <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
         <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
         <Pagination
           totalPage={(searchParams ? searchData : data)?.totalPages as number}
