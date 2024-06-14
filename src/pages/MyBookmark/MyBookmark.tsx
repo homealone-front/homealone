@@ -16,7 +16,7 @@ const MyBookmark = () => {
       <div className="grow">
         <Layout>
           <div className="flex items-center gap-4 mb-10">
-            <img className="w-7" src="/icons/arrow_icon.svg" alt="arrow_icon" />
+            <img className="h-9" src="/icons/bookmark_icon.svg" alt="bookmark_icon" />
             <span className="text-2xl font-normal text-gray-800">저장한 글</span>
           </div>
           <div className="flex flex-col min-h-[42rem] mx-auto">
