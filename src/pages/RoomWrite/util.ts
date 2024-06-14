@@ -14,8 +14,12 @@ export const getRoomCleansingData = async (data: RoomSchemaType) => {
   let cleansingMainImage;
 
   if (thumbnailUrl.image instanceof File) {
-    const uploadedImage = await uploadImage(thumbnailUrl.image);
-    cleansingMainImage = uploadedImage?.imageUrl;
+    if (!thumbnailUrl.image.name) {
+      cleansingMainImage = thumbnailUrl.imageUrl;
+    } else {
+      const uploadedImage = await uploadImage(thumbnailUrl.image);
+      cleansingMainImage = uploadedImage?.imageUrl;
+    }
   }
 
   /**
@@ -25,8 +29,12 @@ export const getRoomCleansingData = async (data: RoomSchemaType) => {
     roomImages
       .filter((item) => item.image instanceof File)
       .map(async (item) => {
-        const uploadedImage = await uploadImage(item.image);
-        return uploadedImage?.imageUrl;
+        if (!item.image.name) {
+          return item.imageUrl;
+        } else {
+          const uploadedImage = await uploadImage(item.image);
+          return uploadedImage?.imageUrl;
+        }
       }),
   )) as PropType<WriteRoomPostFetchParams, 'roomImages'>;
 
