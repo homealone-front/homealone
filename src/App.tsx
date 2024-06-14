@@ -7,7 +7,7 @@ function App() {
   const Modal = useModalStore((state) => state.Modal);
 
   return (
-    <div className="bg-[#F9F7F4]">
+    <div className="bg-[#F9F7F4] min-h-screen">
       {isOpen ? Modal : null}
       <Toaster />
       <Routes />

@@ -15,8 +15,8 @@ const MyPosts = () => {
       <Appbar />
       <div className="grow">
         <Layout>
-          <div className="flex items-center gap-4 mb-10">
-            <img className="w-7" src="/icons/arrow_icon.svg" alt="arrow_icon" />
+          <div className="flex items-center gap-3 mb-10">
+            <img className="h-7" src="/icons/post_list_icon.png" alt="post_list_icon" />
             <span className="text-2xl font-normal text-gray-800">작성한 글</span>
           </div>
           <div className="flex flex-col min-h-[42rem] mx-auto">
