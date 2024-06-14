@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CircleCheck, CircleXIcon, Image, Undo2 } from 'lucide-react';
 import ReactQuill from 'react-quill';
@@ -24,7 +24,9 @@ import { writeRoomPostFetch } from '@/api/room/writeRoomPostFetch';
 import { isAxiosError } from 'axios';
 import { useToast } from '@/hooks/useToast';
 import { TOAST } from '@/constants/toast';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRoomDetailQuery } from '@/services/room/useRoomDetailQuery';
+import { roomEditPatchFetch } from '@/api/room/roomEditPatchFetch';
 
 export type RoomSchemaType = yup.InferType<typeof roomSchema>;
 
@@ -33,8 +35,15 @@ export type RoomSchemaType = yup.InferType<typeof roomSchema>;
  *
  */
 const RoomWrite = () => {
-  // TODO: 비회원 접근 불가 라우트 설정하기
   const navigate = useNavigate();
+
+  // 방자랑 수정 시 받아오는 roomId
+  const location = useLocation();
+  const roomId = location.state?.roomId;
+  // roomId가 있다면 데이터 호출
+  const { data: roomData } = roomId ? useRoomDetailQuery({ roomId }) : { data: null };
+  // 현재 수정인지 등록인지
+  const mode = roomId ? '수정' : '등록';
 
   const { toast } = useToast();
 
@@ -68,6 +77,24 @@ const RoomWrite = () => {
     formState: { errors },
   } = method;
 
+  useEffect(() => {
+    if (roomData) {
+      setValue('title', roomData.title);
+      setValue('content', roomData.content);
+      setValue('thumbnailUrl', {
+        image: new File([], ''),
+        imageUrl: roomData.thumbnailUrl,
+      });
+      setValue(
+        'roomImages',
+        roomData.roomImages.map((image) => ({
+          image: new File([], ''),
+          imageUrl: image,
+        })),
+      );
+    }
+  }, [roomData]);
+
   const thumbnailFile = watch(`thumbnailUrl`);
   const uploadRef = useRef<HTMLInputElement>(null);
   const quillRef = useRef<ReactQuill>(null);
@@ -91,31 +118,40 @@ const RoomWrite = () => {
 
   const handleSubmit = submit(async () => {
     try {
-      // console.info('최종 파라미터를 확인한다.', writeRoomParams);
-      console.info('작성 파라미터를 확인한다.', getValues());
-
       setDisplaySpinner(true);
       const writeRoomParams = await getRoomCleansingData(getValues());
-      const response = await writeRoomPostFetch(writeRoomParams);
-      const createRoomId = response.data.id;
+      // console.info('최종 파라미터를 확인한다.', writeRoomParams);
+      // console.info('작성 파라미터를 확인한다.', getValues());
+      let response;
+
+      if (roomId) {
+        const params = {
+          roomId,
+          ...writeRoomParams,
+        };
+        response = await roomEditPatchFetch(params);
+      } else {
+        response = await writeRoomPostFetch(writeRoomParams);
+      }
+
+      const returnRoomId = response.data.id;
 
       toast({
-        title: '방자랑 등록 성공',
+        title: `방자랑 ${mode} 성공`,
         icon: <CircleCheck />,
         className: TOAST.success,
       });
-      // TODO: 방자랑 등록 후, 상세 페이지로 이동
 
       setDisplaySpinner(false);
 
-      // 등록 성공 후, 해당 게시글로 이동
-      navigate(`${PATH.room}/${createRoomId}`);
+      // 성공 후, 해당 게시글로 이동
+      navigate(`${PATH.room}/${returnRoomId}`);
     } catch (error) {
       console.error(error);
 
       if (isAxiosError(error)) {
         toast({
-          title: error?.response?.data.message || '방자랑 등록 실패',
+          title: error?.response?.data.message || `방자랑 ${mode} 실패`,
           icon: <CircleXIcon />,
           className: TOAST.error,
         });
@@ -126,7 +162,7 @@ const RoomWrite = () => {
 
   return (
     <>
-      {displaySpinner ? <Spinner>방자랑을 등록 중 이에요 ... </Spinner> : null}
+      {displaySpinner ? <Spinner>방자랑을 {mode} 중 이에요 ... </Spinner> : null}
       <Appbar />
       <Layout>
         <Button variant="ghost" className="flex items-center gap-2" onClick={() => navigate(PATH.room)}>
@@ -134,7 +170,7 @@ const RoomWrite = () => {
           <span className="text-xl">돌아갈래요</span>
         </Button>
         <div className="-mt-8">
-          <ListTitle imgPath="/icons/room_icon.png" title="방자랑 작성 중이에요 ..." />
+          <ListTitle imgPath="/icons/room_icon.png" title={`방자랑 ${mode} 중이에요 ...`} />
         </div>
         <FormProvider {...method}>
           <div className="container w-11/12 mx-auto flex justify-between">
@@ -176,7 +212,7 @@ const RoomWrite = () => {
                               />
                               <span>
                                 대표 이미지{' '}
-                                {thumbnailFile.imageUrl && thumbnailFile.image instanceof File ? '수정' : '추가'}하기
+                                {thumbnailFile.imageUrl || thumbnailFile.image instanceof File ? '수정' : '추가'}하기
                               </span>
                             </Button>
                           </div>
@@ -209,6 +245,7 @@ const RoomWrite = () => {
                   label="방자랑 제목"
                   placeholder="방자랑 제목을 입력해주세요."
                   error={errors?.title}
+                  defaultValue={roomData?.title}
                 />
               </div>
 
@@ -220,10 +257,10 @@ const RoomWrite = () => {
                 ) : null}
               </div>
 
-              {/* 등록 버튼 */}
+              {/* submit 버튼 */}
               <div className="mt-20 text-center">
                 <Button className="rounded-lg w-24 text-lg" onClick={handleSubmit}>
-                  등록하기
+                  {mode}하기
                 </Button>
               </div>
             </div>

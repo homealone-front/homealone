@@ -22,6 +22,7 @@ interface CustomInputPropsType<T extends FieldValues> {
 
   addon?: InputButtonPropsType;
 
+  defaultValue?: string;
   value?: string;
   placeholder?: string;
   maxLength?: number;

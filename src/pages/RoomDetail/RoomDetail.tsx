@@ -1,4 +1,4 @@
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import parse from 'html-react-parser';
 import { EmblaOptionsType } from 'embla-carousel';
@@ -104,11 +104,9 @@ const RoomDetail = () => {
    * 수정 버튼 클릭 시, 해당 작성 페이지로 이동
    */
   const handleNavigate = () => {
-    navigate(
-      generatePath(PATH.roomWrite, {
-        id: roomId,
-      }),
-    );
+    navigate(PATH.roomWrite, {
+      state: { roomId },
+    });
   };
 
   /**
@@ -120,7 +118,7 @@ const RoomDetail = () => {
   };
 
   const OPTIONS: EmblaOptionsType = {};
-  const SLIDES = data?.contentImages;
+  const SLIDES = [data?.thumbnailUrl, ...(data?.roomImages ?? [])];
 
   return (
     <>
