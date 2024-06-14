@@ -66,7 +66,7 @@ const TalkWrite = () => {
   const quillRef = useRef<ReactQuill>(null);
 
   useEffect(() => {
-    if (talkData && talkData.content) {
+    if (talkData?.content) {
       setValue('content', talkData.content);
     }
   }, [talkData, setValue]);

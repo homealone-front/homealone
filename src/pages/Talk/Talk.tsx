@@ -21,6 +21,8 @@ import { useTalkListQuery } from '@/services/talk/useTalkListQuery';
 import { useSearchTalkQuery } from '@/services/search/useSearchQuery';
 import { TalkListGetFetchParms, TalkListResponse } from '@/api/talk/talkListGetFetch';
 import { useUserStore } from '@/store/useUserStore';
+import { NoContents } from '../MyPosts/components/NoContents';
+import { NAV_TABS } from '../MyPosts/constants';
 
 /**
  * 혼잣말 페이지(목록 조회)
@@ -31,7 +33,7 @@ const Talk = () => {
 
   const accessToken = useUserStore((state) => state.accessToken);
 
-  const { data, isLoading } = useTalkListQuery({ page: currentPage, size: 20 });
+  const { data, isLoading, isFetching } = useTalkListQuery({ page: currentPage, size: 20 });
   const { data: searchData, isLoading: isSearchLoading } = useSearchTalkQuery(searchParams);
 
   const navigate = useNavigate();
@@ -50,11 +52,11 @@ const Talk = () => {
     setCurrentPage(0);
   };
 
-  const renderCards = () => {
-    const cardData = searchParams.query ? searchData : data;
-    const loading = searchParams.query ? isSearchLoading : isLoading;
+  const cardData = searchParams.query ? searchData : data;
+  const loading = searchParams.query ? isSearchLoading : isLoading;
 
-    if (loading) {
+  const renderCards = () => {
+    if (loading || isFetching) {
       return Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />);
     }
 
@@ -91,24 +93,32 @@ const Talk = () => {
             </div>
           </div>
         </FormProvider>
-        <div className="flex justify-between items-center">
-          <ListTitle
-            imgPath="/icons/single_ment.png"
-            title="케빈들의 잡담"
-            description="케빈들은 지금 무슨 생각을 하고 있을까요?"
-          />
-          {accessToken && (
-            <Button className="rounded-full" onClick={() => navigate(PATH.talkWrite)}>
-              새 글 작성
-            </Button>
-          )}
-        </div>
-        <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
-        <Pagination
-          totalPage={(searchParams.query ? searchData : data)?.totalPages as number}
-          currentPage={currentPage}
-          onPageChange={handlePageMove}
-        />
+        {!cardData?.content.length ? (
+          <div className="flex justify-center">
+            <NoContents {...NAV_TABS.talk} />
+          </div>
+        ) : (
+          <>
+            <div className="flex justify-between items-center">
+              <ListTitle
+                imgPath="/icons/single_ment.png"
+                title="케빈들의 잡담"
+                description="케빈들은 지금 무슨 생각을 하고 있을까요?"
+              />
+              {accessToken && (
+                <Button className="rounded-full" onClick={() => navigate(PATH.talkWrite)}>
+                  새 글 작성
+                </Button>
+              )}
+            </div>
+            <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
+            <Pagination
+              totalPage={(searchParams.query ? searchData : data)?.totalPages as number}
+              currentPage={currentPage}
+              onPageChange={handlePageMove}
+            />
+          </>
+        )}
       </Layout>
       <Footer />
     </>
