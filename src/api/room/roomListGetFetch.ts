@@ -12,6 +12,16 @@ export interface RoomListGetFetchParams {
    * 한 페이지에 표시할 게시물의 수
    */
   size?: number;
+
+  /**
+   * 검색 카테고리
+   */
+  category?: string;
+
+  /**
+   * 검색어
+   */
+  query?: string;
 }
 
 export interface RoomListResponse extends ResponseModel {
@@ -107,4 +117,13 @@ export const roomListGetFetch = (params: RoomListGetFetchParams) => {
  */
 export const viewRoomListGetFetch = () => {
   return apiFetch.get<RoomListResponse>('/room/view?page=0');
+};
+
+/**
+ * 검색 키워드별 방자랑 조회
+ */
+export const searchRoomGetFetch = (params: RoomListGetFetchParams) => {
+  const { page = 0, size = 20, category, query } = params;
+
+  return apiFetch.get<RoomListResponse>(`/room?page=${page}&size=${size}&${category}=${query}&sort=createdAt,desc`);
 };

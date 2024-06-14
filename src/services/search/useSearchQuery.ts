@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { searchTalkGetFetch, TalkListGetFetchParms } from '@/api/talk/talkListGetFetch';
+import { RoomListGetFetchParams, searchRoomGetFetch } from '@/api/room/roomListGetFetch';
 
 // TODO: 레시피, 방자랑 추가하기
 type FetchParams = TalkListGetFetchParms;
@@ -36,24 +37,14 @@ export const useSearchQuery = <T extends FetchParams>({ params, fetchFn, queryKe
   });
 
 /**
- * 레시피 검색 결과 조회
- */
-// export const useSearchRoomQuery = (params: RecipeListGetFetchParams) =>
-//   useSearchQuery({
-//     params,
-//     fetchFn: ,
-//     queryKeyPrefix: '@search-recipeList',
-//   });
-
-/**
  * 방자랑 검색 결과 조회
  */
-// export const useSearchRoomQuery = (params: RoomListGetFetchParams) =>
-//   useSearchQuery({
-//     params,
-//     fetchFn: ,
-//     queryKeyPrefix: '@search-roomList',
-//   });
+export const useSearchRoomQuery = (params: RoomListGetFetchParams) =>
+  useSearchQuery({
+    params,
+    fetchFn: searchRoomGetFetch,
+    queryKeyPrefix: '@search-roomList',
+  });
 
 /**
  * 혼잣말 검색 결과 조회
