@@ -39,15 +39,17 @@ const Talk = () => {
 
   const handlePageMove = (page: number) => {
     setCurrentPage(page);
+    setSearchParams((prevParams: TalkListGetFetchParms) => ({ ...prevParams, page }));
   };
 
   const handleSearch = (params: FieldValues) => {
-    setSearchParams(params);
+    setSearchParams({ ...params, page: 0, size: 20 });
+    setCurrentPage(0);
   };
 
   const renderCards = () => {
-    const cardData = searchParams ? searchData : data;
-    const loading = searchParams ? isSearchLoading : isLoading;
+    const cardData = searchParams.query ? searchData : data;
+    const loading = searchParams.query ? isSearchLoading : isLoading;
 
     if (loading) {
       return Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />);
@@ -96,33 +98,9 @@ const Talk = () => {
             새 글 작성
           </Button>
         </div>
-        <div className="grid grid-cols-4 gap-6 place-items-start py-12">
-          {isLoading
-            ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-            : data?.content?.map((card) => (
-                <TextCard
-                  key={card?.id}
-                  description={card?.contentSummary}
-                  title={card?.title}
-                  userName={card?.memberName}
-                  lineClamp={1}
-                  userImage={card?.imageUrl}
-                  slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
-                  likes={card?.likeCount}
-                  onPageMove={() =>
-                    navigate(
-                      generatePath(TALK_PATH.detail, {
-                        id: card.id.toString(),
-                      }),
-                    )
-                  }
-                />
-              ))}
-        </div>
-        <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
         <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
         <Pagination
-          totalPage={(searchParams ? searchData : data)?.totalPages as number}
+          totalPage={(searchParams.query ? searchData : data)?.totalPages as number}
           currentPage={currentPage}
           onPageChange={handlePageMove}
         />
