@@ -52,7 +52,9 @@ const ProfileDropdown = (props: ProfileDropdownPropsType) => {
         </Button>
         <Button className="flex items-center justify-center m-auto" variant="ghost">
           <BookMarked className="w-4 h-4" />
-          <DropdownMenuLabel className="text-center font-light text-sm">저장한 글</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-center font-light text-sm" onClick={() => navigate(PATH.myBookmark)}>
+            저장한 글
+          </DropdownMenuLabel>
         </Button>
         <Button className="flex items-center justify-center m-auto" variant="ghost">
           <LogOut className="w-4 h-4" />

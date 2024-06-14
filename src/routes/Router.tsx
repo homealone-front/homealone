@@ -26,6 +26,7 @@ import { TalkWritePage } from '@/pages/TalkWrite';
 import { NaverCallbackPage } from '@/pages/NaverCallback';
 // import { RecipeEditPage } from '@/pages/RecipeEdit';
 import { MyPosts } from '@/pages/MyPosts';
+import { MyBookmark } from '@/pages/MyBookmark';
 
 const Router = () => {
   return (
@@ -55,6 +56,7 @@ const Router = () => {
           <Route path={PATH.roomWrite} element={<RoomWritePage />} />
           <Route path={PATH.mypage} element={<Mypage />} />
           <Route path={PATH.myPosts} element={<MyPosts />} />
+          <Route path={PATH.myBookmark} element={<MyBookmark />} />
         </Route>
 
         <Route path={PATH.chattings} element={<ChattingsPage />} />
