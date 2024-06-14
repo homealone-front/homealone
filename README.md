@@ -53,11 +53,12 @@ $ cp .env.info .env
 
 .env에 실제 환경변수 값을 넣어야합니다.
 
-> @CONTACT
-> ax34554@gmail.com
-> suerish.e@gmail.com
-> tnklr1111@gmail.com
-> sum9577@gmail.com
+| @CONTACT            |
+| ------------------- |
+| ax34554@gmail.com   |
+| tnklr1111@gmail.com |
+| suerish.e@gmail.com |
+| sum9577@gmail.com   |
 
 ## 모든 프로젝트
 
