@@ -149,7 +149,7 @@ const TalkDetail = () => {
                   {dayjs(data?.createdAt).format('YYYY년 MM월 DD일')}
                 </span>
               </section>
-              {data && <div className="h-36">{parse(`${data.content}`)}</div>}
+              {data && <div className="h-auto min-h-32 no-tailwind">{parse(`${data.content}`)}</div>}
             </div>
             <div className="w-3/4 mx-auto pb-24">
               <div className="flex gap-2 items-center justify-end text-gray500 text-sm border-t pt-5">

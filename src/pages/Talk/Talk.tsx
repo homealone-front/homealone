@@ -20,6 +20,7 @@ import { PATH, TALK_PATH } from '@/constants/paths';
 import { useTalkListQuery } from '@/services/talk/useTalkListQuery';
 import { useSearchTalkQuery } from '@/services/search/useSearchQuery';
 import { TalkListGetFetchParms, TalkListResponse } from '@/api/talk/talkListGetFetch';
+import { useUserStore } from '@/store/useUserStore';
 
 /**
  * 혼잣말 페이지(목록 조회)
@@ -27,6 +28,8 @@ import { TalkListGetFetchParms, TalkListResponse } from '@/api/talk/talkListGetF
 const Talk = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [searchParams, setSearchParams] = useState<TalkListGetFetchParms>({ page: 0, size: 20 });
+
+  const accessToken = useUserStore((state) => state.accessToken);
 
   const { data, isLoading } = useTalkListQuery({ page: currentPage, size: 20 });
   const { data: searchData, isLoading: isSearchLoading } = useSearchTalkQuery(searchParams);
@@ -94,9 +97,11 @@ const Talk = () => {
             title="케빈들의 잡담"
             description="케빈들은 지금 무슨 생각을 하고 있을까요?"
           />
-          <Button className="rounded-full" onClick={() => navigate(PATH.talkWrite)}>
-            새 글 작성
-          </Button>
+          {accessToken && (
+            <Button className="rounded-full" onClick={() => navigate(PATH.talkWrite)}>
+              새 글 작성
+            </Button>
+          )}
         </div>
         <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
         <Pagination
