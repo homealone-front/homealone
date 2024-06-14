@@ -15,6 +15,11 @@ export interface CommentListResponse extends ResponseModel {
   id: number;
 
   /**
+   * 프로필 이미지
+   */
+  imageUrl: string;
+
+  /**
    * 게시물 식별값
    */
   postId: number;

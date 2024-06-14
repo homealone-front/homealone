@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ThumbsUp, CircleCheck, CircleXIcon } from 'lucide-react';
+import { CircleCheck, CircleXIcon } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { QueryObserverResult } from '@tanstack/react-query';
 
@@ -32,7 +32,6 @@ interface CommentPropsType extends Omit<CommentListResponse, 'message'> {
  */
 const Comment = (props: CommentPropsType) => {
   const { write, commentRefetch, ...rest } = props;
-
   const { toast } = useToast();
 
   const onOpen = useModalStore((state) => state.onOpen);
@@ -120,7 +119,7 @@ const Comment = (props: CommentPropsType) => {
     <div className="w-full h-fit">
       <div className="flex gap-4 p-4">
         <Avatar className="w-7 h-7">
-          <AvatarImage src="/icons/no_image.png" alt="@shadcn" />
+          <AvatarImage src={rest.imageUrl || '/icons/no_image.png'} alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start w-full gap-3">
@@ -141,11 +140,6 @@ const Comment = (props: CommentPropsType) => {
           ) : (
             <p className="text-sm">{rest.content}</p>
           )}
-          <div className="flex items-center justify-center gap-2">
-            <button className="flex items-center justify-center gap-1">
-              <ThumbsUp size={16} color="#9ca3af" strokeWidth={1} /> <span className="text-xs text-gray-400">0</span>
-            </button>
-          </div>
         </div>
         {write ? (
           <ul className="flex gap-2 ml-auto text-xs text-gray400">
