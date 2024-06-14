@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => ({
     cors: true,
     proxy: {
       '/api': {
-        target: 'http://34.22.76.244/',
+        target: 'https://www.na-holo.site',
         changeOrigin: true,
       },
     },
