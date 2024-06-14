@@ -137,51 +137,53 @@ const RecipeDetail = () => {
                   </Avatar>
                   By <span className="text-sm font-light">{data?.userName}</span>
                 </div>
-                <ul className="flex items-center gap-2 text-xs text-gray400">
-                  <li>
-                    <Button
-                      variant="ghost"
-                      onClick={() => {
-                        setModal(
-                          <Confirm
-                            title="레시피 수정"
-                            content="레시피를 수정하시겠어요?"
-                            submitButtonText="수정"
-                            onSubmit={() => {
-                              onClose();
-                              navigate(`${PATH.recipe}/${id}/edit`);
-                            }}
-                            onClose={onClose}
-                          />,
-                        );
+                {userId === data?.userId ? (
+                  <ul className="flex items-center gap-2 text-xs text-gray400">
+                    <li>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          setModal(
+                            <Confirm
+                              title="레시피 수정"
+                              content="레시피를 수정하시겠어요?"
+                              submitButtonText="수정"
+                              onSubmit={() => {
+                                onClose();
+                                navigate(`${PATH.recipe}/${id}/edit`);
+                              }}
+                              onClose={onClose}
+                            />,
+                          );
 
-                        onOpen();
-                      }}
-                    >
-                      수정
-                    </Button>
-                  </li>
-                  <li>
-                    <Button
-                      variant="ghost"
-                      onClick={() => {
-                        setModal(
-                          <Confirm
-                            title="레시피 삭제"
-                            content="레시피를 삭제하시겠어요?"
-                            submitButtonText="삭제"
-                            onSubmit={handleRemoveRecipe}
-                            onClose={onClose}
-                          />,
-                        );
+                          onOpen();
+                        }}
+                      >
+                        수정
+                      </Button>
+                    </li>
+                    <li>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          setModal(
+                            <Confirm
+                              title="레시피 삭제"
+                              content="레시피를 삭제하시겠어요?"
+                              submitButtonText="삭제"
+                              onSubmit={handleRemoveRecipe}
+                              onClose={onClose}
+                            />,
+                          );
 
-                        onOpen();
-                      }}
-                    >
-                      삭제
-                    </Button>
-                  </li>
-                </ul>
+                          onOpen();
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    </li>
+                  </ul>
+                ) : null}
               </div>
 
               <div className="flex flex-col justify-center gap-2 mt-8">

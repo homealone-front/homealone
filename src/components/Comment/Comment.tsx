@@ -117,21 +117,21 @@ const Comment = (props: CommentPropsType) => {
   };
 
   return (
-    <div className="h-fit w-full">
+    <div className="w-full h-fit">
       <div className="flex gap-4 p-4">
         <Avatar className="w-7 h-7">
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <div className="flex flex-col items-start gap-3">
+        <div className="flex flex-col items-start w-full gap-3">
           <ul className="flex items-center justify-center gap-2 text-xs text-gray-400">
             <li className="font-normal text-black">{rest.memberName}</li>
             <li>{getRelativeTime(rest.modifiedAt)}</li>
           </ul>
           {isEdit ? (
-            <div className="flex flex-col justify-center grow">
+            <div className="flex flex-col justify-center w-full grow">
               <Input control={control} name="content" type="text" error={errors?.content} value={watch('content')} />
-              <div className="mt-2 flex gap-2">
+              <div className="flex self-end gap-2 mt-2">
                 <Button variant="ghost" onClick={() => setIsEdit(false)}>
                   취소
                 </Button>
@@ -148,7 +148,7 @@ const Comment = (props: CommentPropsType) => {
           </div>
         </div>
         {write ? (
-          <ul className="flex gap-2 text-xs text-gray400 ml-auto">
+          <ul className="flex gap-2 ml-auto text-xs text-gray400">
             <li>
               <Button variant="ghost" onClick={() => setIsEdit(true)}>
                 수정
