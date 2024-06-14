@@ -1,7 +1,7 @@
 type PropType = {
   selected: boolean;
   onClick: () => void;
-  image: string;
+  image: string | undefined;
 };
 
 export const Thumb = (props: PropType) => {
@@ -10,7 +10,13 @@ export const Thumb = (props: PropType) => {
   return (
     <div className={'embla-thumbs__slide'.concat(selected ? ' embla-thumbs__slide--selected' : '')}>
       <button
-        style={{ background: `url(${image}) no-repeat center`, backgroundSize: 'cover' }}
+        style={{
+          backgroundImage: `url(${image})`,
+          backgroundColor: '#fff',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'contain',
+        }}
         onClick={onClick}
         type="button"
         className="embla-thumbs__slide__number rounded-2xl border shadow-sm"

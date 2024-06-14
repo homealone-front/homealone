@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { Thumb } from './EmblaCarouselThumbsButton.tsx';
 
 type PropType = {
-  slides: string[] | undefined;
+  slides: (string | undefined)[];
   options?: EmblaOptionsType;
 };
 
@@ -46,7 +46,13 @@ const EmblaCarousel = (props: PropType) => {
           {slides?.map((slide, index) => (
             <div className="embla__slide" key={index}>
               <div
-                style={{ background: `url(${slide}) no-repeat center`, backgroundSize: 'cover' }}
+                style={{
+                  backgroundImage: `url(${slide})`,
+                  backgroundColor: '#fff',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  backgroundSize: 'contain',
+                }}
                 className="embla__slide__number rounded-2xl border shadow-sm"
               ></div>
             </div>

@@ -15,9 +15,5 @@ export const useRoomDetailQuery = ({ roomId }: RoomDetailGetFetchParams) =>
 
       return data;
     },
-    select: (data) => ({
-      ...data,
-      contentImages: [data.thumbnailUrl, ...data.roomImages],
-    }),
     staleTime: 5000,
   });
