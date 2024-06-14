@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CircleCheck, CircleXIcon, Undo2 } from 'lucide-react';
 import ReactQuill from 'react-quill';
@@ -59,10 +59,17 @@ const TalkWrite = () => {
     handleSubmit: submit,
     control,
     getValues,
+    setValue,
     formState: { errors },
   } = method;
 
   const quillRef = useRef<ReactQuill>(null);
+
+  useEffect(() => {
+    if (talkData && talkData.content) {
+      setValue('content', talkData.content);
+    }
+  }, [talkData, setValue]);
 
   const modules = useMemo(() => {
     return {
