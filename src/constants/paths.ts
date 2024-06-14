@@ -63,6 +63,11 @@ export const PATH = Object.freeze({
   myPosts: '/mypage/posts' as const,
 
   /**
+   * 저장한 글 페이지
+   */
+  myBookmark: '/mypage/bookmark' as const,
+
+  /**
    * 카카오 로그인 redirect uri
    */
   kakao: '/kakao/callback' as const,

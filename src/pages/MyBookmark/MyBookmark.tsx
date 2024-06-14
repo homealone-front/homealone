@@ -6,10 +6,10 @@ import { NAV_TABS } from './constants';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 /**
- * 작성한 글 페이지 컴포넌트
+ * 저장한 글 페이지 컴포넌트
  */
 
-const MyPosts = () => {
+const MyBookmark = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Appbar />
@@ -17,11 +17,11 @@ const MyPosts = () => {
         <Layout>
           <div className="flex items-center gap-4 mb-10">
             <img className="w-7" src="/icons/arrow_icon.svg" alt="arrow_icon" />
-            <span className="text-2xl font-normal text-gray-800">작성한 글</span>
+            <span className="text-2xl font-normal text-gray-800">저장한 글</span>
           </div>
           <div className="flex flex-col min-h-[42rem] mx-auto">
             <div className=" bg-white border border-gray200 rounded-lg px-8 pt-4 mb-24 grow ">
-              <Tabs defaultValue={Object.values(NAV_TABS)[3].name}>
+              <Tabs defaultValue={Object.values(NAV_TABS)[0].name}>
                 <TabsList>
                   {Object.entries(NAV_TABS).map(([key, value]) => (
                     <TabsTrigger key={key} value={value.name}>
@@ -44,4 +44,4 @@ const MyPosts = () => {
   );
 };
 
-export default MyPosts;
+export default MyBookmark;

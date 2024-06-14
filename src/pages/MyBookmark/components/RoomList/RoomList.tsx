@@ -5,22 +5,22 @@ import { Card } from '@/components/Card';
 
 import { ROOM_PATH } from '@/constants/paths';
 import { useState } from 'react';
-import { useMyRoomListQuery } from '@/services/room/useMyRoomListQuery';
+import { useMyBookmarkedRoomListQuery } from '@/services/room/useMyBookmarkedRoomListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
 
 import { RoomCardSlot } from '@/pages/Room/components/RoomCardSlot';
-import { NoContents } from '../NoContents';
+import { NoBookmark } from '../NoBookmark';
 
 import { NAV_TABS } from '../../constants';
 
 /**
- * 내가 작성한 방자랑 글 목록 컴포넌트
+ * 내가 저장한 방자랑 글 목록 컴포넌트
  */
 
 const RoomList = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-  const { data, isLoading, isFetching } = useMyRoomListQuery({ page: currentPage, size: 20 });
+  const { data, isLoading, isFetching } = useMyBookmarkedRoomListQuery({ page: currentPage, size: 20 });
 
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ const RoomList = () => {
   return (
     <>
       {!data?.content.length ? (
-        <NoContents {...NAV_TABS.room} />
+        <NoBookmark {...NAV_TABS.room} />
       ) : (
         <div className="flex flex-col justify-between mt-10">
           <div className="mb-4 flex items-center">

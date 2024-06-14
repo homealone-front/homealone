@@ -23,6 +23,16 @@ const CommentList = () => {
     setCurrentPage(page);
   };
 
+  if (isLoading || isFetching) {
+    return (
+      <div className="w-full flex flex-col gap-2 place-items-start pb-12 mt-16">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Skeleton key={index} className="h-[90px] w-full rounded-none " />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <>
       {!data?.content.length ? (
@@ -35,11 +45,9 @@ const CommentList = () => {
               <span className="text-sm font-light text-gray400">{data.totalElements}</span>
             </div>
             <div className="flex flex-col place-items-start border-x border-t mb-10">
-              {isLoading || isFetching
-                ? Array.from({ length: data.content.length }).map((_, index) => (
-                    <Skeleton key={index} className="h-[6rem] w-full mb-2" />
-                  ))
-                : data?.content?.map((item) => <CommentCard {...item} />)}
+              {data?.content?.map((item) => (
+                <CommentCard {...item} />
+              ))}
             </div>
           </div>
           {data?.totalPages > 1 && (

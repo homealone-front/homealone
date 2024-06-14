@@ -1,24 +1,25 @@
-import { useState } from 'react';
-import { Card } from '@/components/Card';
-
-import { PriceSlot } from '@/pages/Main/components/PriceSlot';
-import { Pagination } from '@/components/Pagination';
-
 import { useNavigate, generatePath } from 'react-router-dom';
-import { RECIPE_PATH } from '@/constants/paths';
-import { useMyRecipeListQuery } from '@/services/recipe/useMyRecipeListQuery';
+
+import { Pagination } from '@/components/Pagination';
+import { Card as TextCard } from '@/components/Card';
+
+import { RoomCardSlot } from '@/pages/Room/components/RoomCardSlot';
+import { TALK_PATH } from '@/constants/paths';
+import { useState } from 'react';
+import { useMyBookmarkedTalkListQuery } from '@/services/talk/useMyBookmarkedTalkListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
-import { NoContents } from '../NoContents';
+
+import { NoBookmark } from '../NoBookmark';
 import { NAV_TABS } from '../../constants';
 
 /**
- * 내가 작성한 레시피 글 목록 컴포넌트
+ * 내가 저장한 혼잣말 글 목록 컴포넌트
  */
 
-const RecipeList = () => {
+const TalkList = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-  const { data, isLoading, isFetching } = useMyRecipeListQuery({ page: currentPage, size: 20 });
+  const { data, isLoading, isFetching } = useMyBookmarkedTalkListQuery({ page: currentPage, size: 20 });
 
   const navigate = useNavigate();
 
@@ -39,36 +40,28 @@ const RecipeList = () => {
   return (
     <>
       {!data?.content.length ? (
-        <NoContents {...NAV_TABS.recipe} />
+        <NoBookmark {...NAV_TABS.talk} />
       ) : (
-        <div className="flex flex-col justify-between mt-10">
+        <div className="w-full flex flex-col justify-between mt-10">
           <div className="mb-4 flex items-center">
             <span className="text-medium text-gray700 mr-1">전체</span>
             <span className="text-sm font-light text-gray400">{data.totalElements}</span>
           </div>
           <div className="flex flex-col justify-between">
-            <div className="grid grid-cols-4 gap-6 place-items-start pb-10">
-              {data?.content?.map((card, i) => (
-                <Card
-                  key={i}
+            <div className="grid grid-cols-4 gap-6 place-items-start pb-12">
+              {data?.content?.map((card) => (
+                <TextCard
+                  key={card?.id}
+                  description={card?.contentSummary}
                   title={card?.title}
-                  description={card?.description}
-                  userName={card?.userName}
-                  userImage={card.userImage}
-                  imageUrl={card?.imageUrl}
+                  userName={card?.memberName}
+                  userImage={card.imageUrl}
                   lineClamp={1}
-                  slot={
-                    <PriceSlot
-                      cookInfo={{
-                        portions: card?.portions,
-                        cookTime: card?.recipeTime,
-                      }}
-                    />
-                  }
-                  likes={card.relatedDto.likeCount}
+                  slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
+                  likes={card?.likeCount}
                   onPageMove={() =>
                     navigate(
-                      generatePath(RECIPE_PATH.detail, {
+                      generatePath(TALK_PATH.detail, {
                         id: card.id.toString(),
                       }),
                     )
@@ -90,4 +83,4 @@ const RecipeList = () => {
   );
 };
 
-export default RecipeList;
+export default TalkList;

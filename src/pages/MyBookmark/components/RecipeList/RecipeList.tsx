@@ -6,19 +6,19 @@ import { Pagination } from '@/components/Pagination';
 
 import { useNavigate, generatePath } from 'react-router-dom';
 import { RECIPE_PATH } from '@/constants/paths';
-import { useMyRecipeListQuery } from '@/services/recipe/useMyRecipeListQuery';
+import { useMyBookmarkedRecipeListQuery } from '@/services/recipe/useMyBookmarkedRecipeListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
-import { NoContents } from '../NoContents';
+import { NoBookmark } from '../NoBookmark';
 import { NAV_TABS } from '../../constants';
 
 /**
- * 내가 작성한 레시피 글 목록 컴포넌트
+ * 내가 저장한 레시피 글 목록 컴포넌트
  */
 
 const RecipeList = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-  const { data, isLoading, isFetching } = useMyRecipeListQuery({ page: currentPage, size: 20 });
+  const { data, isLoading, isFetching } = useMyBookmarkedRecipeListQuery({ page: currentPage, size: 20 });
 
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const RecipeList = () => {
   return (
     <>
       {!data?.content.length ? (
-        <NoContents {...NAV_TABS.recipe} />
+        <NoBookmark {...NAV_TABS.recipe} />
       ) : (
         <div className="flex flex-col justify-between mt-10">
           <div className="mb-4 flex items-center">
