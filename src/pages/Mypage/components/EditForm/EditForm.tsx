@@ -36,7 +36,7 @@ const EditForm = () => {
       image: { image: null, imageUrl: imageUrl },
       name: name,
       email: email,
-      birth: !birth ? birthDateCleansing(birth) : '',
+      birth: birth !== '' ? birthDateCleansing(birth) : '',
       firstAddress: firstAddress,
       secondAddress: secondAddress,
     },
@@ -53,7 +53,6 @@ const EditForm = () => {
   } = method;
 
   const values = watch();
-
   const { mutate } = useMemberInfoMutation();
 
   const handleSubmit = submit(async () => {
