@@ -12,7 +12,7 @@ export const patchMemberDataCleansing = async (data: MemberSchemaType) => {
 
   return {
     ...rest,
-    imageUrl: cleansingImage?.imageUrl,
+    imageUrl: cleansingImage?.imageUrl || '',
     birth: dayjs(birth).format('YYYY-MM-DD'),
   };
 };
