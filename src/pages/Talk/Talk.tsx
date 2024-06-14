@@ -18,7 +18,7 @@ import { CATEGORY_OPTIONS } from '../Main/constants';
 import { PATH, TALK_PATH } from '@/constants/paths';
 
 import { useTalkListQuery } from '@/services/talk/useTalkListQuery';
-import { useSearchTalkQuery } from '@/services/talk/useSearchTalkQuery';
+import { useSearchTalkQuery } from '@/services/search/useSearchQuery';
 import { TalkListGetFetchParms, TalkListResponse } from '@/api/talk/talkListGetFetch';
 
 /**
