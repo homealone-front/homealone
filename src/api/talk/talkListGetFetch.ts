@@ -37,6 +37,11 @@ export interface TalkListResponse extends ResponseModel {
     memberName: string;
 
     /**
+     * 유저 프로필 이미지 URL
+     */
+    imageUrl: string;
+
+    /**
      * 댓글 개수
      */
     commentCount: number;
@@ -73,6 +78,16 @@ export interface TalkListResponse extends ResponseModel {
    * 총 페이지 갯수
    */
   totalPages: number;
+
+  /**
+   * 현재 보여주는 갯수
+   */
+  size: number;
+
+  /**
+   * 작성자 프로필 이미지 URL
+   */
+  imageUrl: string | undefined;
 }
 
 /**
@@ -82,4 +97,11 @@ export const talkListGetFetch = (params: TalkListGetFetchParms) => {
   const { page = 0, size = 20 } = params;
 
   return apiFetch.get<TalkListResponse>(`/talk?page=${page}&size=${size}&sort=createdAt,desc`);
+};
+
+/**
+ * 인기 혼잣말 조회
+ */
+export const viewTalkListGetFetch = () => {
+  return apiFetch.get<TalkListResponse>('/talk/view?page=0');
 };
