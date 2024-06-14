@@ -104,7 +104,7 @@ const EditForm = () => {
             프로필 이미지
           </Label>
           <Avatar className="w-[6.25rem] h-[6.25rem] my-4">
-            <AvatarImage src={values.image.imageUrl || 'https://github.com/shadcn.png'} alt="프로필 이미지" />
+            <AvatarImage src={values.image.imageUrl || '/icons/no_image.png'} alt="프로필 이미지" />
             <AvatarFallback>nickname state</AvatarFallback>
           </Avatar>
           <div className="flex flex-row gap-1">
