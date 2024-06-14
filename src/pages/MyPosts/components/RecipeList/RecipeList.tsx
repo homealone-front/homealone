@@ -28,7 +28,7 @@ const RecipeList = () => {
 
   if (isLoading || isFetching) {
     return (
-      <div className="grid grid-cols-4 gap-6 place-items-start pb-12 mt-16">
+      <div className="grid grid-cols-4 gap-6 pb-12 mt-16 place-items-start">
         {Array.from({ length: 8 }).map((_, index) => (
           <SkeletonCard key={index} />
         ))}
@@ -42,12 +42,12 @@ const RecipeList = () => {
         <NoContents {...NAV_TABS.recipe} />
       ) : (
         <div className="flex flex-col justify-between mt-10">
-          <div className="mb-4 flex items-center">
-            <span className="text-medium text-gray700 mr-1">전체</span>
+          <div className="flex items-center mb-4">
+            <span className="mr-1 text-medium text-gray700">전체</span>
             <span className="text-sm font-light text-gray400">{data.totalElements}</span>
           </div>
           <div className="flex flex-col justify-between">
-            <div className="grid grid-cols-4 gap-6 place-items-start pb-10">
+            <div className="grid grid-cols-4 gap-6 pb-10 place-items-start">
               {data?.content?.map((card, i) => (
                 <Card
                   key={i}
@@ -60,7 +60,7 @@ const RecipeList = () => {
                   slot={
                     <PriceSlot
                       cookInfo={{
-                        portions: card?.portions,
+                        portions: card?.portions.toString(),
                         cookTime: card?.recipeTime,
                       }}
                     />
