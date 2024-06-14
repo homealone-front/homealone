@@ -12,6 +12,10 @@ export interface TalkListGetFetchParms {
    * 한 페이지에 표시할 게시물의 수
    */
   size?: number;
+
+  category?: string;
+
+  query?: string;
 }
 
 export interface TalkListResponse extends ResponseModel {
@@ -104,4 +108,13 @@ export const talkListGetFetch = (params: TalkListGetFetchParms) => {
  */
 export const viewTalkListGetFetch = () => {
   return apiFetch.get<TalkListResponse>('/talk/view?page=0');
+};
+
+/**
+ * 검색 키워드별 혼잣말 조회
+ */
+export const searchTalkGetFetch = (params: TalkListGetFetchParms) => {
+  const { page = 0, size = 20, category, query } = params;
+
+  return apiFetch.get<TalkListResponse>(`/talk?page=${page}&size=${size}&${category}=${query}&sort=createdAt,desc`);
 };

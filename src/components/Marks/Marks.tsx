@@ -9,6 +9,8 @@ import { useUserStore } from '@/store/useUserStore';
 import { toast } from '../ui/use-toast';
 import { CircleCheck } from 'lucide-react';
 import { TOAST } from '@/constants/toast';
+import { useModalStore } from '@/store/useModalStore';
+import { Alert } from '../Alert';
 
 export type MarksPropsType = {
   // TODO: RoomDetailResponse 추가
@@ -19,6 +21,10 @@ export type MarksPropsType = {
 
 const Marks = ({ postId, data, refetch }: MarksPropsType) => {
   const accessToken = useUserStore((state) => state.accessToken);
+
+  const setModal = useModalStore((state) => state.setModal);
+  const onOpen = useModalStore((state) => state.onOpen);
+  const onClose = useModalStore((state) => state.onClose);
 
   const showToast = (title: string) => {
     toast({
@@ -48,7 +54,18 @@ const Marks = ({ postId, data, refetch }: MarksPropsType) => {
         alert('좋아요 실패');
       }
     } else {
-      alert('로그인이 필요해요.');
+      setModal(
+        <Alert
+          title="로그인 후 이용해주세요"
+          content="로그인 후 하트를 눌러보세요!"
+          submitButtonText="확인"
+          onSubmit={onClose}
+        />,
+      );
+
+      onOpen();
+
+      return;
     }
   };
 
@@ -72,7 +89,18 @@ const Marks = ({ postId, data, refetch }: MarksPropsType) => {
         alert('북마크 실패');
       }
     } else {
-      alert('로그인이 필요해요.');
+      setModal(
+        <Alert
+          title="로그인 후 이용해주세요"
+          content="로그인 후 게시물을 저장하세요!"
+          submitButtonText="확인"
+          onSubmit={onClose}
+        />,
+      );
+
+      onOpen();
+
+      return;
     }
   };
 
