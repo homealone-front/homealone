@@ -68,6 +68,11 @@ export interface RecipeListResponse extends ResponseModel {
       likeByCurrentUser: boolean;
       bookmarked: boolean;
     };
+
+    /**
+     * 유저 프로필 이미지
+     */
+    userImage: string;
   }[];
 
   /**

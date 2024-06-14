@@ -46,6 +46,7 @@ const TalkList = () => {
                       description={card?.contentSummary}
                       title={card?.title}
                       userName={card?.memberName}
+                      userImage={card.imageUrl}
                       lineClamp={1}
                       slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
                       likes={card?.likeCount}

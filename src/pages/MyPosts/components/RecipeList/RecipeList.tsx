@@ -46,6 +46,7 @@ const RecipeList = () => {
                       title={card?.title}
                       description={card?.description}
                       userName={card?.userName}
+                      userImage={card.userImage}
                       imageUrl={card?.imageUrl}
                       lineClamp={1}
                       slot={
