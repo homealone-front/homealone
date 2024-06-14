@@ -30,7 +30,7 @@ const Main = () => {
       <Appbar />
 
       <div className="bg-[#10BE62] -mt-12">
-        <img src="/images/main_img.png" className="w-1/2 my-0 mx-auto" />
+        <img src="/images/main_img.png" className="w-1/2 mx-auto my-0" />
       </div>
 
       <Layout>
@@ -55,12 +55,12 @@ const Main = () => {
                   slot={
                     <PriceSlot
                       cookInfo={{
-                        portions: card?.portions,
+                        portions: card?.portions === 9 ? '6' : card?.portions.toString(),
                         cookTime: card?.recipeTime,
                       }}
                     />
                   }
-                  likes={40}
+                  likes={card?.relatedDto.likeCount}
                   onPageMove={() =>
                     navigate(
                       generatePath(RECIPE_PATH.detail, {

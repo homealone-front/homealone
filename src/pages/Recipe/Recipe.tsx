@@ -78,12 +78,12 @@ const Receipe = () => {
                   slot={
                     <PriceSlot
                       cookInfo={{
-                        portions: card?.portions,
+                        portions: card?.portions === 9 ? '6' : card?.portions.toString(),
                         cookTime: card?.recipeTime,
                       }}
                     />
                   }
-                  likes={40}
+                  likes={card?.relatedDto.likeCount}
                   onPageMove={() =>
                     navigate(
                       generatePath(RECIPE_PATH.detail, {
@@ -109,12 +109,12 @@ const Receipe = () => {
                   slot={
                     <PriceSlot
                       cookInfo={{
-                        portions: card?.portions,
+                        portions: card?.portions === 9 ? '6' : card?.portions.toString(),
                         cookTime: card?.recipeTime,
                       }}
                     />
                   }
-                  likes={40}
+                  likes={card?.relatedDto.likeCount}
                   onPageMove={() =>
                     navigate(
                       generatePath(RECIPE_PATH.detail, {

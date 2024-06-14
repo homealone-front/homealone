@@ -10,7 +10,7 @@ type PriceSlotPropsType = {
     /**
      * N인분
      */
-    portions: number;
+    portions: string;
   };
 };
 
@@ -23,7 +23,10 @@ const PriceSlot = ({ cookInfo }: PriceSlotPropsType) => {
       </div>
       <div className="flex items-center gap-1">
         <User className="w-4 h-4" />
-        <span className="text-sm font-light">{cookInfo?.portions}인분</span>
+        <span className="text-sm font-light">
+          {cookInfo?.portions}
+          {cookInfo?.portions === '6' ? '인분 이상' : '인분'}
+        </span>
       </div>
     </div>
   );
