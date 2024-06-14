@@ -32,7 +32,7 @@ const CommentForm = <T extends FieldValues>(props: CommentFormPropsType<T>) => {
         <div className="align-center flex justify-between px-6 py-4">
           <div className="flex flex-grow">
             <Avatar>
-              <AvatarImage src={imageUrl ? imageUrl : 'https://github.com/shadcn.png'} alt="@shadcn" />
+              <AvatarImage src={imageUrl ? imageUrl : '/icons/no_image.png'} alt="@shadcn" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <Controller

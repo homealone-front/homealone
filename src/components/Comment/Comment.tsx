@@ -120,7 +120,7 @@ const Comment = (props: CommentPropsType) => {
     <div className="w-full h-fit">
       <div className="flex gap-4 p-4">
         <Avatar className="w-7 h-7">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+          <AvatarImage src="/icons/no_image.png" alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start w-full gap-3">
