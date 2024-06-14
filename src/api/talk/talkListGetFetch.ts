@@ -15,7 +15,7 @@ export interface TalkListGetFetchParms {
 
   category?: string;
 
-  keyword?: string;
+  query?: string;
 }
 
 export interface TalkListResponse extends ResponseModel {
@@ -114,7 +114,7 @@ export const viewTalkListGetFetch = () => {
  * 검색 키워드별 혼잣말 조회
  */
 export const searchTalkGetFetch = (params: TalkListGetFetchParms) => {
-  const { page = 0, size = 20, category, keyword } = params;
+  const { page = 0, size = 20, category, query } = params;
 
-  return apiFetch.get<TalkListResponse>(`/talk?page=${page}&size=${size}&${category}=${keyword}&sort=createdAt,desc`);
+  return apiFetch.get<TalkListResponse>(`/talk?page=${page}&size=${size}&${category}=${query}&sort=createdAt,desc`);
 };

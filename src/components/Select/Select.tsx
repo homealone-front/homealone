@@ -21,27 +21,31 @@ const CustomSelect = (props: CustomSelectPropsType) => {
     <Controller
       name={name}
       control={control}
-      render={({ field: { value, onChange } }) => (
-        <>
-          {label ? (
-            <Label className="mb-2 flex items-center" htmlFor={id}>
-              {label}
-            </Label>
-          ) : null}
-          <Select value={value} onValueChange={onChange}>
-            <SelectTrigger className="w-[9rem]">{value}</SelectTrigger>
-            <SelectContent id={id} className="border-2 focus:border-primary">
-              <SelectGroup>
-                {options.map((option, i) => (
-                  <SelectItem key={i} value={option.value} aria-selected>
-                    {option.item}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </>
-      )}
+      render={({ field: { value, onChange } }) => {
+        const selectedItem = options.find((option) => option.value === value)?.item || '선택하세요'; // 선택된 항목이 없을 경우 기본 텍스트
+
+        return (
+          <>
+            {label ? (
+              <Label className="mb-2 flex items-center" htmlFor={id}>
+                {label}
+              </Label>
+            ) : null}
+            <Select value={value} onValueChange={onChange}>
+              <SelectTrigger className="w-[9rem]">{selectedItem}</SelectTrigger>
+              <SelectContent id={id} className="border-2 focus:border-primary">
+                <SelectGroup>
+                  {options.map((option, i) => (
+                    <SelectItem key={i} value={option.value} aria-selected>
+                      {option.item}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </>
+        );
+      }}
     />
   );
 };

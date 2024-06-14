@@ -34,7 +34,7 @@ const Talk = () => {
   const navigate = useNavigate();
 
   const method = useForm({
-    values: { category: '전체', query: '' },
+    values: { category: 'all', query: '' },
   });
 
   const handlePageMove = (page: number) => {

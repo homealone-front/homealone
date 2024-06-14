@@ -1,8 +1,6 @@
 import { Controller, FieldValues, useFormContext } from 'react-hook-form';
 import { Input } from '@/components/Input';
 import { Search } from 'lucide-react';
-import { Select } from '@radix-ui/react-select';
-import { CATEGORY_OPTIONS } from '@/pages/Main/constants';
 
 export interface SearchBarProps {
   onSearch?: (params: FieldValues) => void;
@@ -20,16 +18,11 @@ const Searchbar = ({ onSearch }: SearchBarProps) => {
   return (
     <>
       <Controller
-        name="category"
-        control={control}
-        render={({ field }) => <Select {...field} options={CATEGORY_OPTIONS} />}
-      />
-      <Controller
-        name="keyword"
+        name="query"
         control={control}
         render={({ field: { value } }) => (
           <Input
-            name="keyword"
+            name="query"
             control={control}
             type="text"
             extractNumber={false}
