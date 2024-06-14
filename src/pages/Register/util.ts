@@ -6,11 +6,10 @@ import { RegisterSchemaType } from './Register';
  */
 export const getRegisterDataCleansing = (data: RegisterSchemaType) => {
   //eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { firstAddress, lastAddress, birth, confirmPassword, ...rest } = data;
+  const { birth, confirmPassword, ...rest } = data;
 
   return {
     ...rest,
-    address: `${firstAddress} ${lastAddress}`.trim(),
     birth: dayjs(birth).format('YYYY-MM-DD'),
   };
 };

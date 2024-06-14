@@ -37,7 +37,7 @@ const Register = () => {
       password: '',
       confirmPassword: '',
       firstAddress: '',
-      lastAddress: '',
+      secondAddress: '',
     },
   });
 
@@ -109,7 +109,7 @@ const Register = () => {
       <Layout>
         <div className="w-[30rem] m-auto py-10">
           <div className="mb-14">
-            <h3 className="text-2xl text-center text-primary font-semibold mb-6">환영합니다</h3>
+            <h3 className="mb-6 text-2xl font-semibold text-center text-primary">환영합니다</h3>
             <p className="text-lg text-center text-gray400">회원가입 하기</p>
           </div>
           <form onSubmit={handleSubmit}>
@@ -176,7 +176,7 @@ const Register = () => {
             </div>
             <AddressSearch
               name="firstAddress"
-              lastName="lastAddress"
+              lastName="secondAddress"
               control={control}
               errors={errors?.firstAddress as FieldError}
               onAddressChange={(addr) => {

@@ -49,7 +49,7 @@ const Chatting = () => {
   useEffect(() => {
     const loadChatHistory = async () => {
       axios
-        .get(`http://34.22.76.244/api/chatting/${chatroomId}`)
+        .get(`https://www.na-holo.site/api/chatting/${chatroomId}`)
         .then((response) => {
           setChatroomName(response.data.chatroomName);
           setSenderName(response.data.senderName);
@@ -67,7 +67,7 @@ const Chatting = () => {
     loadChatHistory();
 
     const client = new Client({
-      brokerURL: 'ws://34.22.76.244/ws/websocket',
+      brokerURL: 'ws://www.na-holo.site/ws/websocket',
       reconnectDelay: 5000,
       onConnect: () => {
         client.subscribe(`/topic/public/${chatroomId}`, (message) => {
@@ -137,7 +137,7 @@ const Chatting = () => {
   const exitChatroom = () => {
     if (window.confirm('정말로 채팅방을 나가시겠습니까?')) {
       axios
-        .delete(`http://34.22.76.244/api/chatting/${chatroomId}`)
+        .delete(`https://www.na-holo.site/api/chatting/${chatroomId}`)
         .then((response) => {
           console.info(response.data.message);
           navigate('/');

@@ -22,7 +22,9 @@ export interface MemberRegisterPostFetchParams {
    * 주소
    * - firstAddress + lastAddress
    */
-  address: string;
+  firstAddress: string;
+
+  secondAddress?: string;
 
   /**
    * 패스워드
