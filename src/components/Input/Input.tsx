@@ -1,11 +1,9 @@
 import { Controller, Control, FieldError, FieldValues, Path } from 'react-hook-form';
-
 import { useExtractNumberHandler } from '@/hooks/useExtractNumberHandler';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InputButtonPropsType } from '../InputButton/InputButton';
 import { InputButton } from '../InputButton';
-import { forwardRef } from 'react';
 
 interface CustomInputPropsType<T extends FieldValues> {
   name: Path<T>;
@@ -16,9 +14,6 @@ interface CustomInputPropsType<T extends FieldValues> {
   type: 'email' | 'text' | 'password';
   control: Control<T>;
 
-  /**
-   * onlyNumber
-   */
   extractNumber?: boolean;
 
   addon?: InputButtonPropsType;
@@ -30,11 +25,7 @@ interface CustomInputPropsType<T extends FieldValues> {
   readOnly?: boolean;
 }
 
-/**
- * ReactHookForm 과 같이 사용하기 위한 Tailwind InputForm 컴포넌트
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CustomInput = forwardRef<HTMLInputElement, CustomInputPropsType<FieldValues>>((props, ref) => {
+const CustomInput = <T extends FieldValues>(props: CustomInputPropsType<T>) => {
   const { name, label, addon, control, type, error, helperText, extractNumber = false, ...rest } = props;
 
   const handleExtractNumber = useExtractNumberHandler();
@@ -44,7 +35,7 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputPropsType<FieldValue
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <div className="w-full">
             {label ? (
               <div className="flex items-center mb-2">
@@ -58,6 +49,7 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputPropsType<FieldValue
               <Input
                 id={name}
                 type={type}
+                value={value}
                 onChange={
                   extractNumber
                     ? (e) => {
@@ -92,6 +84,6 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputPropsType<FieldValue
       />
     </div>
   );
-});
+};
 
 export default CustomInput;

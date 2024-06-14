@@ -131,7 +131,7 @@ const TalkWrite = () => {
             <ListTitle imgPath="/icons/single_ment.png" title={titleText} />
           </div>
           <FormProvider {...method}>
-            <div className="container w-11/12 mx-auto flex justify-between">
+            <div className="container flex justify-between w-11/12 mx-auto">
               <div className="w-full mb-8">
                 {/* 제목 */}
                 <div className="mt-8">
@@ -150,13 +150,13 @@ const TalkWrite = () => {
                 <div className="mt-8 h-72">
                   <QuillEditor ref={quillRef} modules={modules} placeholder="혼잣말 내용을 입력해주세요." />
                   {errors?.content ? (
-                    <p className="mt-16 text-sm text-red-600 text-left">{errors?.content.message}</p>
+                    <p className="mt-16 text-sm text-left text-red-600">{errors?.content.message}</p>
                   ) : null}
                 </div>
 
                 {/* 등록 버튼 */}
                 <div className="mt-20 text-center">
-                  <Button className="rounded-lg w-24 text-lg" onClick={handleSubmit}>
+                  <Button className="w-24 text-lg rounded-lg" onClick={handleSubmit}>
                     {submitBtnText}
                   </Button>
                 </div>
