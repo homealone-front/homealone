@@ -35,13 +35,18 @@ const CustomPagination = (props: PaginationPropsType) => {
 
   const visiblePage = getVisiblePages({ totalPage, currentPage });
 
+  const handlePageChange = (nextPage: number) => {
+    onPageChange(nextPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="py-12">
       <Pagination>
         <PaginationContent>
           <PaginationItem>
             <button
-              onClick={currentPage === 0 ? undefined : () => onPageChange(currentPage - 1)}
+              onClick={currentPage === 0 ? undefined : () => handlePageChange(currentPage - 1)}
               disabled={currentPage === 0}
             >
               <PaginationPrevious />
@@ -52,7 +57,7 @@ const CustomPagination = (props: PaginationPropsType) => {
           {currentPage > 5 && totalPage > 10 && (
             <>
               <PaginationItem>
-                <button onClick={() => onPageChange(0)}>
+                <button onClick={() => handlePageChange(0)}>
                   <PaginationLink isActive={currentPage === 0}>1</PaginationLink>
                 </button>
               </PaginationItem>
@@ -65,7 +70,7 @@ const CustomPagination = (props: PaginationPropsType) => {
           {/* 현재 페이지와 근처의 페이지 표시 */}
           {visiblePage.map((page) => (
             <PaginationItem key={page}>
-              <button onClick={() => onPageChange(page - 1)}>
+              <button onClick={() => handlePageChange(page - 1)}>
                 <PaginationLink isActive={currentPage === page - 1}>{page}</PaginationLink>
               </button>
             </PaginationItem>
@@ -78,7 +83,7 @@ const CustomPagination = (props: PaginationPropsType) => {
                 <PaginationEllipsis />
               </PaginationItem>
               <PaginationItem>
-                <button onClick={() => onPageChange(totalPage - 1)}>
+                <button onClick={() => handlePageChange(totalPage - 1)}>
                   <PaginationLink isActive={currentPage === totalPage - 1}>{totalPage}</PaginationLink>
                 </button>
               </PaginationItem>
@@ -87,7 +92,7 @@ const CustomPagination = (props: PaginationPropsType) => {
 
           <PaginationItem>
             <button
-              onClick={totalPage === currentPage - 1 ? undefined : () => onPageChange(currentPage + 1)}
+              onClick={totalPage === currentPage - 1 ? undefined : () => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPage - 1}
             >
               <PaginationNext />
