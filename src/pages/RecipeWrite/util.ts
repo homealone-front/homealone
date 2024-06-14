@@ -2,6 +2,7 @@ import { COOK_TIME, RECIPE_TYPE, PORTIONS, FOOD_CATEGORIES } from './constants';
 import { uploadImage } from '@/utils/uploadImage';
 import { WriteRecipePostFetchParams } from '@/api/recipe/writeRecipePostFetch';
 import { RecipeSchemaType } from './RecipeWrite';
+import { RecipeDetailResponse } from '@/api/recipe/recipeDetailGetFetch';
 
 /**
  * 레시피 수정 및 등록 파라미터를 포맷팅한다.
@@ -21,8 +22,12 @@ export const getRecipeCleansingData = async (data: RecipeSchemaType) => {
           ...uploadedImage,
         };
       }
+
+      return {
+        ...item,
+      };
     }),
-  )) as PropType<WriteRecipePostFetchParams, 'images'>;
+  )) as PropType<WriteRecipePostFetchParams, 'images'> & RecipeDetailResponse;
 
   /**
    * 조리순서에 등록된 이미지들을 업로드하고 params 형식에 맞춘다.
@@ -39,6 +44,7 @@ export const getRecipeCleansingData = async (data: RecipeSchemaType) => {
       }
 
       return {
+        ...item,
         description: item.description,
       };
     }),

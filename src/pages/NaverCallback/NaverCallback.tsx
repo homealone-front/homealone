@@ -53,7 +53,10 @@ const NaverCallback = () => {
 
           const userInfoResponse = await memberInfoGetFetch();
 
-          setUserInfo({ ...userInfoResponse.data, birth: dayjs(userInfoResponse.data.birth).format('YYYYMMDD') });
+          setUserInfo({
+            ...userInfoResponse.data,
+            birth: !userInfoResponse.data.birth ? '' : dayjs(userInfoResponse.data.birth).format('YYYYMMDD'),
+          });
 
           toast({
             title: '네이버로 로그인 했어요!',

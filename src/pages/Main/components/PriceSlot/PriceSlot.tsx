@@ -17,11 +17,11 @@ type PriceSlotPropsType = {
 const PriceSlot = ({ cookInfo }: PriceSlotPropsType) => {
   return (
     <div className="flex items-center gap-2">
-      <div className="flex gap-1 items-center">
+      <div className="flex items-center gap-1">
         <Clock className="w-4 h-4" />
-        <span className="text-sm font-light">{cookInfo?.cookTime}</span>
+        <span className="text-sm font-light">{cookInfo?.cookTime}분</span>
       </div>
-      <div className="flex gap-1 items-center">
+      <div className="flex items-center gap-1">
         <User className="w-4 h-4" />
         <span className="text-sm font-light">{cookInfo?.portions}인분</span>
       </div>

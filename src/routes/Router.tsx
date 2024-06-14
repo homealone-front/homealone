@@ -27,6 +27,7 @@ import { NaverCallbackPage } from '@/pages/NaverCallback';
 // import { RecipeEditPage } from '@/pages/RecipeEdit';
 import { MyPosts } from '@/pages/MyPosts';
 import { MyBookmark } from '@/pages/MyBookmark';
+import { RecipeEditPage } from '@/pages/RecipeEdit';
 
 const Router = () => {
   return (
@@ -42,17 +43,18 @@ const Router = () => {
         </Route>
 
         <Route path={PATH.recipe} element={<RecipePage />} />
-        <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
         <Route path={RECIPE_PATH.detail} element={<RecipeDetailPage />} />
 
         <Route path={PATH.room} element={<RoomPage />} />
         <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
 
         <Route path={PATH.talk} element={<TalkPage />} />
-        <Route path={PATH.talkWrite} element={<TalkWritePage />} />
         <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
 
         <Route element={<UserRouter />}>
+          <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
+          <Route path={RECIPE_PATH.edit} element={<RecipeEditPage />} />
+          <Route path={PATH.talkWrite} element={<TalkWritePage />} />
           <Route path={PATH.roomWrite} element={<RoomWritePage />} />
           <Route path={PATH.mypage} element={<Mypage />} />
           <Route path={PATH.myPosts} element={<MyPosts />} />

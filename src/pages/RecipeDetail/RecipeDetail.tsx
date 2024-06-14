@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Badge } from '@/components/ui/badge';
@@ -24,16 +24,32 @@ import { Card } from '@/components/Card';
 import { ListTitle } from '../Main/components/ListTitle';
 import { Spinner } from '@/components/Spinner';
 import { SkeletonComment } from '@/components/SkeletonComment';
+import { Button } from '@/components/ui/button';
+import { useModalStore } from '@/store/useModalStore';
+import { isAxiosError } from 'axios';
+import { useToast } from '@/hooks/useToast';
+import { CircleCheckIcon, CircleXIcon } from 'lucide-react';
+import { TOAST } from '@/constants/toast';
+import { removeRecipeDeleteFetch } from '@/api/recipe/removeRecipeDeleteFetch';
+import { Confirm } from '@/components/Confirm';
+import { PATH } from '@/constants/paths';
 
 /**
  * 레시피 게시글 상세페이지
  */
 const RecipeDetail = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { toast } = useToast();
 
   const id = pathname.split('/')[2];
+
   const userId = useUserStore((state) => state.id);
   const imageUrl = useUserStore((state) => state.imageUrl);
+
+  const onOpen = useModalStore((state) => state.onOpen);
+  const setModal = useModalStore((state) => state.setModal);
+  const onClose = useModalStore((state) => state.onClose);
 
   const { data, refetch: detailRefetch, isFetching: detailFetching } = useRecipeDetailQuery({ id });
 
@@ -78,6 +94,32 @@ const RecipeDetail = () => {
     }
   });
 
+  const handleRemoveRecipe = async () => {
+    onClose();
+
+    try {
+      await removeRecipeDeleteFetch({ id });
+
+      toast({
+        title: '레시피를 삭제했어요!',
+        icon: <CircleCheckIcon />,
+        className: TOAST.success,
+      });
+    } catch (error) {
+      console.error(error);
+
+      if (isAxiosError(error)) {
+        toast({
+          title: error.response?.data.message || '레시피를 삭제하지 못했어요 ..',
+          icon: <CircleXIcon />,
+          className: TOAST.error,
+        });
+
+        return;
+      }
+    }
+  };
+
   return (
     <>
       <Appbar />
@@ -87,16 +129,59 @@ const RecipeDetail = () => {
           <>
             <Marks postId={parseInt(id, 10)} data={data} refetch={detailRefetch} />
             <div className="w-3/4 pb-24 mx-auto">
-              <div className="flex items-center gap-2 text-lg">
-                <Avatar>
-                  <AvatarImage
-                    src={
-                      'https://firebasestorage.googleapis.com/v0/b/homealone-adce9.appspot.com/o/images%2F2024-06-08_3cbdb5af-525e-4420-b291-4fc200e3038b.png?alt=media&token=9a750c95-5b35-4ead-9798-1d90a0727941'
-                    }
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                By <span className="text-sm font-light">{data?.userName}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-lg">
+                  <Avatar>
+                    <AvatarImage src={data?.userImage ?? '/icons/no_image.png'} />
+                    <AvatarFallback>{data?.userName || 'NA'}</AvatarFallback>
+                  </Avatar>
+                  By <span className="text-sm font-light">{data?.userName}</span>
+                </div>
+                <ul className="flex items-center gap-2 text-xs text-gray400">
+                  <li>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setModal(
+                          <Confirm
+                            title="레시피 수정"
+                            content="레시피를 수정하시겠어요?"
+                            submitButtonText="수정"
+                            onSubmit={() => {
+                              onClose();
+                              navigate(`${PATH.recipe}/${id}/edit`);
+                            }}
+                            onClose={onClose}
+                          />,
+                        );
+
+                        onOpen();
+                      }}
+                    >
+                      수정
+                    </Button>
+                  </li>
+                  <li>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setModal(
+                          <Confirm
+                            title="레시피 삭제"
+                            content="레시피를 삭제하시겠어요?"
+                            submitButtonText="삭제"
+                            onSubmit={handleRemoveRecipe}
+                            onClose={onClose}
+                          />,
+                        );
+
+                        onOpen();
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </li>
+                </ul>
               </div>
 
               <div className="flex flex-col justify-center gap-2 mt-8">
@@ -138,7 +223,7 @@ const RecipeDetail = () => {
                     key={i}
                     className="min-h-[20rem] gap-4"
                     description={`${i + 1}. ${item.description}`}
-                    imageUrl={item.imageUrl}
+                    imageUrl={item?.imageUrl}
                     lineClamp={2}
                   />
                 ))}

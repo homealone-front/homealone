@@ -75,14 +75,14 @@ const CustomCard = (props: CustomCardPropsType) => {
             : 'none',
         }}
       >
-        {imageUrl ? (
-          <div className="flex gap-1 items-center rounded-2xl bg-gray400 opacity-70 px-2 py-1 mt-auto ml-auto">
+        {imageUrl && likes ? (
+          <div className="flex items-center gap-1 px-2 py-1 mt-auto ml-auto rounded-2xl bg-gray400 opacity-70">
             <Heart fill="#fff" stroke="#fff" className="w-3 h-3" />
-            <span className="text-white font-extralight text-sm">{likes}</span>
+            <span className="text-sm text-white font-extralight">{likes}</span>
           </div>
         ) : null}
       </CardHeader>
-      <CardContent className="py-2 px-3 box-border">
+      <CardContent className="box-border px-3 py-2">
         <h3 className="mb-2 text-lg font-semibold truncate">{title}</h3>
 
         {description && (
@@ -94,21 +94,21 @@ const CustomCard = (props: CustomCardPropsType) => {
         <div className="mb-2">{slot}</div>
         {userName ? <Separator /> : null}
       </CardContent>
-      <CardFooter className="flex items-center gap-2 pb-2 px-3">
+      <CardFooter className="flex items-center gap-2 px-3 pb-2">
         {userName ? (
           <div className="flex items-center gap-2">
             <Avatar className="w-4 h-4">
               <AvatarImage src={userImage ? userImage : 'https://github.com/shadcn.png'} alt="@shadcn" />
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
-            <span className="font-extralight text-sm">{userName}</span>
+            <span className="text-sm font-extralight">{userName}</span>
           </div>
         ) : null}
 
-        {!imageUrl ? (
-          <div className="flex gap-1 items-center rounded-2xl bg-gray400 opacity-70 px-2 py-1 mt-auto ml-auto">
+        {!imageUrl && likes ? (
+          <div className="flex items-center gap-1 px-2 py-1 mt-auto ml-auto rounded-2xl bg-gray400 opacity-70">
             <Heart fill="#fff" stroke="#fff" className="w-3 h-3" />
-            <span className="text-white font-extralight text-sm">{likes}</span>
+            <span className="text-sm text-white font-extralight">{likes}</span>
           </div>
         ) : null}
       </CardFooter>

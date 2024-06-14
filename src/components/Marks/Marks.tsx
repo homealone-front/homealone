@@ -13,7 +13,7 @@ import { TOAST } from '@/constants/toast';
 export type MarksPropsType = {
   // TODO: RoomDetailResponse 추가
   postId: number;
-  data: RecipeDetailResponse | TalkDetailResponse | RoomDetailResponse | undefined;
+  data?: RecipeDetailResponse | TalkDetailResponse | RoomDetailResponse;
   refetch: () => void;
 };
 
