@@ -14,8 +14,6 @@ import { useUserStore } from '@/store/useUserStore';
 import { useRecipeDetailQuery } from '@/services/recipe/useRecipeDetailQuery';
 import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
 
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-
 // import { COOK_TIME } from '../RecipeWrite/constants';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { commentSchema } from './validator';
@@ -33,6 +31,7 @@ import { TOAST } from '@/constants/toast';
 import { removeRecipeDeleteFetch } from '@/api/recipe/removeRecipeDeleteFetch';
 import { Confirm } from '@/components/Confirm';
 import { PATH } from '@/constants/paths';
+import { UserAvatar } from '@/components/UserAvatar';
 
 /**
  * 레시피 게시글 상세페이지
@@ -123,20 +122,13 @@ const RecipeDetail = () => {
   return (
     <>
       <Appbar />
-
       <Layout>
         {!isLoading ? (
           <>
             <Marks postId={parseInt(id, 10)} data={data} refetch={detailRefetch} />
             <div className="w-3/4 pb-24 mx-auto">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-lg">
-                  <Avatar>
-                    <AvatarImage src={data?.userImage ?? '/icons/no_image.png'} />
-                    <AvatarFallback>{data?.userName || 'NA'}</AvatarFallback>
-                  </Avatar>
-                  By <span className="text-sm font-light">{data?.userName}</span>
-                </div>
+                <UserAvatar userImage={data?.userImage ?? '/icons/no_image.png'} userName={data?.userName} />
                 {userId === data?.userId ? (
                   <ul className="flex items-center gap-2 text-xs text-gray400">
                     <li>
