@@ -12,7 +12,7 @@ import { Layout } from '@/layout';
 
 import { ListTitle } from '@/pages/Main/components/ListTitle';
 import { PriceSlot } from '@/pages/Main/components/PriceSlot';
-import { CATEGORY_OPTIONS } from '../Main/constants';
+import { RECIPE_CATEGORY_OPTIONS } from '../Main/constants';
 import { Pagination } from '@/components/Pagination';
 
 import { useNavigate, generatePath } from 'react-router-dom';
@@ -21,23 +21,36 @@ import { Button } from '@/components/ui/button';
 
 import { useRecipeListQuery } from '@/services/recipe/useRecipeListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
+import { useUserStore } from '@/store/useUserStore';
+import { useTrendsRecipeListQuery } from '@/services/recipe/useTrendsRecipeListQuery';
 
 /**
  * 레시피 페이지 컴포넌트
  */
 const Receipe = () => {
-  const [currentPage, setCurrentPage] = useState<number>(0);
-
-  const { data, isLoading, isFetching } = useRecipeListQuery({ page: currentPage, size: 20 });
-
   const navigate = useNavigate();
 
+  const accessToken = useUserStore((state) => state.accessToken);
+
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
   const method = useForm({
-    values: { category: '전체', query: '' },
+    values: { category: 'all', query: '' },
   });
+
+  const { getValues } = method;
+
+  const { category, query } = getValues();
+
+  const { data, isLoading, isFetching, refetch } = useRecipeListQuery({ page: currentPage, size: 20, category, query });
+  const { data: trendData, isLoading: isTrendLoading, isFetching: isTrendFetching } = useTrendsRecipeListQuery();
 
   const handlePageMove = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleRefetch = () => {
+    refetch();
   };
 
   return (
@@ -46,9 +59,9 @@ const Receipe = () => {
       <Layout>
         <FormProvider {...method}>
           <div className="flex w-[40rem] gap-4 mx-auto">
-            <Select name="category" options={CATEGORY_OPTIONS} />
+            <Select name="category" options={RECIPE_CATEGORY_OPTIONS} />
             <div className="w-[40rem] m-auto relative">
-              <Searchbar />
+              <Searchbar onSearch={handleRefetch} />
               <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
             </div>
           </div>
@@ -59,15 +72,17 @@ const Receipe = () => {
             title="트렌드 레시피"
             description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
           />
-          <Button className="rounded-full" onClick={() => navigate(PATH.recipeWrite)}>
-            새 글 작성
-          </Button>
+          {!accessToken ? null : (
+            <Button className="rounded-full" onClick={() => navigate(PATH.recipeWrite)}>
+              새 글 작성
+            </Button>
+          )}
         </div>
 
         <div className="grid grid-cols-4 gap-6 place-items-start">
-          {isLoading || isFetching
+          {isTrendLoading || isTrendFetching
             ? Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)
-            : data?.content?.slice(13, 17).map((card, i) => (
+            : trendData?.content?.map((card, i) => (
                 <Card
                   key={i}
                   title={card?.title}

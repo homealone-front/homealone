@@ -12,6 +12,10 @@ export interface RecipeListGetFetchParams {
    * 한 페이지에 표시할 게시물의 수
    */
   size?: number;
+
+  category?: string;
+
+  query?: string;
 }
 
 export interface RecipeListResponse extends ResponseModel {
@@ -110,9 +114,11 @@ export interface RecipeListResponse extends ResponseModel {
  * 레시피 게시글 조회 (페이지네이션)
  */
 export const recipeListGetFetch = (params: RecipeListGetFetchParams) => {
-  const { page = 0, size = 20 } = params;
+  const { page = 0, size = 20, category = 'all', query = '' } = params;
 
-  return apiFetch.get<RecipeListResponse>(`/recipes?page=${page}&size=${size}&sort=createdAt,desc`);
+  return apiFetch.get<RecipeListResponse>(
+    `/recipes?page=${page}&size=${size}&sort=createdAt,desc&${category}=${query}`,
+  );
 };
 
 /**

@@ -27,7 +27,7 @@ const CustomSelect = (props: CustomSelectPropsType) => {
         return (
           <>
             {label ? (
-              <Label className="mb-2 flex items-center" htmlFor={id}>
+              <Label className="flex items-center mb-2" htmlFor={id}>
                 {label}
               </Label>
             ) : null}

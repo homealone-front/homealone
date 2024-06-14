@@ -51,7 +51,7 @@ const RecipeDetail = () => {
   const setModal = useModalStore((state) => state.setModal);
   const onClose = useModalStore((state) => state.onClose);
 
-  const { data, refetch: detailRefetch, isFetching: detailFetching } = useRecipeDetailQuery({ id });
+  const { data, refetch: detailRefetch, isLoading } = useRecipeDetailQuery({ id });
 
   const {
     data: commentData,
@@ -125,7 +125,7 @@ const RecipeDetail = () => {
       <Appbar />
 
       <Layout>
-        {!detailFetching ? (
+        {!isLoading ? (
           <>
             <Marks postId={parseInt(id, 10)} data={data} refetch={detailRefetch} />
             <div className="w-3/4 pb-24 mx-auto">

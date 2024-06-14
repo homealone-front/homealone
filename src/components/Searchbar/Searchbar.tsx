@@ -1,3 +1,4 @@
+import { FormEvent } from 'react';
 import { Controller, FieldValues, useFormContext } from 'react-hook-form';
 import { Input } from '@/components/Input';
 import { Search } from 'lucide-react';
@@ -9,31 +10,31 @@ export interface SearchBarProps {
 const Searchbar = ({ onSearch }: SearchBarProps) => {
   const { control, getValues } = useFormContext();
 
-  const handleSearchBtn = () => {
-    const searchValue = getValues();
-    // console.info('검색값', searchValue);
-    onSearch && onSearch(searchValue);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onSearch?.(getValues());
   };
 
   return (
     <>
-      <Controller
-        name="query"
-        control={control}
-        render={({ field: { value } }) => (
-          <Input
-            name="query"
-            control={control}
-            type="text"
-            extractNumber={false}
-            value={value}
-            placeholder="검색어를 입력해주세요!"
-          />
-        )}
-      />
-      <button onClick={handleSearchBtn}>
-        <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
-      </button>
+      <form onSubmit={handleSubmit} className="relative">
+        <Controller
+          name="query"
+          control={control}
+          render={({ field }) => (
+            <Input
+              control={control}
+              {...field}
+              type="text"
+              extractNumber={false}
+              placeholder="검색어를 입력해주세요!"
+            />
+          )}
+        />
+        <button type="submit" className="absolute top-[0.5rem] right-[0.6rem] appearance-none">
+          <Search stroke="#737373" />
+        </button>
+      </form>
     </>
   );
 };
