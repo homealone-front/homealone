@@ -31,42 +31,51 @@ const RecipeList = () => {
       {!data?.content.length ? (
         <NoContents {...NAV_TABS.recipe} />
       ) : (
-        <div className="min-h-[38rem] flex flex-col justify-between mt-10">
+        <div className="flex flex-col justify-between mt-10">
           <div className="mb-4 flex items-center">
             <span className="text-medium text-gray700 mr-1">전체</span>
             <span className="text-sm font-light text-gray400">{data.totalElements}</span>
           </div>
-          <div className="grid grid-cols-4 gap-6 place-items-start pb-12">
-            {isLoading || isFetching
-              ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-              : data?.content?.map((card, i) => (
-                  <Card
-                    key={i}
-                    title={card?.title}
-                    description={card?.description}
-                    userName={card?.userName}
-                    imageUrl={card?.imageUrl}
-                    lineClamp={1}
-                    slot={
-                      <PriceSlot
-                        cookInfo={{
-                          portions: card?.portions,
-                          cookTime: card?.recipeTime,
-                        }}
-                      />
-                    }
-                    likes={card.relatedDto.likeCount}
-                    onPageMove={() =>
-                      navigate(
-                        generatePath(RECIPE_PATH.detail, {
-                          id: card.id.toString(),
-                        }),
-                      )
-                    }
-                  />
-                ))}
+          <div className="flex flex-col justify-between">
+            <div className="grid grid-cols-4 gap-6 place-items-start pb-10">
+              {isLoading || isFetching
+                ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
+                : data?.content?.map((card, i) => (
+                    <Card
+                      key={i}
+                      title={card?.title}
+                      description={card?.description}
+                      userName={card?.userName}
+                      userImage={card.userImage}
+                      imageUrl={card?.imageUrl}
+                      lineClamp={1}
+                      slot={
+                        <PriceSlot
+                          cookInfo={{
+                            portions: card?.portions,
+                            cookTime: card?.recipeTime,
+                          }}
+                        />
+                      }
+                      likes={card.relatedDto.likeCount}
+                      onPageMove={() =>
+                        navigate(
+                          generatePath(RECIPE_PATH.detail, {
+                            id: card.id.toString(),
+                          }),
+                        )
+                      }
+                    />
+                  ))}
+            </div>
+            {data?.totalPages > 1 && (
+              <Pagination
+                totalPage={data?.totalPages as number}
+                currentPage={currentPage}
+                onPageChange={handlePageMove}
+              />
+            )}
           </div>
-          <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
         </div>
       )}
     </>
