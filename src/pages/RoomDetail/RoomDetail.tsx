@@ -1,30 +1,34 @@
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import parse from 'html-react-parser';
+import { EmblaOptionsType } from 'embla-carousel';
+import { Eye, MessageSquareMore } from 'lucide-react';
+import dayjs from 'dayjs';
 
 import { Appbar } from '@/components/Appbar';
 import { Marks } from '@/components/Marks';
-import { Layout } from '@/layout';
-import { useRoomDetailQuery } from '@/services/room/useRoomDetailQuery';
-
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { EmblaCarousel } from './components/EmblaCarousel';
-import { EmblaOptionsType } from 'embla-carousel';
-import dayjs from 'dayjs';
-import { Eye, MessageSquareMore } from 'lucide-react';
-import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { commentSchema } from '../RecipeDetail/validator';
-import { addCommentPostFetch } from '@/api/comment/addCommentPostFetch';
 import { CommentForm } from '@/components/CommentForm';
 import { SkeletonComment } from '@/components/SkeletonComment';
-import { Comment } from '@/components/Comment';
-import { useUserStore } from '@/store/useUserStore';
 import { Spinner } from '@/components/Spinner';
 import { Confirm } from '@/components/Confirm';
-import { useModalStore } from '@/store/useModalStore';
+import { Comment } from '@/components/Comment';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { EmblaCarousel } from './components/EmblaCarousel';
+
+import { Layout } from '@/layout';
+
+import { useRoomDetailQuery } from '@/services/room/useRoomDetailQuery';
+import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
 import { useRoomDeleteMutation } from '@/services/room/useRoomDeleteMutation';
+import { queryClient } from '@/services/quries';
+
+import { useUserStore } from '@/store/useUserStore';
+import { useModalStore } from '@/store/useModalStore';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { commentSchema } from '../RecipeDetail/validator';
+import { addCommentPostFetch } from '@/api/comment/addCommentPostFetch';
 import { PATH } from '@/constants/paths';
 
 /**
@@ -42,7 +46,7 @@ const RoomDetail = () => {
 
   const navigate = useNavigate();
 
-  const { mutate } = useRoomDeleteMutation();
+  const { mutate: roomDeleteMutate } = useRoomDeleteMutation();
 
   if (!roomId) return;
 
@@ -73,6 +77,9 @@ const RoomDetail = () => {
     formState: { errors },
   } = method;
 
+  /**
+   * 댓글 생성
+   */
   const handleSubmit = submit(async () => {
     try {
       const content = getValues('content').trim();
@@ -87,11 +94,15 @@ const RoomDetail = () => {
       setValue('content', '');
 
       await commentRefetch();
+      queryClient.invalidateQueries({ queryKey: ['@room-detail', roomId] });
     } catch (error) {
       console.error(error);
     }
   });
 
+  /**
+   * 수정 버튼 클릭 시, 해당 작성 페이지로 이동
+   */
   const handleNavigate = () => {
     navigate(
       generatePath(PATH.roomWrite, {
@@ -100,8 +111,11 @@ const RoomDetail = () => {
     );
   };
 
+  /**
+   * 게시물 삭제
+   */
   const handleRemoveRoom = () => {
-    mutate({ roomId });
+    roomDeleteMutate({ roomId });
     onClose();
   };
 
@@ -111,11 +125,12 @@ const RoomDetail = () => {
   return (
     <>
       <Appbar />
+
       <Layout>
         {!isLoading ? (
           <>
-            {/* TODO: 좋아요, 북마크 완료되면 붙이기 */}
-            <Marks postId={Number(roomId)} data={data} refetch={detailRefetch} />
+            <Marks postId={parseInt(roomId, 10)} data={data} refetch={detailRefetch} />
+
             <div className="w-3/4 mx-auto flex flex-col gap-8 pb-8">
               <section className="border-b pb-4 flex justify-between items-center">
                 <h3 className="text-3xl font-semibold">{data?.title}</h3>
