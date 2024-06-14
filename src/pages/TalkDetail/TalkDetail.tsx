@@ -3,7 +3,6 @@ import { Appbar } from '@/components/Appbar';
 import { Layout } from '@/layout';
 import { useTalkDetailQuery } from '@/services/talk/useTalkDetailQuery';
 
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Marks } from '@/components/Marks';
 import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
 import { useForm } from 'react-hook-form';
@@ -24,6 +23,7 @@ import { useTalkDeleteMutation } from '@/services/talk/useTalkDeleteMutation';
 import { Confirm } from '@/components/Confirm';
 import { useModalStore } from '@/store/useModalStore';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { UserAvatar } from '@/components/UserAvatar';
 
 /**
  * 혼잣말 게시글 상세페이지
@@ -138,16 +138,8 @@ const TalkDetail = () => {
                 )}
               </section>
               <section className="flex items-center justify-between">
-                <div className="flex gap-2 items-center text-sm">
-                  <Avatar>
-                    <AvatarImage src={data?.imageUrl} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <span className="text-sm font-light">{data?.memberName}</span>
-                </div>
-                <span className="text-gray500 text-sm font-light">
-                  {dayjs(data?.createdAt).format('YYYY년 MM월 DD일')}
-                </span>
+                <UserAvatar userImage={data?.imageUrl} userName={data?.memberName} />
+                <span className="text-gray500 text-sm">{dayjs(data?.createdAt).format('YYYY년 MM월 DD일')}</span>
               </section>
               {data && <div className="h-auto min-h-32 no-tailwind">{parse(`${data.content}`)}</div>}
             </div>

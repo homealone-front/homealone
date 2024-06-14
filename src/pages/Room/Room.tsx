@@ -1,4 +1,4 @@
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, FieldValues } from 'react-hook-form';
 import { Search } from 'lucide-react';
 import { useNavigate, generatePath } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ import { Searchbar } from '@/components/Searchbar';
 import { Select } from '@/components/Select';
 import { Pagination } from '@/components/Pagination';
 import { Footer } from '@/components/Footer';
-import { Card } from '@/components/Card';
+import { Card as RoomCard } from '@/components/Card';
 
 import { Layout } from '@/layout';
 import { CATEGORY_OPTIONS } from '../Main/constants';
@@ -21,24 +21,64 @@ import { SkeletonCard } from '@/components/Skeleton';
 
 import { RoomCardSlot } from './components/RoomCardSlot';
 import { useUserStore } from '@/store/useUserStore';
+import { RoomListGetFetchParams, RoomListResponse } from '@/api/room/roomListGetFetch';
+import { useSearchRoomQuery } from '@/services/search/useSearchQuery';
 
 /**
  * 방자랑 페이지 컴포넌트
  */
 const Room = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [searchParams, setSearchParams] = useState<RoomListGetFetchParams>({ page: 0, size: 20 });
+
   const accessToken = useUserStore((state) => state.accessToken);
 
-  const { data, isLoading, isFetching } = useRoomListQuery({ page: currentPage, size: 20 });
+  const { data, isLoading } = useRoomListQuery({ page: currentPage, size: 20 });
+  const { data: searchData, isLoading: isSearchLoading } = useSearchRoomQuery(searchParams);
 
   const navigate = useNavigate();
 
   const method = useForm({
-    values: { category: '전체', query: '' },
+    values: { category: 'all', query: '' },
   });
 
   const handlePageMove = (page: number) => {
     setCurrentPage(page);
+    setSearchParams((prevParams: RoomListGetFetchParams) => ({ ...prevParams, page }));
+  };
+
+  const handleSearch = (params: FieldValues) => {
+    setSearchParams({ ...params, page: 0, size: 20 });
+    setCurrentPage(0);
+  };
+
+  const renderCards = () => {
+    const cardData = searchParams.query ? searchData : data;
+    const loading = searchParams.query ? isSearchLoading : isLoading;
+
+    if (loading) {
+      return Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />);
+    }
+
+    return cardData?.content?.map((card: RoomListResponse['content'][number]) => (
+      <RoomCard
+        key={card?.id}
+        title={card?.title}
+        userName={card?.memberName}
+        lineClamp={1}
+        userImage={card?.imageUrl}
+        slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
+        likes={card?.likeCount}
+        imageUrl={card.thumbnailUrl}
+        onPageMove={() =>
+          navigate(
+            generatePath(ROOM_PATH.detail, {
+              id: card.id.toString(),
+            }),
+          )
+        }
+      />
+    ));
   };
 
   return (
@@ -49,7 +89,7 @@ const Room = () => {
           <div className="flex w-[40rem] gap-4 mx-auto">
             <Select name="category" options={CATEGORY_OPTIONS} />
             <div className="w-[40rem] m-auto relative">
-              <Searchbar />
+              <Searchbar onSearch={handleSearch} />
               <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
             </div>
           </div>
@@ -67,29 +107,7 @@ const Room = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-4 gap-6 place-items-start">
-          {isLoading || isFetching
-            ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-            : data?.content?.map((card, i) => (
-                <Card
-                  key={i}
-                  likes={card?.likeCount}
-                  title={card?.title}
-                  userName={card?.memberName}
-                  userImage={card?.imageUrl}
-                  imageUrl={card?.thumbnailUrl}
-                  lineClamp={1}
-                  slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
-                  onPageMove={() =>
-                    navigate(
-                      generatePath(ROOM_PATH.detail, {
-                        id: card.id.toString(),
-                      }),
-                    )
-                  }
-                />
-              ))}
-        </div>
+        <div className="grid grid-cols-4 gap-6 place-items-start">{renderCards()}</div>
         <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
       </Layout>
       <Footer />

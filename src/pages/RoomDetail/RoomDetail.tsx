@@ -13,7 +13,6 @@ import { Spinner } from '@/components/Spinner';
 import { Confirm } from '@/components/Confirm';
 import { Comment } from '@/components/Comment';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { EmblaCarousel } from './components/EmblaCarousel';
 
 import { Layout } from '@/layout';
@@ -30,6 +29,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { commentSchema } from '../RecipeDetail/validator';
 import { addCommentPostFetch } from '@/api/comment/addCommentPostFetch';
 import { PATH } from '@/constants/paths';
+import { UserAvatar } from '@/components/UserAvatar';
 
 /**
  * 방자랑 게시글 상세페이지
@@ -164,13 +164,7 @@ const RoomDetail = () => {
                 )}
               </section>
               <section className="flex items-center justify-between">
-                <div className="flex gap-2 items-center text-sm">
-                  <Avatar>
-                    <AvatarImage src={data?.imageUrl} />
-                    <AvatarFallback>{data?.memberName}</AvatarFallback>
-                  </Avatar>
-                  By <span className="text-lg">{data?.memberName}</span>
-                </div>
+                <UserAvatar userImage={data?.imageUrl} userName={data?.memberName} />
                 <span className="text-gray500 text-sm">{dayjs(data?.createdAt).format('YYYY년 MM월 DD일')}</span>
               </section>
 
