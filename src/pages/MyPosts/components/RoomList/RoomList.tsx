@@ -28,6 +28,16 @@ const RoomList = () => {
     setCurrentPage(page);
   };
 
+  if (isLoading || isFetching) {
+    return (
+      <div className="grid grid-cols-4 gap-6 place-items-start pb-12 mt-16">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <>
       {!data?.content.length ? (
@@ -39,28 +49,26 @@ const RoomList = () => {
             <span className="text-sm font-light text-gray400">{data.totalElements}</span>
           </div>
           <div className="grid grid-cols-4 gap-6 place-items-start pb-10">
-            {isLoading || isFetching
-              ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-              : data?.content?.map((card, i) => (
-                  <Card
-                    key={i}
-                    description=""
-                    title={card?.title}
-                    userName={card?.memberName}
-                    userImage={card?.imageUrl}
-                    imageUrl={card?.thumbnailUrl}
-                    lineClamp={1}
-                    likes={card.likeCount}
-                    slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
-                    onPageMove={() =>
-                      navigate(
-                        generatePath(ROOM_PATH.detail, {
-                          id: card.id.toString(),
-                        }),
-                      )
-                    }
-                  />
-                ))}
+            {data?.content?.map((card, i) => (
+              <Card
+                key={i}
+                description=""
+                title={card?.title}
+                userName={card?.memberName}
+                userImage={card?.imageUrl}
+                imageUrl={card?.thumbnailUrl}
+                lineClamp={1}
+                likes={card.likeCount}
+                slot={<RoomCardSlot createdAt={card?.createdAt} commentCount={card?.commentCount} />}
+                onPageMove={() =>
+                  navigate(
+                    generatePath(ROOM_PATH.detail, {
+                      id: card.id.toString(),
+                    }),
+                  )
+                }
+              />
+            ))}
           </div>
           {data?.totalPages > 1 && (
             <Pagination

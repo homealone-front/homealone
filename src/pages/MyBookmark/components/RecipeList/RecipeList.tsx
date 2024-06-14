@@ -26,6 +26,16 @@ const RecipeList = () => {
     setCurrentPage(page);
   };
 
+  if (isLoading || isFetching) {
+    return (
+      <div className="grid grid-cols-4 gap-6 place-items-start pb-12 mt-16">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <>
       {!data?.content.length ? (
@@ -38,35 +48,33 @@ const RecipeList = () => {
           </div>
           <div className="flex flex-col justify-between">
             <div className="grid grid-cols-4 gap-6 place-items-start pb-10">
-              {isLoading || isFetching
-                ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-                : data?.content?.map((card, i) => (
-                    <Card
-                      key={i}
-                      title={card?.title}
-                      description={card?.description}
-                      userName={card?.userName}
-                      userImage={card.userImage}
-                      imageUrl={card?.imageUrl}
-                      lineClamp={1}
-                      slot={
-                        <PriceSlot
-                          cookInfo={{
-                            portions: card?.portions,
-                            cookTime: card?.recipeTime,
-                          }}
-                        />
-                      }
-                      likes={card.relatedDto.likeCount}
-                      onPageMove={() =>
-                        navigate(
-                          generatePath(RECIPE_PATH.detail, {
-                            id: card.id.toString(),
-                          }),
-                        )
-                      }
+              {data?.content?.map((card, i) => (
+                <Card
+                  key={i}
+                  title={card?.title}
+                  description={card?.description}
+                  userName={card?.userName}
+                  userImage={card.userImage}
+                  imageUrl={card?.imageUrl}
+                  lineClamp={1}
+                  slot={
+                    <PriceSlot
+                      cookInfo={{
+                        portions: card?.portions,
+                        cookTime: card?.recipeTime,
+                      }}
                     />
-                  ))}
+                  }
+                  likes={card.relatedDto.likeCount}
+                  onPageMove={() =>
+                    navigate(
+                      generatePath(RECIPE_PATH.detail, {
+                        id: card.id.toString(),
+                      }),
+                    )
+                  }
+                />
+              ))}
             </div>
             {data?.totalPages > 1 && (
               <Pagination

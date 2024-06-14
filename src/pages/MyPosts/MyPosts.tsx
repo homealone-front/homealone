@@ -21,7 +21,7 @@ const MyPosts = () => {
           </div>
           <div className="flex flex-col min-h-[42rem] mx-auto">
             <div className=" bg-white border border-gray200 rounded-lg px-8 pt-4 mb-24 grow ">
-              <Tabs defaultValue={Object.values(NAV_TABS)[0].name}>
+              <Tabs defaultValue={Object.values(NAV_TABS)[3].name}>
                 <TabsList>
                   {Object.entries(NAV_TABS).map(([key, value]) => (
                     <TabsTrigger key={key} value={value.name}>
