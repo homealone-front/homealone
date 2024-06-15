@@ -104,6 +104,8 @@ const RecipeDetail = () => {
         icon: <CircleCheckIcon />,
         className: TOAST.success,
       });
+
+      navigate(PATH.recipe);
     } catch (error) {
       console.error(error);
 

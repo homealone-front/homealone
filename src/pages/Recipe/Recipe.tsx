@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { useRecipeListQuery } from '@/services/recipe/useRecipeListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
 import { useUserStore } from '@/store/useUserStore';
-import { useTrendsRecipeListQuery } from '@/services/recipe/useTrendsRecipeListQuery';
+// import { useTrendsRecipeListQuery } from '@/services/recipe/useTrendsRecipeListQuery';
 import { NoContents } from '../MyPosts/components/NoContents';
 import { NAV_TABS } from '../MyPosts/constants';
 
@@ -45,7 +45,7 @@ const Receipe = () => {
   const { category, query } = getValues();
 
   const { data, isLoading, isFetching, refetch } = useRecipeListQuery({ page: currentPage, size: 20, category, query });
-  const { data: trendData, isLoading: isTrendLoading, isFetching: isTrendFetching } = useTrendsRecipeListQuery();
+  // const { data: trendData, isLoading: isTrendLoading, isFetching: isTrendFetching } = useTrendsRecipeListQuery();
 
   const handlePageMove = (page: number) => {
     setCurrentPage(page);
@@ -74,7 +74,7 @@ const Receipe = () => {
           </div>
         ) : (
           <>
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <ListTitle
                 imgPath="/icons/receipe_icon.png"
                 title="트렌드 레시피"
@@ -85,9 +85,9 @@ const Receipe = () => {
                   새 글 작성
                 </Button>
               )}
-            </div>
+            </div> */}
 
-            <div className="grid grid-cols-4 gap-6 place-items-start">
+            {/* <div className="grid grid-cols-4 gap-6 place-items-start">
               {isTrendLoading || isTrendFetching
                 ? Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)
                 : trendData?.content?.map((card, i) => (
@@ -116,8 +116,19 @@ const Receipe = () => {
                       }
                     />
                   ))}
+            </div> */}
+            <div className="flex items-center justify-between">
+              <ListTitle
+                imgPath="/icons/receipe_icon.png"
+                description="오늘도 맛있는 하루! 어떤 요리를 해볼까요?"
+                title="모든 레시피"
+              />
+              {!accessToken ? null : (
+                <Button className="rounded-full" onClick={() => navigate(PATH.recipeWrite)}>
+                  새 글 작성
+                </Button>
+              )}
             </div>
-            <ListTitle imgPath="/icons/receipe_icon.png" title="모든 레시피" />
             <div className="grid grid-cols-4 gap-6 py-12 place-items-start">
               {isLoading || isFetching
                 ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
