@@ -93,7 +93,7 @@ const Talk = () => {
             </div>
           </div>
         </FormProvider>
-        {!cardData?.content.length ? (
+        {!cardData?.content.length && !isLoading ? (
           <div className="flex justify-center">
             <NoContents {...NAV_TABS.talk} />
           </div>

@@ -23,6 +23,8 @@ import { RoomCardSlot } from './components/RoomCardSlot';
 import { useUserStore } from '@/store/useUserStore';
 import { RoomListGetFetchParams, RoomListResponse } from '@/api/room/roomListGetFetch';
 import { useSearchRoomQuery } from '@/services/search/useSearchQuery';
+import { NoContents } from '../MyPosts/components/NoContents';
+import { NAV_TABS } from '../MyPosts/constants';
 
 /**
  * 방자랑 페이지 컴포넌트
@@ -94,21 +96,33 @@ const Room = () => {
             </div>
           </div>
         </FormProvider>
-        <div className="flex justify-between items-center">
-          <ListTitle
-            imgPath="/icons/room_icon.png"
-            title="케빈들의 아지트"
-            description="다른사람들의 아지트를 확인해보세요!"
-          />
-          {accessToken && (
-            <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
-              새 글 작성
-            </Button>
-          )}
-        </div>
+        {!searchData?.content.length && !isLoading ? (
+          <div className="flex justify-center">
+            <NoContents {...NAV_TABS.room} />
+          </div>
+        ) : (
+          <>
+            <div className="flex justify-between items-center">
+              <ListTitle
+                imgPath="/icons/room_icon.png"
+                title="케빈들의 아지트"
+                description="다른사람들의 아지트를 확인해보세요!"
+              />
+              {accessToken && (
+                <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
+                  새 글 작성
+                </Button>
+              )}
+            </div>
 
-        <div className="grid grid-cols-4 gap-6 place-items-start">{renderCards()}</div>
-        <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
+            <div className="grid grid-cols-4 gap-6 place-items-start">{renderCards()}</div>
+            <Pagination
+              totalPage={data?.totalPages as number}
+              currentPage={currentPage}
+              onPageChange={handlePageMove}
+            />
+          </>
+        )}
       </Layout>
       <Footer />
     </>
