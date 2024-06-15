@@ -23,6 +23,8 @@ import { useRecipeListQuery } from '@/services/recipe/useRecipeListQuery';
 import { SkeletonCard } from '@/components/Skeleton';
 import { useUserStore } from '@/store/useUserStore';
 import { useTrendsRecipeListQuery } from '@/services/recipe/useTrendsRecipeListQuery';
+import { NoContents } from '../MyPosts/components/NoContents';
+import { NAV_TABS } from '../MyPosts/constants';
 
 /**
  * 레시피 페이지 컴포넌트
@@ -66,81 +68,93 @@ const Receipe = () => {
             </div>
           </div>
         </FormProvider>
-        <div className="flex items-center justify-between">
-          <ListTitle
-            imgPath="/icons/receipe_icon.png"
-            title="트렌드 레시피"
-            description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
-          />
-          {!accessToken ? null : (
-            <Button className="rounded-full" onClick={() => navigate(PATH.recipeWrite)}>
-              새 글 작성
-            </Button>
-          )}
-        </div>
+        {!data?.content.length && !isLoading ? (
+          <div className="flex justify-center">
+            <NoContents {...NAV_TABS.recipe} />
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between">
+              <ListTitle
+                imgPath="/icons/receipe_icon.png"
+                title="트렌드 레시피"
+                description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
+              />
+              {!accessToken ? null : (
+                <Button className="rounded-full" onClick={() => navigate(PATH.recipeWrite)}>
+                  새 글 작성
+                </Button>
+              )}
+            </div>
 
-        <div className="grid grid-cols-4 gap-6 place-items-start">
-          {isTrendLoading || isTrendFetching
-            ? Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)
-            : trendData?.content?.map((card, i) => (
-                <Card
-                  key={i}
-                  title={card?.title}
-                  description={card?.description}
-                  userName={card?.userName}
-                  imageUrl={card?.imageUrl}
-                  lineClamp={1}
-                  slot={
-                    <PriceSlot
-                      cookInfo={{
-                        portions: card?.portions === 9 ? '6' : card?.portions.toString(),
-                        cookTime: card?.recipeTime,
-                      }}
+            <div className="grid grid-cols-4 gap-6 place-items-start">
+              {isTrendLoading || isTrendFetching
+                ? Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)
+                : trendData?.content?.map((card, i) => (
+                    <Card
+                      key={i}
+                      title={card?.title}
+                      description={card?.description}
+                      userName={card?.userName}
+                      imageUrl={card?.imageUrl}
+                      lineClamp={1}
+                      slot={
+                        <PriceSlot
+                          cookInfo={{
+                            portions: card?.portions === 9 ? '6' : card?.portions.toString(),
+                            cookTime: card?.recipeTime,
+                          }}
+                        />
+                      }
+                      likes={card?.relatedDto.likeCount}
+                      onPageMove={() =>
+                        navigate(
+                          generatePath(RECIPE_PATH.detail, {
+                            id: card.id.toString(),
+                          }),
+                        )
+                      }
                     />
-                  }
-                  likes={card?.relatedDto.likeCount}
-                  onPageMove={() =>
-                    navigate(
-                      generatePath(RECIPE_PATH.detail, {
-                        id: card.id.toString(),
-                      }),
-                    )
-                  }
-                />
-              ))}
-        </div>
-        <ListTitle imgPath="/icons/receipe_icon.png" title="모든 레시피" />
-        <div className="grid grid-cols-4 gap-6 py-12 place-items-start">
-          {isLoading || isFetching
-            ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
-            : data?.content?.map((card, i) => (
-                <Card
-                  key={i}
-                  title={card?.title}
-                  description={card?.description}
-                  userName={card?.userName}
-                  imageUrl={card?.imageUrl}
-                  lineClamp={1}
-                  slot={
-                    <PriceSlot
-                      cookInfo={{
-                        portions: card?.portions === 9 ? '6' : card?.portions.toString(),
-                        cookTime: card?.recipeTime,
-                      }}
+                  ))}
+            </div>
+            <ListTitle imgPath="/icons/receipe_icon.png" title="모든 레시피" />
+            <div className="grid grid-cols-4 gap-6 py-12 place-items-start">
+              {isLoading || isFetching
+                ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
+                : data?.content?.map((card, i) => (
+                    <Card
+                      key={i}
+                      title={card?.title}
+                      description={card?.description}
+                      userName={card?.userName}
+                      imageUrl={card?.imageUrl}
+                      lineClamp={1}
+                      slot={
+                        <PriceSlot
+                          cookInfo={{
+                            portions: card?.portions === 9 ? '6' : card?.portions.toString(),
+                            cookTime: card?.recipeTime,
+                          }}
+                        />
+                      }
+                      likes={card?.relatedDto.likeCount}
+                      onPageMove={() =>
+                        navigate(
+                          generatePath(RECIPE_PATH.detail, {
+                            id: card.id.toString(),
+                          }),
+                        )
+                      }
                     />
-                  }
-                  likes={card?.relatedDto.likeCount}
-                  onPageMove={() =>
-                    navigate(
-                      generatePath(RECIPE_PATH.detail, {
-                        id: card.id.toString(),
-                      }),
-                    )
-                  }
-                />
-              ))}
-        </div>
-        <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
+                  ))}
+            </div>
+            <Pagination
+              totalPage={data?.totalPages as number}
+              currentPage={currentPage}
+              onPageChange={handlePageMove}
+            />
+          </>
+        )}
       </Layout>
       <Footer />
     </>
