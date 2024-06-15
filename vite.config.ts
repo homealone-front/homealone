@@ -18,49 +18,55 @@ const renderChunks = (deps: Record<string, string>) => {
   return chunks;
 };
 
-export default defineConfig(({ mode }) => ({
-  plugins: [react()],
-  server: {
-    host: '0.0.0.0',
-    port: 8060,
-    watch: {
-      usePolling: true,
-    },
-    cors: true,
-    proxy: {
-      '/api': {
-        target: 'https://www.na-holo.site',
-        changeOrigin: true,
+/**
+ * @see https://vitejs.dev/config/
+ */
+export default ({ mode }: { mode: 'development' | 'production' }) =>
+  defineConfig({
+    plugins: [react()],
+    server: {
+      host: '0.0.0.0',
+      port: 8060,
+      watch: {
+        usePolling: true,
       },
-    },
-  },
-  define: {
-    'import.meta.env.DEV': mode === 'development',
-    'import.meta.env.PROD': mode === 'production',
-  },
-  build: {
-    outDir: 'build',
-    sourcemap: false,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production',
-      },
-    },
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-router-dom', 'react-dom'],
-          ...renderChunks(dependencies),
+      cors: true,
+      proxy: {
+        '/api': {
+          target: 'https://www.na-holo.site/',
+          changeOrigin: true,
         },
       },
     },
-  },
-  assetsInclude: ['**/*.node'],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
+
+    define: {
+      'import.meta.env.DEV': mode === 'development',
+      'import.meta.env.PROD': mode === 'development',
     },
-  },
-}));
+
+    build: {
+      outDir: 'build',
+      sourcemap: false,
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: mode === 'development',
+          drop_debugger: mode === 'development',
+        },
+      },
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-router-dom', 'react-dom'],
+            ...renderChunks(dependencies),
+          },
+        },
+      },
+    },
+
+    assetsInclude: ['**/*.node'],
+
+    resolve: {
+      alias: { '@': resolve(__dirname, './src') },
+    },
+  });
