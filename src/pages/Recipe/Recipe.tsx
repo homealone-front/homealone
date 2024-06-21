@@ -29,7 +29,7 @@ import { NAV_TABS } from '../MyPosts/constants';
 /**
  * 레시피 페이지 컴포넌트
  */
-const Receipe = () => {
+const Recipe = () => {
   const navigate = useNavigate();
 
   const accessToken = useUserStore((state) => state.accessToken);
@@ -45,7 +45,6 @@ const Receipe = () => {
   const { category, query } = getValues();
 
   const { data, isLoading, isFetching, refetch } = useRecipeListQuery({ page: currentPage, size: 20, category, query });
-  // const { data: trendData, isLoading: isTrendLoading, isFetching: isTrendFetching } = useTrendsRecipeListQuery();
 
   const handlePageMove = (page: number) => {
     setCurrentPage(page);
@@ -74,49 +73,6 @@ const Receipe = () => {
           </div>
         ) : (
           <>
-            {/* <div className="flex items-center justify-between">
-              <ListTitle
-                imgPath="/icons/receipe_icon.png"
-                title="트렌드 레시피"
-                description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
-              />
-              {!accessToken ? null : (
-                <Button className="rounded-full" onClick={() => navigate(PATH.recipeWrite)}>
-                  새 글 작성
-                </Button>
-              )}
-            </div> */}
-
-            {/* <div className="grid grid-cols-4 gap-6 place-items-start">
-              {isTrendLoading || isTrendFetching
-                ? Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)
-                : trendData?.content?.map((card, i) => (
-                    <Card
-                      key={i}
-                      title={card?.title}
-                      description={card?.description}
-                      userName={card?.userName}
-                      imageUrl={card?.imageUrl}
-                      lineClamp={1}
-                      slot={
-                        <PriceSlot
-                          cookInfo={{
-                            portions: card?.portions === 9 ? '6' : card?.portions.toString(),
-                            cookTime: card?.recipeTime,
-                          }}
-                        />
-                      }
-                      likes={card?.relatedDto.likeCount}
-                      onPageMove={() =>
-                        navigate(
-                          generatePath(RECIPE_PATH.detail, {
-                            id: card.id.toString(),
-                          }),
-                        )
-                      }
-                    />
-                  ))}
-            </div> */}
             <div className="flex items-center justify-between">
               <ListTitle
                 imgPath="/icons/receipe_icon.png"
@@ -172,4 +128,4 @@ const Receipe = () => {
   );
 };
 
-export default Receipe;
+export default Recipe;

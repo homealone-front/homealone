@@ -62,7 +62,7 @@ const Room = () => {
       return Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />);
     }
 
-    return cardData?.content?.map((card: RoomListResponse['content'][number]) => (
+    return cardData?.content?.map((card: ArrayType<PropType<RoomListResponse, 'content'>>) => (
       <RoomCard
         key={card?.id}
         title={card?.title}
@@ -102,7 +102,7 @@ const Room = () => {
           </div>
         ) : (
           <>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <ListTitle
                 imgPath="/icons/room_icon.png"
                 title="케빈들의 아지트"
