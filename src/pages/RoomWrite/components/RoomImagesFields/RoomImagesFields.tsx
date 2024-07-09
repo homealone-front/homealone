@@ -1,4 +1,4 @@
-import { useRef, ChangeEvent } from 'react';
+import { useRef, ChangeEvent, useState, useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { CarouselItem } from '@/components/ui/carousel';
@@ -21,6 +21,7 @@ const RoomImagesFields = () => {
   });
 
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [appendedIndex, setAppendedIndex] = useState<number | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
     const { files } = e.target;
@@ -32,6 +33,19 @@ const RoomImagesFields = () => {
       setValue(`roomImages.${index}.imageUrl`, imageUrl);
     }
   };
+
+  const handleAppend = () => {
+    const newIndex = fields.length;
+    append({ image: {} as File, imageUrl: '' });
+    setAppendedIndex(newIndex);
+  };
+
+  useEffect(() => {
+    if (appendedIndex !== null && fileInputRefs.current[appendedIndex]) {
+      fileInputRefs.current[appendedIndex]?.click();
+      setAppendedIndex(null);
+    }
+  }, [fields, appendedIndex]);
 
   return (
     <>
@@ -97,7 +111,7 @@ const RoomImagesFields = () => {
           <Card>
             <CardContent
               className="flex aspect-square items-center justify-center cursor-pointer group pb-0"
-              onClick={() => append({ image: {} as File, imageUrl: '' })}
+              onClick={handleAppend}
             >
               <ImagePlus size={64} color="#a0aec0" strokeWidth={2} className=" group-hover:stroke-[#2d3748]" />
             </CardContent>
