@@ -3,7 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { CarouselItem } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
-import { CirclePlus, CircleX, Image } from 'lucide-react';
+import { CircleX, Image, ImagePlus } from 'lucide-react';
 
 interface RoomImagesFieldsType {
   roomImages: {
@@ -96,10 +96,10 @@ const RoomImagesFields = () => {
         <div className="p-1">
           <Card>
             <CardContent
-              className="flex aspect-square items-center justify-center cursor-pointer group"
+              className="flex aspect-square items-center justify-center cursor-pointer group pb-0"
               onClick={() => append({ image: {} as File, imageUrl: '' })}
             >
-              <CirclePlus size={64} color="#a0aec0" strokeWidth={2} className=" group-hover:stroke-[#2d3748]" />
+              <ImagePlus size={64} color="#a0aec0" strokeWidth={2} className=" group-hover:stroke-[#2d3748]" />
             </CardContent>
           </Card>
         </div>
