@@ -2,14 +2,12 @@ import { useForm, FormProvider, FieldValues } from 'react-hook-form';
 import { Search } from 'lucide-react';
 import { useNavigate, generatePath } from 'react-router-dom';
 
-import { Appbar } from '@/components/Appbar';
 import { Searchbar } from '@/components/Searchbar';
 import { Select } from '@/components/Select';
 import { Pagination } from '@/components/Pagination';
-import { Footer } from '@/components/Footer';
+
 import { Card as RoomCard } from '@/components/Card';
 
-import { Layout } from '@/layout';
 import { CATEGORY_OPTIONS } from '../Main/constants';
 import { ListTitle } from '../Main/components/ListTitle';
 
@@ -85,46 +83,38 @@ const Room = () => {
 
   return (
     <>
-      <Appbar />
-      <Layout>
-        <FormProvider {...method}>
-          <div className="flex w-[40rem] gap-4 mx-auto">
-            <Select name="category" options={CATEGORY_OPTIONS} />
-            <div className="w-[40rem] m-auto relative">
-              <Searchbar onSearch={handleSearch} />
-              <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
-            </div>
+      <FormProvider {...method}>
+        <div className="flex w-[40rem] gap-4 mx-auto">
+          <Select name="category" options={CATEGORY_OPTIONS} />
+          <div className="w-[40rem] m-auto relative">
+            <Searchbar onSearch={handleSearch} />
+            <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
           </div>
-        </FormProvider>
-        {!searchData?.content.length && !isLoading ? (
-          <div className="flex justify-center">
-            <NoContents {...NAV_TABS.room} />
-          </div>
-        ) : (
-          <>
-            <div className="flex items-center justify-between">
-              <ListTitle
-                imgPath="/icons/room_icon.png"
-                title="케빈들의 아지트"
-                description="다른사람들의 아지트를 확인해보세요!"
-              />
-              {accessToken && (
-                <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
-                  새 글 작성
-                </Button>
-              )}
-            </div>
-
-            <div className="grid grid-cols-4 gap-6 place-items-start">{renderCards()}</div>
-            <Pagination
-              totalPage={data?.totalPages as number}
-              currentPage={currentPage}
-              onPageChange={handlePageMove}
+        </div>
+      </FormProvider>
+      {!searchData?.content.length && !isLoading ? (
+        <div className="flex justify-center">
+          <NoContents {...NAV_TABS.room} />
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center justify-between">
+            <ListTitle
+              imgPath="/icons/room_icon.png"
+              title="케빈들의 아지트"
+              description="다른사람들의 아지트를 확인해보세요!"
             />
-          </>
-        )}
-      </Layout>
-      <Footer />
+            {accessToken && (
+              <Button className="rounded-full" onClick={() => navigate(PATH.roomWrite)}>
+                새 글 작성
+              </Button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-4 gap-6 place-items-start">{renderCards()}</div>
+          <Pagination totalPage={data?.totalPages as number} currentPage={currentPage} onPageChange={handlePageMove} />
+        </>
+      )}
     </>
   );
 };

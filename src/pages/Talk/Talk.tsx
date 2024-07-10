@@ -2,17 +2,15 @@ import { useState } from 'react';
 import { useForm, FormProvider, FieldValues } from 'react-hook-form';
 import { useNavigate, generatePath } from 'react-router-dom';
 
-import { Appbar } from '@/components/Appbar';
 import { Searchbar } from '@/components/Searchbar';
 import { Select } from '@/components/Select';
 import { Pagination } from '@/components/Pagination';
-import { Footer } from '@/components/Footer';
+
 import { Card as TextCard } from '@/components/Card';
 import { ListTitle } from '../Main/components/ListTitle';
 import { Button } from '@/components/ui/button';
 import { SkeletonCard } from '@/components/Skeleton';
 import { RoomCardSlot } from '../Room/components/RoomCardSlot';
-import { Layout } from '@/layout';
 
 import { CATEGORY_OPTIONS } from '../Main/constants';
 import { PATH, TALK_PATH } from '@/constants/paths';
@@ -83,44 +81,40 @@ const Talk = () => {
 
   return (
     <>
-      <Appbar />
-      <Layout>
-        <FormProvider {...method}>
-          <div className="flex w-[40rem] gap-4 mx-auto">
-            <Select name="category" options={CATEGORY_OPTIONS} />
-            <div className="w-[40rem] m-auto relative">
-              <Searchbar onSearch={handleSearch} />
-            </div>
+      <FormProvider {...method}>
+        <div className="flex w-[40rem] gap-4 mx-auto">
+          <Select name="category" options={CATEGORY_OPTIONS} />
+          <div className="w-[40rem] m-auto relative">
+            <Searchbar onSearch={handleSearch} />
           </div>
-        </FormProvider>
-        {!cardData?.content.length && !isLoading ? (
-          <div className="flex justify-center">
-            <NoContents {...NAV_TABS.talk} />
-          </div>
-        ) : (
-          <>
-            <div className="flex justify-between items-center">
-              <ListTitle
-                imgPath="/icons/single_ment.png"
-                title="케빈들의 잡담"
-                description="케빈들은 지금 무슨 생각을 하고 있을까요?"
-              />
-              {accessToken && (
-                <Button className="rounded-full" onClick={() => navigate(PATH.talkWrite)}>
-                  새 글 작성
-                </Button>
-              )}
-            </div>
-            <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
-            <Pagination
-              totalPage={(searchParams.query ? searchData : data)?.totalPages as number}
-              currentPage={currentPage}
-              onPageChange={handlePageMove}
+        </div>
+      </FormProvider>
+      {!cardData?.content.length && !isLoading ? (
+        <div className="flex justify-center">
+          <NoContents {...NAV_TABS.talk} />
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between items-center">
+            <ListTitle
+              imgPath="/icons/single_ment.png"
+              title="케빈들의 잡담"
+              description="케빈들은 지금 무슨 생각을 하고 있을까요?"
             />
-          </>
-        )}
-      </Layout>
-      <Footer />
+            {accessToken && (
+              <Button className="rounded-full" onClick={() => navigate(PATH.talkWrite)}>
+                새 글 작성
+              </Button>
+            )}
+          </div>
+          <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
+          <Pagination
+            totalPage={(searchParams.query ? searchData : data)?.totalPages as number}
+            currentPage={currentPage}
+            onPageChange={handlePageMove}
+          />
+        </>
+      )}
     </>
   );
 };

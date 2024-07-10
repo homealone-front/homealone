@@ -2,11 +2,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isAxiosError } from 'axios';
 
-import { Layout } from '@/layout';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/Input';
-import { Appbar } from '@/components/Appbar';
 
 import { PATH } from '@/constants/paths';
 
@@ -133,56 +130,53 @@ const Login = () => {
 
   return (
     <>
-      <Appbar />
-      <Layout>
-        <div className="w-[30rem] m-auto pt-10">
-          <div className="mb-14">
-            <h3 className="mb-6 text-2xl font-semibold text-center text-primary">로그인</h3>
-            <p className="text-lg text-center text-gray400">이메일로 로그인</p>
-          </div>
-
-          <div>
-            <Input
-              control={control}
-              name="email"
-              type="text"
-              label="이메일"
-              placeholder="example@example.com"
-              error={errors?.email}
-            />
-          </div>
-
-          <div className="my-8">
-            <Input
-              control={control}
-              name="password"
-              type="password"
-              label="비밀번호"
-              placeholder="영어 대소문자, 특수문자 1자를 포함"
-              error={errors?.password}
-            />
-          </div>
-
-          <Button className="w-full mb-2" onClick={handleSubmit}>
-            로그인
-          </Button>
-          <KakaoButton buttonText="카카오로 시작하기" onSubmit={handleKakaoLogin} />
-          <Button
-            className="flex items-center w-full gap-6 mt-2 text-white bg-green-500 hover:bg-green-600 active:bg-green-700"
-            onClick={handleNaverLogin}
-          >
-            <img className="h-full" src="/icons/naverlogo.png" alt="naverlogo" />
-            네이버로 시작하기
-          </Button>
-
-          <div className="mt-8 font-light text-center">
-            아직 회원이 아니신가요?{' '}
-            <span onClick={() => navigate(PATH.register)} className="ml-2 underline cursor-pointer text-blue500">
-              회원가입
-            </span>
-          </div>
+      <div className="w-[30rem] m-auto pt-10">
+        <div className="mb-14">
+          <h3 className="mb-6 text-2xl font-semibold text-center text-primary">로그인</h3>
+          <p className="text-lg text-center text-gray400">이메일로 로그인</p>
         </div>
-      </Layout>
+
+        <div>
+          <Input
+            control={control}
+            name="email"
+            type="text"
+            label="이메일"
+            placeholder="example@example.com"
+            error={errors?.email}
+          />
+        </div>
+
+        <div className="my-8">
+          <Input
+            control={control}
+            name="password"
+            type="password"
+            label="비밀번호"
+            placeholder="영어 대소문자, 특수문자 1자를 포함"
+            error={errors?.password}
+          />
+        </div>
+
+        <Button className="w-full mb-2" onClick={handleSubmit}>
+          로그인
+        </Button>
+        <KakaoButton buttonText="카카오로 시작하기" onSubmit={handleKakaoLogin} />
+        <Button
+          className="flex items-center w-full gap-6 mt-2 text-white bg-green-500 hover:bg-green-600 active:bg-green-700"
+          onClick={handleNaverLogin}
+        >
+          <img className="h-full" src="/icons/naverlogo.png" alt="naverlogo" />
+          네이버로 시작하기
+        </Button>
+
+        <div className="mt-8 font-light text-center">
+          아직 회원이 아니신가요?{' '}
+          <span onClick={() => navigate(PATH.register)} className="ml-2 underline cursor-pointer text-blue500">
+            회원가입
+          </span>
+        </div>
+      </div>
     </>
   );
 };
