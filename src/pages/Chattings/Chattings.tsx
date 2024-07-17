@@ -9,6 +9,10 @@
 // } from 'react';
 // import {jwtDecode} from "jwt-decode";
 
+import { Appbar } from '@/components/Appbar';
+import { Footer } from '@/components/Footer';
+import { Layout } from '@/layout';
+
 const Chattings = () => {
   //   const navigate = useNavigate();
   // const [member, setMember] = useState([]);
@@ -30,21 +34,25 @@ const Chattings = () => {
 
   return (
     <>
-      <div>
-        <div className="user_chatting_room_manage_page" style={{ width: '100%', height: '700px' }}>
-          <div className="page_head" style={{ width: '100%', height: '80px' }}>
-            <p style={{ color: '#424242', fontSize: '26px', fontWeight: 'bold', textAlign: 'center' }}>
-              나의 채팅방 목록
-            </p>
-          </div>
-          <div
-            className="page_body"
-            style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '370px' }}
-          >
-            <p>여기에 채팅방 리스트</p>
+      <Appbar />
+      <Layout>
+        <div>
+          <div className="user_chatting_room_manage_page" style={{ width: '100%', height: '700px' }}>
+            <div className="page_head" style={{ width: '100%', height: '80px' }}>
+              <p style={{ color: '#424242', fontSize: '26px', fontWeight: 'bold', textAlign: 'center' }}>
+                나의 채팅방 목록
+              </p>
+            </div>
+            <div
+              className="page_body"
+              style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '370px' }}
+            >
+              <p>여기에 채팅방 리스트</p>
+            </div>
           </div>
         </div>
-      </div>
+      </Layout>
+      <Footer />
     </>
   );
 };

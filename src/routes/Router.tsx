@@ -29,47 +29,40 @@ import { MyPosts } from '@/pages/MyPosts';
 import { MyBookmark } from '@/pages/MyBookmark';
 import { RecipeEditPage } from '@/pages/RecipeEdit';
 
-import { Layout, LayoutWithBanner, LayoutWithoutFooter } from '@/layout';
-
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<LayoutWithBanner />}>
-          <Route index path={PATH.root} element={<MainPage />} />
+        <Route index path={PATH.root} element={<MainPage />} />
+
+        <Route element={<AuthRouter />}>
+          <Route path={PATH.login} element={<LoginPage />} />
+          <Route path={PATH.register} element={<RegisterPage />} />
+          <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
+          <Route path={PATH.naver} element={<NaverCallbackPage />} />
         </Route>
 
-        <Route element={<LayoutWithoutFooter />}>
-          <Route element={<AuthRouter />}>
-            <Route path={PATH.login} element={<LoginPage />} />
-            <Route path={PATH.register} element={<RegisterPage />} />
-            <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
-            <Route path={PATH.naver} element={<NaverCallbackPage />} />
-          </Route>
+        <Route path={PATH.recipe} element={<RecipePage />} />
+        <Route path={RECIPE_PATH.detail} element={<RecipeDetailPage />} />
 
-          <Route element={<UserRouter />}>
-            <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
-            <Route path={RECIPE_PATH.edit} element={<RecipeEditPage />} />
-            <Route path={PATH.talkWrite} element={<TalkWritePage />} />
-            <Route path={PATH.roomWrite} element={<RoomWritePage />} />
-            <Route path={PATH.mypage} element={<Mypage />} />
-            <Route path={PATH.myPosts} element={<MyPosts />} />
-            <Route path={PATH.myBookmark} element={<MyBookmark />} />
-          </Route>
+        <Route path={PATH.room} element={<RoomPage />} />
+        <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
 
-          <Route path={RECIPE_PATH.detail} element={<RecipeDetailPage />} />
-          <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
-          <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
+        <Route path={PATH.talk} element={<TalkPage />} />
+        <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
+
+        <Route element={<UserRouter />}>
+          <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
+          <Route path={RECIPE_PATH.edit} element={<RecipeEditPage />} />
+          <Route path={PATH.talkWrite} element={<TalkWritePage />} />
+          <Route path={PATH.roomWrite} element={<RoomWritePage />} />
+          <Route path={PATH.mypage} element={<Mypage />} />
+          <Route path={PATH.myPosts} element={<MyPosts />} />
+          <Route path={PATH.myBookmark} element={<MyBookmark />} />
         </Route>
 
-        <Route element={<Layout />}>
-          <Route path={PATH.recipe} element={<RecipePage />} />
-          <Route path={PATH.room} element={<RoomPage />} />
-          <Route path={PATH.talk} element={<TalkPage />} />
-
-          <Route path={PATH.chattings} element={<ChattingsPage />} />
-          <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
-        </Route>
+        <Route path={PATH.chattings} element={<ChattingsPage />} />
+        <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

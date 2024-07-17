@@ -1,19 +1,15 @@
-import { Appbar } from '@/components/Appbar';
-import { Footer } from '@/components/Footer';
-import { Outlet } from 'react-router-dom';
+import { ReactNode } from 'react';
 
-/**
- * Appbar, Footer로 구성된 Layout(기본)
- */
+type LayoutPropsType = {
+  children: ReactNode | ReactNode[];
+};
 
-const Layout = () => {
+const Layout = (props: LayoutPropsType) => {
+  const { children } = props;
+
   return (
     <div className="wrapper w-full h-full ">
-      <Appbar />
-      <div className="container">
-        <Outlet />
-      </div>
-      <Footer />
+      <div className="container">{children}</div>
     </div>
   );
 };

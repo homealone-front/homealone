@@ -4,6 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Undo2, CircleXIcon, CircleCheck } from 'lucide-react';
 import * as yup from 'yup';
 
+import { Appbar } from '@/components/Appbar';
+import { Layout } from '@/layout';
 import { ListTitle } from '@/pages/Main/components/ListTitle';
 import { Input } from '@/components/Input';
 import { Select } from '@/components/Select';
@@ -155,105 +157,112 @@ const RecipeEditForm = () => {
         <Spinner>로딩 중이에요 ...</Spinner>
       ) : (
         <>
-          <Button variant="ghost" className="flex items-center gap-2" onClick={() => navigate(`${PATH.recipe}/${id}`)}>
-            <Undo2 />
-            <span className="text-xl">돌아갈래요</span>
-          </Button>
-          <div className="-mt-8">
-            <ListTitle imgPath="/icons/receipe_icon.png" title="레시피 수정 중이에요 ..." />
-          </div>
-          <FormProvider {...method}>
-            <div className="container flex justify-between w-11/12 mx-auto">
-              <div className="basis-1/2">
-                <div className="mt-8">
-                  <Input
-                    control={control}
-                    name="title"
-                    type="text"
-                    label="레시피 제목"
-                    placeholder="레시피 제목을 입력해주세요."
-                    error={errors?.title as FieldError}
-                    value={watch('title')}
-                  />
-                </div>
-                <div className="mt-8">
-                  <Input
-                    control={control}
-                    name="description"
-                    type="text"
-                    label="간단한 한 줄 소개"
-                    placeholder="간단한 한 줄 소개 20자 이내로 입력해주세요"
-                    error={errors?.description as FieldError}
-                    value={watch('description')}
-                  />
-                </div>
-                <div className="mt-8">
-                  <Select name="cuisine" id="cuisine" label="카테고리" options={FOOD_CATEGORIES} />
-                </div>
-                <div className="mt-8">
-                  <Select name="recipeType" id="recipeType" label="요리 유형" options={RECIPE_TYPE} />
-                </div>
-                <div className="mt-8">
-                  <Select name="recipeTime" id="recipeTime" label="조리시간" options={COOK_TIME} />
-                </div>
-                <div className="mt-8">
-                  <Select name="portions" id="portions" label="👨🏿‍🦳인분" options={PORTIONS} />
-                </div>
-              </div>
-              <div className="mt-8 upload basis-5/12">
-                <div
-                  style={{
-                    backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
-                    backgroundSize: 'cover',
-                  }}
-                  className={`group rounded-xl w-full h-full opacity-90 flex items-center justify-center ${
-                    file && file instanceof File
-                      ? `bg-cover bg-center bg-no-repeat border border-gray300`
-                      : 'bg-[#f5f5f5]'
-                  }`}
-                >
-                  <div className="flex flex-col items-center justify-center">
-                    <Button
-                      className={`flex gap-4 ${
-                        file.imageUrl ? 'text-gray700 bg-white hidden group-hover:block' : 'text-gray400'
-                      }`}
-                      variant="ghost"
-                      onClick={handleUploadImage}
-                    >
-                      대표이미지 수정하기
-                    </Button>
+          <Appbar />
+          <Layout>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2"
+              onClick={() => navigate(`${PATH.recipe}/${id}`)}
+            >
+              <Undo2 />
+              <span className="text-xl">돌아갈래요</span>
+            </Button>
+            <div className="-mt-8">
+              <ListTitle imgPath="/icons/receipe_icon.png" title="레시피 수정 중이에요 ..." />
+            </div>
+            <FormProvider {...method}>
+              <div className="container flex justify-between w-11/12 mx-auto">
+                <div className="basis-1/2">
+                  <div className="mt-8">
+                    <Input
+                      control={control}
+                      name="title"
+                      type="text"
+                      label="레시피 제목"
+                      placeholder="레시피 제목을 입력해주세요."
+                      error={errors?.title as FieldError}
+                      value={watch('title')}
+                    />
+                  </div>
+                  <div className="mt-8">
+                    <Input
+                      control={control}
+                      name="description"
+                      type="text"
+                      label="간단한 한 줄 소개"
+                      placeholder="간단한 한 줄 소개 20자 이내로 입력해주세요"
+                      error={errors?.description as FieldError}
+                      value={watch('description')}
+                    />
+                  </div>
+                  <div className="mt-8">
+                    <Select name="cuisine" id="cuisine" label="카테고리" options={FOOD_CATEGORIES} />
+                  </div>
+                  <div className="mt-8">
+                    <Select name="recipeType" id="recipeType" label="요리 유형" options={RECIPE_TYPE} />
+                  </div>
+                  <div className="mt-8">
+                    <Select name="recipeTime" id="recipeTime" label="조리시간" options={COOK_TIME} />
+                  </div>
+                  <div className="mt-8">
+                    <Select name="portions" id="portions" label="👨🏿‍🦳인분" options={PORTIONS} />
                   </div>
                 </div>
+                <div className="mt-8 upload basis-5/12">
+                  <div
+                    style={{
+                      backgroundImage: file.imageUrl ? `url(${file.imageUrl})` : 'none',
+                      backgroundSize: 'cover',
+                    }}
+                    className={`group rounded-xl w-full h-full opacity-90 flex items-center justify-center ${
+                      file && file instanceof File
+                        ? `bg-cover bg-center bg-no-repeat border border-gray300`
+                        : 'bg-[#f5f5f5]'
+                    }`}
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      <Button
+                        className={`flex gap-4 ${
+                          file.imageUrl ? 'text-gray700 bg-white hidden group-hover:block' : 'text-gray400'
+                        }`}
+                        variant="ghost"
+                        onClick={handleUploadImage}
+                      >
+                        대표이미지 수정하기
+                      </Button>
+                    </div>
+                  </div>
 
-                <input ref={uploadRef} className="hidden" accept="image/*" type="file" onChange={handleFileChange} />
+                  <input ref={uploadRef} className="hidden" accept="image/*" type="file" onChange={handleFileChange} />
+                </div>
               </div>
-            </div>
-            <div className="container flex flex-col w-11/12 mx-auto mt-8">
-              <ul>
-                <li>재료정보</li>
-                <li className="mt-2 text-sm text-gray400">
-                  재료가 남거나 부족하지 않도록 정확한 계량 정보를 적어주세요!
-                </li>
-              </ul>
-              <div className="flex flex-col justify-center w-full">
-                <IngredientFields />
+              <div className="container flex flex-col w-11/12 mx-auto mt-8">
+                <ul>
+                  <li>재료정보</li>
+                  <li className="mt-2 text-sm text-gray400">
+                    재료가 남거나 부족하지 않도록 정확한 계량 정보를 적어주세요!
+                  </li>
+                </ul>
+                <div className="flex flex-col justify-center w-full">
+                  <IngredientFields />
+                </div>
               </div>
-            </div>
-            <div className="container flex flex-col w-11/12 mx-auto mt-8 mb-20">
-              <ul>
-                <li>조리 순서</li>
-                <li className="mt-2 text-sm text-gray400">이해를 돕기 위해 사진을 업로드해주세요! (선택사항)</li>
-              </ul>
-              <div className="flex flex-col justify-center w-full">
-                <CookingOrderFields />
+              <div className="container flex flex-col w-11/12 mx-auto mt-8 mb-20">
+                <ul>
+                  <li>조리 순서</li>
+                  <li className="mt-2 text-sm text-gray400">이해를 돕기 위해 사진을 업로드해주세요! (선택사항)</li>
+                </ul>
+                <div className="flex flex-col justify-center w-full">
+                  <CookingOrderFields />
+                </div>
               </div>
-            </div>
-            <div className="py-20 mx-auto w-fit">
-              <Button className="w-24 text-lg rounded-lg" onClick={handleSubmit}>
-                수정하기
-              </Button>
-            </div>
-          </FormProvider>
+              <div className="py-20 mx-auto w-fit">
+                <Button className="w-24 text-lg rounded-lg" onClick={handleSubmit}>
+                  수정하기
+                </Button>
+              </div>
+            </FormProvider>
+          </Layout>
         </>
       )}
     </>
