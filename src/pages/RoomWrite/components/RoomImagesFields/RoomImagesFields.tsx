@@ -47,6 +47,13 @@ const RoomImagesFields = () => {
     }
   }, [fields, appendedIndex]);
 
+  //  const handleAppend = () => {
+  //   append({ image: {} as File, imageUrl: '' });
+  //   setTimeout(() => {
+  //     fileInputRefs.current[fileInputRefs.current.length - 1]?.click();
+  //   }, 0);
+  // };
+
   return (
     <>
       {fields?.map((item, i) => (
