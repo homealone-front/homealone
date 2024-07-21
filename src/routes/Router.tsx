@@ -39,15 +39,17 @@ const Router = () => {
           <Route index path={PATH.root} element={<MainPage />} />
         </Route>
 
-        <Route element={<LayoutWithoutFooter />}>
-          <Route element={<AuthRouter />}>
+        <Route element={<AuthRouter />}>
+          <Route element={<LayoutWithoutFooter />}>
             <Route path={PATH.login} element={<LoginPage />} />
             <Route path={PATH.register} element={<RegisterPage />} />
             <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
             <Route path={PATH.naver} element={<NaverCallbackPage />} />
           </Route>
+        </Route>
 
-          <Route element={<UserRouter />}>
+        <Route element={<UserRouter />}>
+          <Route element={<LayoutWithoutFooter />}>
             <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
             <Route path={RECIPE_PATH.edit} element={<RecipeEditPage />} />
             <Route path={PATH.talkWrite} element={<TalkWritePage />} />
@@ -56,7 +58,9 @@ const Router = () => {
             <Route path={PATH.myPosts} element={<MyPosts />} />
             <Route path={PATH.myBookmark} element={<MyBookmark />} />
           </Route>
+        </Route>
 
+        <Route element={<LayoutWithoutFooter />}>
           <Route path={RECIPE_PATH.detail} element={<RecipeDetailPage />} />
           <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
           <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
