@@ -1,18 +1,13 @@
 import { ThumbsUp } from 'lucide-react';
 
 export type ThumbsUpIconProps = {
-  isUserLiked: boolean | undefined;
+  isUserLiked?: boolean;
 };
 
 const ThumbsUpIcon = ({ isUserLiked }: ThumbsUpIconProps) => {
-  return (
-    <ThumbsUp
-      fill={isUserLiked ? '#F2D03C' : '#dedede'}
-      color={isUserLiked ? '#F2D03C' : '#dedede'}
-      strokeWidth={1}
-      size={16}
-    />
-  );
+  const ThumbsUpColor = isUserLiked ? '#F2D03C' : '#dedede';
+
+  return <ThumbsUp fill={ThumbsUpColor} color={ThumbsUpColor} strokeWidth={1} size={16} />;
 };
 
 export default ThumbsUpIcon;

@@ -2,7 +2,12 @@ import { commentLikePostFetch } from '@/api/comment/commentLikePostFeth';
 import { CommentListResponse } from '@/api/comment/commentListGetFetch';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const useLikeCommentMutation = (postId: number, commentId: number) => {
+interface LikeCommentMutationParamsType {
+  postId: PropType<CommentListResponse, 'postId'>;
+  commentId: PropType<CommentListResponse, 'id'>;
+}
+
+export const useLikeCommentMutation = ({ postId, commentId }: LikeCommentMutationParamsType) => {
   const queryClient = useQueryClient();
   const queryKey = ['@comment-list', postId.toString()];
 
