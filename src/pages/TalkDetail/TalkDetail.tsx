@@ -174,7 +174,7 @@ const TalkDetail = () => {
                 <Comment
                   key={item.id}
                   write={userId === item?.memberId}
-                  isUserLiked={item.likeByCurrentUser}
+                  // isUserLiked={item.likeByCurrentUser}
                   commentRefetch={commentRefetch}
                   likeCommentCount={item.likeCount}
                   {...item}

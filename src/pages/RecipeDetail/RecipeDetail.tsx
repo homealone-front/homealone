@@ -50,11 +50,7 @@ const RecipeDetail = () => {
 
   const { data, refetch: detailRefetch, isLoading } = useRecipeDetailQuery({ id });
 
-  const {
-    data: commentData,
-    refetch: commentRefetch,
-    isFetching: commentFetching,
-  } = useCommentListQuery({ postId: id });
+  const { data: commentData, refetch: commentRefetch, isLoading: commentLoading } = useCommentListQuery({ postId: id });
 
   const method = useForm({
     resolver: yupResolver(commentSchema),
@@ -229,7 +225,7 @@ const RecipeDetail = () => {
               onSubmit={handleSubmit}
               value={watch('content')}
             />
-            {commentFetching ? (
+            {commentLoading ? (
               <div className="flex flex-col justify-center gap-2">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <SkeletonComment key={i} />

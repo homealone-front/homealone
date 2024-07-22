@@ -26,8 +26,8 @@ import { useLikeCommentMutation } from '@/services/comment/useCommentLikeMutatio
 interface CommentPropsType extends Omit<CommentListResponse, 'message'> {
   write: boolean;
   commentRefetch: () => Promise<QueryObserverResult<CommentListResponse[], Error>>;
-  isUserLiked: boolean;
-  likeCommentCount: number;
+  likeCount: number;
+  likeByCurrentUser: boolean;
 }
 
 /**
@@ -119,9 +119,9 @@ const Comment = (props: CommentPropsType) => {
   };
   const commentId = props.id;
   const postId = rest.postId;
-  const { mutate } = useLikeCommentMutation(postId, commentId);
+  const { mutate } = useLikeCommentMutation({ postId, commentId });
 
-  const handleLikeBtn = async () => {
+  const handleLikeBtn = () => {
     mutate();
   };
 
@@ -153,7 +153,7 @@ const Comment = (props: CommentPropsType) => {
           <div className="flex items-center justify-center gap-2">
             <button className="flex items-center justify-center gap-1" onClick={handleLikeBtn}>
               <ThumbsUpIcon isUserLiked={props.likeByCurrentUser} />
-              <span className="text-xs text-gray-400">{props.likeCommentCount | 0}</span>
+              <span className="text-xs text-gray-400">{props.likeCount | 0}</span>
             </button>
           </div>
         </div>
