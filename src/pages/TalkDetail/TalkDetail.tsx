@@ -171,14 +171,7 @@ const TalkDetail = () => {
               </div>
             ) : commentData && commentData.length > 0 ? (
               commentData?.map((item) => (
-                <Comment
-                  key={item.id}
-                  write={userId === item?.memberId}
-                  // isUserLiked={item.likeByCurrentUser}
-                  commentRefetch={commentRefetch}
-                  likeCommentCount={item.likeCount}
-                  {...item}
-                />
+                <Comment key={item.id} write={userId === item?.memberId} commentRefetch={commentRefetch} {...item} />
               ))
             ) : (
               <div className="min-h-40 flex items-center justify-around p-4 border border-gray-300 shadow-md rounded-xl">
