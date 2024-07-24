@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { commentSchema } from '@/pages/RecipeDetail/validator';
 
 import { useToast } from '@/hooks/useToast';
-
 import { getRelativeTime } from './util';
 
 import { CommentListResponse } from '@/api/comment/commentListGetFetch';
@@ -21,10 +20,14 @@ import { removeCommentDeleteFetch } from '@/api/comment/removeCommentDeleteFetch
 import { TOAST } from '@/constants/toast';
 import { useModalStore } from '@/store/useModalStore';
 import { Confirm } from '../Confirm';
+import ThumbsUpIcon from './icons/ThumbUpIcon';
+import { useLikeCommentMutation } from '@/services/comment/useCommentLikeMutation';
 
 interface CommentPropsType extends Omit<CommentListResponse, 'message'> {
   write: boolean;
   commentRefetch: () => Promise<QueryObserverResult<CommentListResponse[], Error>>;
+  likeCount: number;
+  likeByCurrentUser: boolean;
 }
 
 /**
@@ -114,6 +117,13 @@ const Comment = (props: CommentPropsType) => {
       }
     }
   };
+  const commentId = props.id;
+  const postId = rest.postId;
+  const { mutate } = useLikeCommentMutation({ postId, commentId });
+
+  const handleLikeBtn = () => {
+    mutate();
+  };
 
   return (
     <div className="w-full h-fit">
@@ -140,6 +150,12 @@ const Comment = (props: CommentPropsType) => {
           ) : (
             <p className="text-sm">{rest.content}</p>
           )}
+          <div className="flex items-center justify-center gap-2">
+            <button className="flex items-center justify-center gap-1" onClick={handleLikeBtn}>
+              <ThumbsUpIcon isUserLiked={props.likeByCurrentUser} />
+              <span className="text-xs text-gray-400">{props.likeCount | 0}</span>
+            </button>
+          </div>
         </div>
         {write ? (
           <ul className="flex gap-2 ml-auto text-xs text-gray400">

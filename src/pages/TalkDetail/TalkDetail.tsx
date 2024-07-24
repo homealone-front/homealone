@@ -51,7 +51,7 @@ const TalkDetail = () => {
   const {
     data: commentData,
     refetch: commentRefetch,
-    isFetching: commentFetching,
+    isLoading: commentLoading,
   } = useCommentListQuery({ postId: id.toString() });
 
   const method = useForm({
@@ -163,7 +163,7 @@ const TalkDetail = () => {
               onSubmit={handleSubmit}
               value={watch('content')}
             />
-            {commentFetching ? (
+            {commentLoading ? (
               <div className="flex flex-col justify-center gap-2">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <SkeletonComment key={i} />
