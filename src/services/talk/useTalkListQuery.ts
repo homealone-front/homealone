@@ -13,8 +13,6 @@ export const useTalkListQuery = (params: TalkListGetFetchParms) =>
 
       const { data } = response;
 
-      console.info(data);
-
       const { totalElements, totalPages, pageable, content } = data;
 
       return {
