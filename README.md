@@ -2,7 +2,7 @@
 
 ## 1인 자취 가구 커뮤니티
 
-> [DEMO 바로가기](https://www.na-holo.site/)
+> [DEMO 바로가기](https://home-alone.site)
 
 나홀로집에서 프로젝트는 React + TypeScript를 사용합니다.
 **단일 페이지 애플리케이션(SPA)** 으로 구현되었습니다.
