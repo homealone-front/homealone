@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useUserStore } from '@/store/useUserStore';
 import { PATH } from '@/constants/paths';
 // import { redirectDocument } from 'react-router-dom';
-import { refreshPostFetch } from './member/refreshPostFetch';
+import { refreshGetFetch } from './member/refreshPostFetch';
 
 export const baseURL = import.meta.env.VITE_APP_BASE_URL;
 
@@ -44,7 +44,7 @@ apiFetch.interceptors.response.use(async (res) => {
 
     if (!isRefreshing) {
       isRefreshing = true;
-      const { data } = await refreshPostFetch();
+      const { data } = await refreshGetFetch();
 
       if (data.accessToken) {
         // 기존 요청에 새로운 토큰 설정
