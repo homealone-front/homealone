@@ -33,7 +33,7 @@ export default ({ mode }: { mode: 'development' | 'production' }) =>
       cors: true,
       proxy: {
         '/api': {
-          target: 'https://www.na-holo.site/',
+          target: 'https://www.home-alone.site/',
           changeOrigin: true,
         },
       },

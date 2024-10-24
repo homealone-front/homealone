@@ -21,7 +21,6 @@ echo -e "\033[1;36m[-] SUCCESS TAR AND SEND VM ... \033[0m"
 
 sshpass -p "$PASSWORD" scp build.tgz ubuntu@43.202.14.207:/home/ubuntu/Front/
 
-
 echo -e "\033[1;32;40m[+] SEND SUCCESS!!! \033[0m"
 
 # tar -xvf build.tgz 로 압축 해제
