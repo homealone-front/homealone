@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CircleCheck, CircleXIcon, Image, Undo2 } from 'lucide-react';
+import { Image, Undo2 } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import * as yup from 'yup';
 
@@ -19,13 +19,10 @@ import { getRoomCleansingData } from './util';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Card } from '@/components/ui/card';
 import { RoomImagesFields } from './components/RoomImagesFields';
-import { writeRoomPostFetch } from '@/api/room/writeRoomPostFetch';
-import { isAxiosError } from 'axios';
-import { useToast } from '@/hooks/useToast';
-import { TOAST } from '@/constants/toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRoomDetailQuery } from '@/services/room/useRoomDetailQuery';
-import { roomEditPatchFetch } from '@/api/room/roomEditPatchFetch';
+import { useRoomEditMutation } from '@/services/room/useRoomEditMutation';
+import { useRoomWriteMutation } from '@/services/room/useRoomWriteMutation';
 
 export type RoomSchemaType = yup.InferType<typeof roomSchema>;
 
@@ -43,8 +40,6 @@ const RoomWrite = () => {
   const { data: roomData } = roomId ? useRoomDetailQuery({ roomId }) : { data: null };
   // 현재 수정인지 등록인지
   const mode = roomId ? '수정' : '등록';
-
-  const { toast } = useToast();
 
   const [displaySpinner, setDisplaySpinner] = useState<boolean>(false);
 
@@ -115,46 +110,27 @@ const RoomWrite = () => {
     }
   };
 
+  const { mutate: roomEditMutate } = useRoomEditMutation();
+  const { mutate: roomWriteMutate } = useRoomWriteMutation();
+
   const handleSubmit = submit(async () => {
     try {
       setDisplaySpinner(true);
       const writeRoomParams = await getRoomCleansingData(getValues());
       // console.info('최종 파라미터를 확인한다.', writeRoomParams);
       // console.info('작성 파라미터를 확인한다.', getValues());
-      let response;
 
       if (roomId) {
         const params = {
           roomId,
           ...writeRoomParams,
         };
-        response = await roomEditPatchFetch(params);
+        await roomEditMutate(params);
       } else {
-        response = await writeRoomPostFetch(writeRoomParams);
+        await roomWriteMutate(writeRoomParams);
       }
-
-      const returnRoomId = response.data.id;
-
-      toast({
-        title: `방자랑 ${mode} 성공`,
-        icon: <CircleCheck />,
-        className: TOAST.success,
-      });
-
       setDisplaySpinner(false);
-
-      // 성공 후, 해당 게시글로 이동
-      navigate(`${PATH.room}/${returnRoomId}`);
     } catch (error) {
-      console.error(error);
-
-      if (isAxiosError(error)) {
-        toast({
-          title: error?.response?.data.message || `방자랑 ${mode} 실패`,
-          icon: <CircleXIcon />,
-          className: TOAST.error,
-        });
-      }
       setDisplaySpinner(false);
     }
   });
@@ -241,7 +217,6 @@ const RoomWrite = () => {
                 label="방자랑 제목"
                 placeholder="방자랑 제목을 입력해주세요."
                 error={errors?.title}
-                defaultValue={roomData?.title}
               />
             </div>
 
