@@ -8,4 +8,4 @@ export interface RefreshResponse extends ResponseModel {
 /**
  * 토큰 리프레쉬
  */
-export const refreshPostFetch = () => apiFetch.post<RefreshResponse>('/token/refresh');
+export const refreshGetFetch = () => apiFetch.get<RefreshResponse>('/token/refresh');
