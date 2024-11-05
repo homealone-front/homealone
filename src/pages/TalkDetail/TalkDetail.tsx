@@ -1,3 +1,5 @@
+import { useQueryClient } from '@tanstack/react-query';
+
 import { addCommentPostFetch } from '@/api/comment/addCommentPostFetch';
 
 import { useTalkDetailQuery } from '@/services/talk/useTalkDetailQuery';
@@ -23,12 +25,12 @@ import { Confirm } from '@/components/Confirm';
 import { useModalStore } from '@/store/useModalStore';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserAvatar } from '@/components/UserAvatar';
-import { queryClient } from '@/services/quries';
 
 /**
  * 혼잣말 게시글 상세페이지
  */
 const TalkDetail = () => {
+  const queryClient = useQueryClient();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
