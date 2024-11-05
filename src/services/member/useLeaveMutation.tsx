@@ -1,4 +1,4 @@
-import { CheckCircle, CircleXIcon } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 
 import { MemberLeavePatchFetchParams, memberLeavePatchFetch } from '@/api/member/memberLeavePatchFetch';
@@ -33,15 +33,6 @@ export const useLeaveMutation = () => {
 
       goHome();
       removeUserInfo();
-    },
-    onError: (error) => {
-      console.error('회원 탈퇴 실패', error);
-
-      toast({
-        title: '회원 탈퇴에 실패했습니다.',
-        icon: <CircleXIcon />,
-        className: TOAST.error,
-      });
     },
   });
   return mutation;

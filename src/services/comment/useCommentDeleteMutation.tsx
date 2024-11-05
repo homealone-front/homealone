@@ -1,4 +1,4 @@
-import { CheckCircle, CircleXIcon } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useToast } from '@/hooks/useToast';
@@ -22,17 +22,7 @@ export const useCommentDeleteMutation = () => {
         icon: <CheckCircle />,
         className: TOAST.success,
       });
-
       queryClient.invalidateQueries({ queryKey: ['@my-comment-list'] });
-    },
-    onError: (error) => {
-      console.error('댓글 삭제 실패', error);
-
-      toast({
-        title: '댓글 삭제를 실패했습니다.',
-        icon: <CircleXIcon />,
-        className: TOAST.error,
-      });
     },
   });
   return mutation;

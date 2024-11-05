@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import { EmblaOptionsType } from 'embla-carousel';
 import { Eye, MessageSquareMore } from 'lucide-react';
 import dayjs from 'dayjs';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { Marks } from '@/components/Marks';
 import { CommentForm } from '@/components/CommentForm';
@@ -17,7 +18,6 @@ import { EmblaCarousel } from './components/EmblaCarousel';
 import { useRoomDetailQuery } from '@/services/room/useRoomDetailQuery';
 import { useCommentListQuery } from '@/services/comment/useCommentListQuery';
 import { useRoomDeleteMutation } from '@/services/room/useRoomDeleteMutation';
-import { queryClient } from '@/services/quries';
 
 import { useUserStore } from '@/store/useUserStore';
 import { useModalStore } from '@/store/useModalStore';
@@ -32,6 +32,8 @@ import { UserAvatar } from '@/components/UserAvatar';
  * 방자랑 게시글 상세페이지
  */
 const RoomDetail = () => {
+  const queryClient = useQueryClient();
+
   const { id: roomId } = useParams();
 
   const userId = useUserStore((state) => state.id);
