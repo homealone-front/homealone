@@ -1,4 +1,4 @@
-import { CheckCircle, CircleXIcon } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useToast } from '@/hooks/useToast';
@@ -28,15 +28,6 @@ export const useTalkDeleteMutation = () => {
       });
       navigate(PATH.talk);
       queryClient.invalidateQueries({ queryKey: ['@talkList'] });
-    },
-    onError: (error) => {
-      console.error('혼잣말 삭제 실패', error);
-
-      toast({
-        title: '혼잣말 삭제를 실패했습니다.',
-        icon: <CircleXIcon />,
-        className: TOAST.error,
-      });
     },
   });
   return mutation;

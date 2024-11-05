@@ -1,4 +1,4 @@
-import { CheckCircle, CircleXIcon } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useToast } from '@/hooks/useToast';
@@ -27,15 +27,6 @@ export const useRoomDeleteMutation = () => {
       });
       navigate(-1);
       queryClient.invalidateQueries({ queryKey: ['@roomList'] });
-    },
-    onError: (error) => {
-      console.error('방자랑 삭제 실패', error);
-
-      toast({
-        title: '방자랑 삭제를 실패했습니다.',
-        icon: <CircleXIcon />,
-        className: TOAST.error,
-      });
     },
   });
   return mutation;
