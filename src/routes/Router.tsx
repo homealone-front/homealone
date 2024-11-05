@@ -1,3 +1,4 @@
+import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { PATH, RECIPE_PATH, ROOM_PATH, TALK_PATH, CHAT_PATH } from '@/constants/paths';
@@ -31,52 +32,56 @@ import { RecipeEditPage } from '@/pages/RecipeEdit';
 
 import { Layout, LayoutWithBanner, LayoutWithoutFooter } from '@/layout';
 
+import { ErrorFallback } from '@/components/ErrorFallback';
+
 const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<LayoutWithBanner />}>
-          <Route index path={PATH.root} element={<MainPage />} />
-        </Route>
-
-        <Route element={<AuthRouter />}>
-          <Route element={<LayoutWithoutFooter />}>
-            <Route path={PATH.login} element={<LoginPage />} />
-            <Route path={PATH.register} element={<RegisterPage />} />
-            <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
-            <Route path={PATH.naver} element={<NaverCallbackPage />} />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Routes>
+          <Route element={<LayoutWithBanner />}>
+            <Route index path={PATH.root} element={<MainPage />} />
           </Route>
-        </Route>
 
-        <Route element={<UserRouter />}>
-          <Route element={<LayoutWithoutFooter />}>
-            <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
-            <Route path={RECIPE_PATH.edit} element={<RecipeEditPage />} />
-            <Route path={PATH.talkWrite} element={<TalkWritePage />} />
-            <Route path={PATH.roomWrite} element={<RoomWritePage />} />
-            <Route path={PATH.mypage} element={<Mypage />} />
-            <Route path={PATH.myPosts} element={<MyPosts />} />
-            <Route path={PATH.myBookmark} element={<MyBookmark />} />
+          <Route element={<AuthRouter />}>
+            <Route element={<LayoutWithoutFooter />}>
+              <Route path={PATH.login} element={<LoginPage />} />
+              <Route path={PATH.register} element={<RegisterPage />} />
+              <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
+              <Route path={PATH.naver} element={<NaverCallbackPage />} />
+            </Route>
           </Route>
-        </Route>
 
-        <Route element={<LayoutWithoutFooter />}>
-          <Route path={RECIPE_PATH.detail} element={<RecipeDetailPage />} />
-          <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
-          <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
-        </Route>
+          <Route element={<UserRouter />}>
+            <Route element={<LayoutWithoutFooter />}>
+              <Route path={PATH.recipeWrite} element={<RecipeWritePage />} />
+              <Route path={RECIPE_PATH.edit} element={<RecipeEditPage />} />
+              <Route path={PATH.talkWrite} element={<TalkWritePage />} />
+              <Route path={PATH.roomWrite} element={<RoomWritePage />} />
+              <Route path={PATH.mypage} element={<Mypage />} />
+              <Route path={PATH.myPosts} element={<MyPosts />} />
+              <Route path={PATH.myBookmark} element={<MyBookmark />} />
+            </Route>
+          </Route>
 
-        <Route element={<Layout />}>
-          <Route path={PATH.recipe} element={<RecipePage />} />
-          <Route path={PATH.room} element={<RoomPage />} />
-          <Route path={PATH.talk} element={<TalkPage />} />
+          <Route element={<LayoutWithoutFooter />}>
+            <Route path={RECIPE_PATH.detail} element={<RecipeDetailPage />} />
+            <Route path={ROOM_PATH.detail} element={<RoomDetailPage />} />
+            <Route path={TALK_PATH.detail} element={<TalkDetailPage />} />
+          </Route>
 
-          <Route path={PATH.chattings} element={<ChattingsPage />} />
-          <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
-        </Route>
+          <Route element={<Layout />}>
+            <Route path={PATH.recipe} element={<RecipePage />} />
+            <Route path={PATH.room} element={<RoomPage />} />
+            <Route path={PATH.talk} element={<TalkPage />} />
 
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+            <Route path={PATH.chattings} element={<ChattingsPage />} />
+            <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
+          </Route>
+
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 };
