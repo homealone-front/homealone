@@ -2,7 +2,7 @@ import { apiFetch } from '../common';
 import { ResponseModel } from '../model';
 
 export interface MemberKakaoLoginPostFetchParams {
-  accessToken: string;
+  code: string;
 }
 
 export interface MemberKakaoLoginResponse extends ResponseModel {
@@ -13,4 +13,4 @@ export interface MemberKakaoLoginResponse extends ResponseModel {
  * 카카오 로그인
  */
 export const memberKakaoLoginPostFetch = (params: MemberKakaoLoginPostFetchParams) =>
-  apiFetch.post<MemberKakaoLoginResponse>('/kakao/login', params);
+  apiFetch.post<MemberKakaoLoginResponse>('/kakao/callback', params);

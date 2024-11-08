@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  getKakaoAccessTokenPostFetch,
-  GetKakaoAccessTokenPostFetchParams,
-} from '@/api/kakao/getKakaoAccessTokenPostFetch';
+import dayjs from 'dayjs';
 
 import { memberKakaoLoginPostFetch } from '@/api/member/memberKakaoLoginGetFetch';
 import { memberInfoGetFetch } from '@/api/member/memberInfoGetFetch';
@@ -16,7 +13,6 @@ import { useToast } from '@/hooks/useToast';
 import { CircleCheck, CircleXIcon } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { Spinner } from '@/components/Spinner';
-import dayjs from 'dayjs';
 
 const KakaoCallback = () => {
   const location = useLocation();
@@ -34,18 +30,7 @@ const KakaoCallback = () => {
         const code = queryParams.get('code');
 
         if (code) {
-          const parmas: GetKakaoAccessTokenPostFetchParams = {
-            grant_type: 'authorization_code',
-            client_id: import.meta.env.VITE_APP_KAKAO_CLIENT_ID,
-            redirect_uri: import.meta.env.VITE_APP_KAKAO_REDIRECT_URI,
-            code,
-          };
-
-          const getAccessTokenResponse = await getKakaoAccessTokenPostFetch(parmas);
-
-          const { data } = getAccessTokenResponse;
-
-          const kakaoLoginResponse = await memberKakaoLoginPostFetch({ accessToken: `Bearer ${data.access_token}` });
+          const kakaoLoginResponse = await memberKakaoLoginPostFetch({ code });
 
           setAccessToken(kakaoLoginResponse.data.accessToken);
 
