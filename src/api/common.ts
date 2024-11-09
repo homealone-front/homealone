@@ -14,12 +14,6 @@ export const apiFetch = axios.create({
   withCredentials: true,
 });
 
-export const kakaoFetch = axios.create({
-  headers: {
-    'Content-type': ' application/x-www-form-urlencoded;charset=utf-8',
-  },
-});
-
 let isExitApplication = false;
 
 apiFetch.interceptors.request.use((config) => {
