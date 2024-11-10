@@ -31,7 +31,7 @@ apiFetch.interceptors.request.use((config) => {
 });
 
 apiFetch.interceptors.response.use(async (res) => {
-  const { status, error } = res.data;
+  const { status, message } = res.data;
   const originalRequest = res.config;
 
   if (!isExitApplication && status === 401) {
@@ -42,7 +42,7 @@ apiFetch.interceptors.response.use(async (res) => {
       location.href = PATH.root;
     };
 
-    if (error === 'EXPIRED_ACCESS_TOKEN') {
+    if (message === 'EXPIRED_ACCESS_TOKEN') {
       const { data } = await refreshGetFetch();
       if (data.accessToken) {
         useUserStore.setState({ accessToken: data.accessToken });
@@ -56,7 +56,7 @@ apiFetch.interceptors.response.use(async (res) => {
         logout();
       }
     }
-    if (error === 'EXPIRED_REFRESH_TOKEN') {
+    if (message === 'EXPIRED_REFRESH_TOKEN') {
       logout();
     }
     return Promise.reject(originalRequest);
