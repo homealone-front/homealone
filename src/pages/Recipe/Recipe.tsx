@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { Search } from 'lucide-react';
 
 import { Card } from '@/components/Card';
 
@@ -58,7 +57,6 @@ const Recipe = () => {
           <Select name="category" options={RECIPE_CATEGORY_OPTIONS} />
           <div className="w-[40rem] m-auto relative">
             <Searchbar onSearch={handleRefetch} />
-            <Search className="absolute top-[0.5rem] right-[0.6rem] appearance-none" stroke="#737373" />
           </div>
         </div>
       </FormProvider>
