@@ -14,12 +14,6 @@ export const apiFetch = axios.create({
   withCredentials: true,
 });
 
-export const kakaoFetch = axios.create({
-  headers: {
-    'Content-type': ' application/x-www-form-urlencoded;charset=utf-8',
-  },
-});
-
 let isExitApplication = false;
 
 apiFetch.interceptors.request.use((config) => {
@@ -36,35 +30,35 @@ apiFetch.interceptors.request.use((config) => {
   return config;
 });
 
-let isRefreshing = false;
-
 apiFetch.interceptors.response.use(async (res) => {
-  if (!isExitApplication && res.data.status === 401 && res.data.error === 'UNAUTHORIZED') {
-    const originalRequest = res.config;
+  const { status, message } = res.data;
+  const originalRequest = res.config;
 
-    if (!isRefreshing) {
-      isRefreshing = true;
+  if (!isExitApplication && status === 401) {
+    const logout = () => {
+      useUserStore.persist.clearStorage();
+      isExitApplication = true;
+
+      location.href = PATH.root;
+    };
+
+    if (message === 'EXPIRED_ACCESS_TOKEN') {
       const { data } = await refreshGetFetch();
-
       if (data.accessToken) {
-        // 기존 요청에 새로운 토큰 설정
         useUserStore.setState({ accessToken: data.accessToken });
+
         originalRequest.headers['Authorization'] = data.accessToken;
 
-        isRefreshing = false;
         return apiFetch(originalRequest);
       } else {
-        alert(
-          '다른 기기에서 동일한 아이디로 로그인되어 자동로그아웃 되었습니다. 서비스를 계속 이용하시려면 다시 로그인 하시기 바랍니다!',
-        );
+        alert('토큰 갱신에 실패했습니다. 다시 로그인해주세요!');
 
-        useUserStore.persist.clearStorage();
-        isExitApplication = true;
-
-        location.href = PATH.root;
+        logout();
       }
     }
-
+    if (message === 'EXPIRED_REFRESH_TOKEN') {
+      logout();
+    }
     return Promise.reject(originalRequest);
   }
 

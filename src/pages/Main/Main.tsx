@@ -70,7 +70,7 @@ const Main = () => {
         description="인테리어 어떻게 할 지 고민될 때! 다른사람들은 어떻게 꾸몄을까요?"
         onPageMove={() => navigate(PATH.room)}
       />
-      <div className="grid grid-cols-4 gap-6 place-items-start">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-start">
         {roomIsLoading || roomIsFetching
           ? Array.from({ length: roomData?.size as number }).map((_, index) => <SkeletonCard key={index} />)
           : roomData?.content?.map((card, i) => (
@@ -93,7 +93,6 @@ const Main = () => {
               />
             ))}
       </div>
-
       {/* 인기 혼잣말 */}
       <ListTitle
         imgPath="/icons/single_ment.png"
@@ -101,7 +100,7 @@ const Main = () => {
         description="혼잣말은 일상생활에 힘이 됩니다."
         onPageMove={() => navigate(PATH.talk)}
       />
-      <div className="grid grid-cols-4 gap-6 mb-20 place-items-start">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-20 place-items-start">
         {talkIsLoading || talkIsFetching
           ? Array.from({ length: talkData?.size as number }).map((_, index) => <SkeletonCard key={index} />)
           : talkData?.content?.map((card) => (
