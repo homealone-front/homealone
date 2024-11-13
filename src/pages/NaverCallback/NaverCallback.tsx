@@ -1,9 +1,5 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  getNaverAccessTokenPostFetch,
-  GetNaverAccessTokenPostFetchParams,
-} from '@/api/naver/getNaverAccessTokenPostFetch';
 
 import { memberInfoGetFetch } from '@/api/member/memberInfoGetFetch';
 
@@ -32,22 +28,9 @@ const NaverCallback = () => {
       try {
         const queryParams = new URLSearchParams(location.search);
         const code = queryParams.get('code');
-        const state = queryParams.get('state');
 
-        if (code && state) {
-          const params: GetNaverAccessTokenPostFetchParams = {
-            grant_type: 'authorization_code',
-            client_id: import.meta.env.VITE_APP_NAVER_CLIENT_ID,
-            client_secret: import.meta.env.VITE_APP_NAVER_CLIENT_SECRET,
-            code,
-            state,
-          };
-
-          const getAccessTokenResponse = await getNaverAccessTokenPostFetch(params);
-
-          const { data } = getAccessTokenResponse;
-
-          const naverLoginResponse = await memberNaverLoginPostFetch({ accessToken: data.access_token });
+        if (code) {
+          const naverLoginResponse = await memberNaverLoginPostFetch({ code });
 
           setAccessToken(naverLoginResponse.data.accessToken);
 
