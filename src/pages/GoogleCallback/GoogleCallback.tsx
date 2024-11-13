@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 import { memberInfoGetFetch } from '@/api/member/memberInfoGetFetch';
 
@@ -11,10 +12,9 @@ import { useToast } from '@/hooks/useToast';
 import { CircleCheck, CircleXIcon } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { Spinner } from '@/components/Spinner';
-import { memberNaverLoginPostFetch } from '@/api/member/memberNaverLoginPostFetch';
-import dayjs from 'dayjs';
+import { memberGoogleLoginPostFetch } from '@/api/member/memberGoogleLoginGetFetch';
 
-const NaverCallback = () => {
+const GoogleCallback = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,19 +30,18 @@ const NaverCallback = () => {
         const code = queryParams.get('code');
 
         if (code) {
-          const naverLoginResponse = await memberNaverLoginPostFetch({ code });
+          const googleLoginResponse = await memberGoogleLoginPostFetch({ code });
 
-          setAccessToken(naverLoginResponse.data.accessToken);
+          setAccessToken(googleLoginResponse.data.accessToken);
 
           const userInfoResponse = await memberInfoGetFetch();
 
-          setUserInfo({
-            ...userInfoResponse.data,
-            birth: !userInfoResponse.data.birth ? '' : dayjs(userInfoResponse.data.birth).format('YYYYMMDD'),
-          });
+          const birth = !userInfoResponse.data.birth ? '' : dayjs(userInfoResponse.data.birth).format('YYYYMMDD');
+
+          setUserInfo({ ...userInfoResponse.data, birth });
 
           toast({
-            title: '네이버로 로그인 했어요!',
+            title: '구글로 로그인 했어요!',
             icon: <CircleCheck />,
             className: TOAST.success,
           });
@@ -54,7 +53,7 @@ const NaverCallback = () => {
 
         if (isAxiosError(error)) {
           toast({
-            title: '네이버 로그인에 실패했어요 ...',
+            title: '구글 로그인에 실패했어요 ...',
             icon: <CircleXIcon />,
             className: TOAST.error,
           });
@@ -70,4 +69,4 @@ const NaverCallback = () => {
   return <Spinner>로그인 중이에요 ...</Spinner>;
 };
 
-export default NaverCallback;
+export default GoogleCallback;

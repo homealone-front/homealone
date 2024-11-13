@@ -29,6 +29,7 @@ import { NaverCallbackPage } from '@/pages/NaverCallback';
 import { MyPosts } from '@/pages/MyPosts';
 import { MyBookmark } from '@/pages/MyBookmark';
 import { RecipeEditPage } from '@/pages/RecipeEdit';
+import { GoogleCallbackPage } from '@/pages/GoogleCallback';
 
 import { Layout, LayoutWithBanner, LayoutWithoutFooter } from '@/layout';
 
@@ -49,6 +50,7 @@ const Router = () => {
               <Route path={PATH.register} element={<RegisterPage />} />
               <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
               <Route path={PATH.naver} element={<NaverCallbackPage />} />
+              <Route path={PATH.google} element={<GoogleCallbackPage />} />
             </Route>
           </Route>
 

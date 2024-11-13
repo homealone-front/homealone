@@ -75,7 +75,12 @@ export const PATH = Object.freeze({
   /**
    * 네이버 로그인 redirect uri
    */
-  naver: '/naver/login' as const,
+  naver: '/naver/callback' as const,
+
+  /**
+   * 구글 로그인 redirect uri
+   */
+  google: '/google/callback' as const,
 });
 
 /**
