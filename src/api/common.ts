@@ -57,6 +57,8 @@ apiFetch.interceptors.response.use(async (res) => {
       }
     }
     if (message === 'EXPIRED_REFRESH_TOKEN') {
+      alert('세션이 만료되었습니다. 다시 로그인해주세요!');
+
       logout();
     }
     return Promise.reject(originalRequest);
