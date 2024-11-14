@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 
 import { List } from './Li';
 import { ProfileDropdown } from './ProfileDropdown';
+import { MenuDrawer } from './MenuDrawer';
 
 import { useUserStore } from '@/store/useUserStore';
 
@@ -27,12 +28,13 @@ const Appbar = () => {
 
   return (
     <div className="container flex items-center justify-between py-4 mb-12 select-none row header">
-      <div className="flex items-center header-left">
-        <h1 className="cursor-pointer" onClick={() => navigate(PATH.root)}>
+      <div className="flex items-center header-left ">
+        <h1 className="cursor-pointer " onClick={() => navigate(PATH.root)}>
           <span className="block indent-[-9999px] absolute">나홀로 집에서(자취 커뮤니티)</span>
-          <img className="w-[4rem] h-[4rem]" src="/icons/logo_svg_square.svg" alt="프로젝트 로고" />
+          <img className="w-[4rem] h-[4rem] hidden md:block" src="/icons/logo_svg_square.svg" alt="프로젝트 로고" />
         </h1>
-        <nav className="ml-10">
+        <MenuDrawer />
+        <nav className="ml-10 hidden md:block">
           <ul className="flex items-center gap-4">
             <List path={PATH.recipe} onPageMove={() => navigate(PATH.recipe)}>
               레시피
@@ -76,7 +78,7 @@ const Appbar = () => {
                 <Separator className="bg-gray700" orientation="vertical" />
               </li>
               <List onPageMove={() => navigate(PATH.register)}>
-                <span className="text-lg text-gray400">회원가입</span>
+                <span className="text-lg text-gray400 whitespace-nowrap">회원가입</span>
               </List>
             </>
           )}
