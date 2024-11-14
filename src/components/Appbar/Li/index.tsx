@@ -2,15 +2,17 @@ import { ReactNode, MouseEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { PATH } from '@/constants/paths';
+import { cn } from '@/lib/utils';
 
 type AppbarListPropsType = {
   children: ReactNode | ReactNode[];
   path?: ValueOf<typeof PATH>;
   onPageMove?: (event: MouseEvent<HTMLLIElement>) => void;
+  className?: string;
 };
 
 export const List = (props: AppbarListPropsType) => {
-  const { children, path, onPageMove } = props;
+  const { children, path, onPageMove, className } = props;
 
   const { pathname } = useLocation();
 
@@ -19,9 +21,12 @@ export const List = (props: AppbarListPropsType) => {
 
   return (
     <li
-      className={`py-4 px-6 cursor-pointer transition-all duration-100 ease hover:text-primary text-lg ${
-        rootPath === propPath ? 'text-primary' : ''
-      }`}
+      className={cn(
+        `py-4 px-6 cursor-pointer transition-all duration-100 ease hover:text-primary text-lg ${
+          rootPath === propPath ? 'text-primary' : ''
+        }`,
+        className,
+      )}
       onClick={onPageMove}
     >
       {children}
