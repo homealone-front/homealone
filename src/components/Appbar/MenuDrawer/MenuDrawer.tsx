@@ -18,7 +18,7 @@ const MenuDrawer = () => {
       <DrawerTrigger className="md:absolute md:opacity-0">
         <AlignJustify />
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="bg-[#F9F7F4]">
         <ul className="flex flex-col mb-36 mt-8">
           <List
             className="text-md py-3"
