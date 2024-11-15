@@ -12,6 +12,7 @@ import { useUserStore } from '@/store/useUserStore';
 
 import { useDisclosure } from '@/hooks/useDisclosure';
 import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
+import { useScolled } from '@/hooks/useScolled';
 
 import { PATH } from '@/constants/paths';
 
@@ -24,10 +25,16 @@ const Appbar = () => {
   const imgUrl = useUserStore((state) => state.imageUrl);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isScrolled } = useScolled();
+
   const navigate = usePageMoveHandler();
 
   return (
-    <div className="container flex items-center justify-between py-4 mb-12 select-none row header">
+    <div
+      className={`${
+        isScrolled ? 'border-b' : ''
+      } container sticky top-0 bg-[#F9F7F4] z-40 flex items-center justify-between py-4 mb-12 select-none row header`}
+    >
       <div className="flex items-center header-left ">
         <h1 className="cursor-pointer " onClick={() => navigate(PATH.root)}>
           <span className="block indent-[-9999px] absolute">나홀로 집에서(자취 커뮤니티)</span>
