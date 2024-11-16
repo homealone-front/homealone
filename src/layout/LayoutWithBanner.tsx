@@ -11,7 +11,10 @@ const LayoutWithBanner = () => {
     <div className="wrapper w-full h-full ">
       <Appbar />
       <div className="bg-[#10BE62] -mt-12">
-        <img src="/images/main_img.png" className="w-1/2 mx-auto my-0" />
+        <picture>
+          <source srcSet="/images/main_img.webp" type="image/webp"></source>
+          <img src="/images/main_img.png" className="w-1/2 mx-auto my-0" />
+        </picture>
       </div>
       <div className="container">
         <Outlet />
