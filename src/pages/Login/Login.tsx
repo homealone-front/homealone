@@ -151,7 +151,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="w-[30rem] m-auto pt-4">
+      <div className="max-w-lg w-full m-auto pt-4">
         <div className="mb-8">
           <h3 className="mb-4 text-2xl font-semibold text-center text-primary">로그인</h3>
           <p className="text-lg text-center text-gray400">이메일로 로그인</p>
