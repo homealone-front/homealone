@@ -31,7 +31,7 @@ const Talk = () => {
 
   const accessToken = useUserStore((state) => state.accessToken);
 
-  const { data, isLoading, isFetching } = useTalkListQuery({ page: currentPage, size: 20 });
+  const { data, isLoading } = useTalkListQuery({ page: currentPage, size: 20 });
   const { data: searchData, isLoading: isSearchLoading } = useSearchTalkQuery(searchParams);
 
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const Talk = () => {
   const loading = searchParams.query ? isSearchLoading : isLoading;
 
   const renderCards = () => {
-    if (loading || isFetching) {
+    if (loading) {
       return Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />);
     }
 
@@ -107,7 +107,9 @@ const Talk = () => {
               </Button>
             )}
           </div>
-          <div className="grid grid-cols-4 gap-6 place-items-start py-12">{renderCards()}</div>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-start py-12">
+            {renderCards()}
+          </div>
           <Pagination
             totalPage={(searchParams.query ? searchData : data)?.totalPages as number}
             currentPage={currentPage}
