@@ -1,6 +1,7 @@
 import { uploadImage } from '@/utils/uploadImage';
 import { RoomSchemaType } from './RoomWrite';
 import { WriteRoomPostFetchParams } from '@/api/room/writeRoomPostFetch';
+import { resizeAndConvertToWebp } from '@/utils/resizeAndConvertToWebp';
 
 /**
  * 방자랑 등록 파라미터를 포맷팅한다.
@@ -17,7 +18,8 @@ export const getRoomCleansingData = async (data: RoomSchemaType) => {
     if (!thumbnailUrl.image.name) {
       cleansingMainImage = thumbnailUrl.imageUrl;
     } else {
-      const uploadedImage = await uploadImage(thumbnailUrl.image);
+      const resizedImage = await resizeAndConvertToWebp(thumbnailUrl.image, { height: 480 });
+      const uploadedImage = await uploadImage(resizedImage as File);
       cleansingMainImage = uploadedImage?.imageUrl;
     }
   }
@@ -32,7 +34,8 @@ export const getRoomCleansingData = async (data: RoomSchemaType) => {
         if (!item.image.name) {
           return item.imageUrl;
         } else {
-          const uploadedImage = await uploadImage(item.image);
+          const resizedImage = await resizeAndConvertToWebp(item.image, { height: 480 });
+          const uploadedImage = await uploadImage(resizedImage as File);
           return uploadedImage?.imageUrl;
         }
       }),
