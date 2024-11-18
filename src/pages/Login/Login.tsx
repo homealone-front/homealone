@@ -151,13 +151,12 @@ const Login = () => {
 
   return (
     <>
-      <div className="w-[30rem] m-auto pt-4">
+      <div className="max-w-lg w-full m-auto pt-4">
         <div className="mb-8">
           <h3 className="mb-4 text-2xl font-semibold text-center text-primary">로그인</h3>
           <p className="text-lg text-center text-gray400">이메일로 로그인</p>
         </div>
-
-        <div className="flex flex-col gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <Input
             control={control}
             name="email"
@@ -176,10 +175,10 @@ const Login = () => {
             error={errors?.password}
           />
 
-          <Button className="w-full mt-4" onClick={handleSubmit}>
+          <Button type="submit" className="w-full mt-4">
             로그인
           </Button>
-        </div>
+        </form>
 
         <div className="w-full h-[1px] bg-gray-200 mt-8"></div>
         <p className="text-sm text-center text-gray400 my-4">또는</p>

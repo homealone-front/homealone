@@ -13,7 +13,7 @@ const LayoutWithBanner = () => {
       <div className="bg-[#10BE62] -mt-12">
         <picture>
           <source srcSet="/images/main_img.webp" type="image/webp"></source>
-          <img src="/images/main_img.png" className="w-1/2 mx-auto my-0" />
+          <img src="/images/main_img.png" className="w-1/2 mx-auto my-0" width={960} height={540} alt="banner-image" />
         </picture>
       </div>
       <div className="container">

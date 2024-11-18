@@ -40,7 +40,7 @@ const Recipe = () => {
 
   const { category, query } = getValues();
 
-  const { data, isLoading, isFetching, refetch } = useRecipeListQuery({ page: currentPage, size: 20, category, query });
+  const { data, isLoading, refetch } = useRecipeListQuery({ page: currentPage, size: 20, category, query });
 
   const handlePageMove = (page: number) => {
     setCurrentPage(page);
@@ -78,8 +78,9 @@ const Recipe = () => {
               </Button>
             )}
           </div>
-          <div className="grid grid-cols-4 gap-6 py-12 place-items-start">
-            {isLoading || isFetching
+
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-12 place-items-start">
+            {isLoading
               ? Array.from({ length: 20 }).map((_, index) => <SkeletonCard key={index} />)
               : data?.content?.map((card, i) => (
                   <Card

@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <div className="w-full h-fit bg-[#444444]">
       <div className="py-8 px-12 flex flex-col justify-center items-center gap-4">
-        <img className="w-20 h-20" src="/icons/logo_svg_square_white.svg" alt="" />
+        <img src="/icons/logo_svg_square_white.svg" alt="logo" width={80} height={80} className="w-20 h-20" />
         <ul className="flex flex-wrap text-gray400 text-md gap-4">
           <li className="li-after">AUTHOR: Clound 2기 Team-7</li>
           <li className="li-after">CONTACT: ax34554@gmail.com</li>

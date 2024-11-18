@@ -33,7 +33,7 @@ const Appbar = () => {
     <div
       className={`${
         isScrolled ? 'border-b' : ''
-      } container sticky top-0 bg-[#F9F7F4] z-40 flex items-center justify-between py-4 mb-12 select-none row header`}
+      } px-8 sticky top-0 bg-[#F9F7F4] z-40 flex items-center justify-between py-4 mb-12 select-none row header`}
     >
       <div className="flex items-center header-left ">
         <h1 className="cursor-pointer " onClick={() => navigate(PATH.root)}>
