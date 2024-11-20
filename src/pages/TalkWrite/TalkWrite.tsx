@@ -37,7 +37,7 @@ const TalkWrite = () => {
   const searchParams = new URLSearchParams(location.search);
   const talkId = searchParams.get('id') ?? '';
 
-  const { data: talkData } = useTalkDetailQuery({ id: talkId });
+  const { data: talkData } = talkId ? useTalkDetailQuery({ id: talkId }) : { data: null };
 
   const { toast } = useToast();
 
