@@ -1,30 +1,24 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isAxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { CircleCheck, CircleXIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/Input';
+import { SocialLoginButtons } from './SocialLoginButtons';
 
 import { PATH } from '@/constants/paths';
-
-import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
-
-import { MemberLoginPostFetchParams, memberLoginPostFetch } from '@/api/member/memberLoginPostFetch';
-
+import { TOAST } from '@/constants/toast';
 import { loginSchema } from './validator';
 
-import { useUserStore } from '@/store/useUserStore';
+import { usePageMoveHandler } from '@/hooks/usePageMoveHandler';
 import { useToast } from '@/hooks/useToast';
-import { TOAST } from '@/constants/toast';
-import { CircleCheck, CircleXIcon } from 'lucide-react';
 
+import { MemberLoginPostFetchParams, memberLoginPostFetch } from '@/api/member/memberLoginPostFetch';
 import { memberInfoGetFetch } from '@/api/member/memberInfoGetFetch';
 
-import { SocialLoginButton } from '@/components/SocialLoginButton';
-import { KakaoAuthUrlGetFetch } from '@/api/member/kakaoAuthUrlGetFetch';
-import { naverAuthUrlGetFetch } from '@/api/member/naverAuthUrlGetFetch';
-import dayjs from 'dayjs';
-import { googleAuthUrlGetFetch } from '@/api/member/googleAuthUrlGetFetch';
+import { useUserStore } from '@/store/useUserStore';
 
 const Login = () => {
   const navigate = usePageMoveHandler();
@@ -83,70 +77,6 @@ const Login = () => {
     }
   });
 
-  const handleKakaoLogin = async () => {
-    try {
-      const urlResponse = await KakaoAuthUrlGetFetch();
-
-      const kakaoUrl = document.createElement('a');
-
-      kakaoUrl.setAttribute('href', urlResponse.data);
-
-      kakaoUrl.click();
-    } catch (error) {
-      console.error(error);
-
-      if (isAxiosError(error)) {
-        toast({
-          title: error?.response?.data.message || '카카오 로그인 실패',
-          icon: <CircleXIcon />,
-          className: TOAST.error,
-        });
-      }
-    }
-  };
-
-  const handleNaverLogin = async () => {
-    try {
-      const urlResponse = await naverAuthUrlGetFetch();
-
-      const naverUrl = document.createElement('a');
-
-      naverUrl.setAttribute('href', urlResponse.data);
-
-      naverUrl.click();
-    } catch (error) {
-      console.error(error);
-
-      if (isAxiosError(error)) {
-        toast({
-          title: error?.response?.data.message || '네이버 로그인 실패',
-          icon: <CircleXIcon />,
-          className: TOAST.error,
-        });
-      }
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const urlResponse = await googleAuthUrlGetFetch();
-
-      const naverUrl = document.createElement('a');
-
-      naverUrl.setAttribute('href', urlResponse.data);
-      naverUrl.click();
-    } catch (error) {
-      console.error(error);
-
-      if (isAxiosError(error)) {
-        toast({
-          title: error?.response?.data.message || '구글 로그인 실패',
-          icon: <CircleXIcon />,
-          className: TOAST.error,
-        });
-      }
-    }
-  };
   // console.info('파라미터 확인', getValues());
 
   return (
@@ -183,20 +113,7 @@ const Login = () => {
         <div className="w-full h-[1px] bg-gray-200 mt-8"></div>
         <p className="text-sm text-center text-gray400 my-4">또는</p>
 
-        <div className="flex flex-col gap-2">
-          <SocialLoginButton onSubmit={handleKakaoLogin} variant="kakao">
-            <img src={'/icons/kakaologo.svg'} alt={'naver-logo'} />
-            카카오로 시작하기
-          </SocialLoginButton>
-          <SocialLoginButton onSubmit={handleNaverLogin} variant="naver">
-            <img className="h-full" src={'/icons/naverlogo.png'} alt={'naver-logo'} />
-            네이버로 시작하기
-          </SocialLoginButton>
-          <SocialLoginButton onSubmit={handleGoogleLogin} variant="google">
-            <img src={'/icons/google_logo.svg'} alt={'google-logo'} />
-            구글로 시작하기
-          </SocialLoginButton>
-        </div>
+        <SocialLoginButtons />
 
         <div className="mt-8 font-light text-center">
           아직 회원이 아니신가요?{' '}
