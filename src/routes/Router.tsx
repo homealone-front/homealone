@@ -30,6 +30,7 @@ import { MyPosts } from '@/pages/MyPosts';
 import { MyBookmark } from '@/pages/MyBookmark';
 import { RecipeEditPage } from '@/pages/RecipeEdit';
 import { GoogleCallbackPage } from '@/pages/GoogleCallback';
+import { PrivacyPage } from '@/pages/Privacy';
 
 import { Layout, LayoutWithBanner, LayoutWithoutFooter } from '@/layout';
 
@@ -76,6 +77,7 @@ const Router = () => {
             <Route path={PATH.recipe} element={<RecipePage />} />
             <Route path={PATH.room} element={<RoomPage />} />
             <Route path={PATH.talk} element={<TalkPage />} />
+            <Route path={PATH.privacy} element={<PrivacyPage />} />
 
             <Route path={PATH.chattings} element={<ChattingsPage />} />
             <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
