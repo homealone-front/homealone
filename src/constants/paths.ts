@@ -81,6 +81,11 @@ export const PATH = Object.freeze({
    * 구글 로그인 redirect uri
    */
   google: '/google/callback' as const,
+
+  /**
+   * 개인정보처리방침
+   */
+  privacy: '/privacy' as const,
 });
 
 /**
