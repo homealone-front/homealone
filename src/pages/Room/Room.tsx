@@ -51,8 +51,9 @@ const Room = () => {
     setCurrentPage(0);
   };
 
+  const cardData = searchParams.query ? searchData : data;
+
   const renderCards = () => {
-    const cardData = searchParams.query ? searchData : data;
     const loading = searchParams.query ? isSearchLoading : isLoading;
 
     if (loading) {
@@ -90,7 +91,7 @@ const Room = () => {
           </div>
         </div>
       </FormProvider>
-      {!searchData?.content.length && !isLoading ? (
+      {!cardData?.content.length && !isLoading ? (
         <div className="flex justify-center">
           <NoContents {...NAV_TABS.room} />
         </div>
