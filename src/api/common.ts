@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useUserStore } from '@/store/useUserStore';
 import { PATH } from '@/constants/paths';
-// import { redirectDocument } from 'react-router-dom';
 import { refreshGetFetch } from './member/refreshPostFetch';
 
 export const baseURL = import.meta.env.VITE_APP_BASE_URL;
@@ -30,11 +29,14 @@ apiFetch.interceptors.request.use((config) => {
   return config;
 });
 
-apiFetch.interceptors.response.use(async (res) => {
-  const { status, message } = res.data;
-  const originalRequest = res.config;
+apiFetch.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const { config, response } = error;
 
-  if (!isExitApplication && status === 401) {
+    const originalRequest = config;
+    const { status, message } = response.data;
+
     const logout = () => {
       useUserStore.persist.clearStorage();
       isExitApplication = true;
@@ -42,27 +44,28 @@ apiFetch.interceptors.response.use(async (res) => {
       location.href = PATH.root;
     };
 
-    if (message === 'EXPIRED_ACCESS_TOKEN') {
-      const { data } = await refreshGetFetch();
-      if (data.accessToken) {
-        useUserStore.setState({ accessToken: data.accessToken });
+    if (!isExitApplication && status === 401) {
+      if (message === 'EXPIRED_ACCESS_TOKEN') {
+        const { data } = await refreshGetFetch();
 
-        originalRequest.headers['Authorization'] = data.accessToken;
+        if (data.accessToken) {
+          useUserStore.setState({ accessToken: data.accessToken });
 
-        return apiFetch(originalRequest);
-      } else {
-        alert('토큰 갱신에 실패했습니다. 다시 로그인해주세요!');
+          originalRequest.headers['Authorization'] = data.accessToken;
+
+          return apiFetch(originalRequest);
+        } else {
+          alert('토큰 갱신에 실패했습니다. 다시 로그인해주세요!');
+
+          logout();
+        }
+      }
+      if (message === 'EXPIRED_REFRESH_TOKEN') {
+        alert('세션이 만료되었습니다. 다시 로그인해주세요!');
 
         logout();
       }
+      return Promise.reject(originalRequest);
     }
-    if (message === 'EXPIRED_REFRESH_TOKEN') {
-      alert('세션이 만료되었습니다. 다시 로그인해주세요!');
-
-      logout();
-    }
-    return Promise.reject(originalRequest);
-  }
-
-  return res;
-});
+  },
+);
