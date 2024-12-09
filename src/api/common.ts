@@ -65,7 +65,7 @@ apiFetch.interceptors.response.use(
 
         logout();
       }
-      return Promise.reject(originalRequest);
+      return Promise.reject(error);
     }
   },
 );
