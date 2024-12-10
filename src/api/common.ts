@@ -35,7 +35,7 @@ apiFetch.interceptors.response.use(
     const { config, response } = error;
 
     const originalRequest = config;
-    const { status, message } = response.data;
+    const { status, code } = response.data;
 
     const logout = () => {
       useUserStore.persist.clearStorage();
@@ -45,7 +45,7 @@ apiFetch.interceptors.response.use(
     };
 
     if (!isExitApplication && status === 401) {
-      if (message === 'EXPIRED_ACCESS_TOKEN') {
+      if (code === 'EXPIRED_ACCESS_TOKEN') {
         const { data } = await refreshGetFetch();
 
         if (data.accessToken) {
@@ -60,12 +60,12 @@ apiFetch.interceptors.response.use(
           logout();
         }
       }
-      if (message === 'EXPIRED_REFRESH_TOKEN') {
+      if (code === 'EXPIRED_REFRESH_TOKEN') {
         alert('세션이 만료되었습니다. 다시 로그인해주세요!');
 
         logout();
       }
-      return Promise.reject(originalRequest);
+      return Promise.reject(error);
     }
   },
 );

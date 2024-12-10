@@ -5,13 +5,12 @@ import { Card as TextCard } from '@/components/Card';
 
 import { SkeletonCard } from '@/components/Skeleton';
 
-// import { PriceSlot } from './components/PriceSlot';
+import { PriceSlot } from './components/PriceSlot';
 import { ListTitle } from './components/ListTitle';
 
-import { PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
-// import { PATH, RECIPE_PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
+import { PATH, RECIPE_PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
 
-// import { useTrendsRecipeListQuery } from '@/services/recipe/useTrendsRecipeListQuery';
+import { useTrendsRecipeListQuery } from '@/services/recipe/useTrendsRecipeListQuery';
 import { useViewRoomListQuery } from '@/services/room/useViewRoomListQuery';
 import { useViewTalkListQuery } from '@/services/talk/useViewTalkListQuery';
 import { RoomCardSlot } from '../Room/components/RoomCardSlot';
@@ -19,20 +18,20 @@ import { RoomCardSlot } from '../Room/components/RoomCardSlot';
 const Main = () => {
   const navigate = useNavigate();
 
-  // const { data: recipeData, isLoading: recipeIsLoading, isFetching: recipeIsFetching } = useTrendsRecipeListQuery();
+  const { data: recipeData, isLoading: recipeIsLoading, isFetching: recipeIsFetching } = useTrendsRecipeListQuery();
   const { data: roomData, isLoading: roomIsLoading, isFetching: roomIsFetching } = useViewRoomListQuery();
   const { data: talkData, isLoading: talkIsLoading, isFetching: talkIsFetching } = useViewTalkListQuery();
 
   return (
     <>
       {/* 트렌드 레시피 */}
-      {/* <ListTitle
+      <ListTitle
         imgPath="/icons/receipe_icon.png"
         title="트렌드 레시피"
         description="하루 10분이면 뚝딱! 사용자들이 많이 보고 있는 레시피에요"
         onPageMove={() => navigate(PATH.recipe)}
       />
-      <div className="grid grid-cols-4 gap-6 place-items-start">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-start">
         {recipeIsLoading || recipeIsFetching
           ? Array.from({ length: recipeData?.size as number }).map((_, index) => <SkeletonCard key={index} />)
           : recipeData?.content?.map((card, i) => (
@@ -61,8 +60,7 @@ const Main = () => {
                 }
               />
             ))}
-      </div> */}
-
+      </div>
       {/* 인기 방자랑 */}
       <ListTitle
         imgPath="/icons/room_icon.png"
