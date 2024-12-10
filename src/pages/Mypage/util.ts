@@ -9,12 +9,16 @@ import { resizeAndConvertToWebp } from '@/utils/resizeAndConvertToWebp';
 export const patchMemberDataCleansing = async (data: MemberSchemaType) => {
   const { image, birth, ...rest } = data;
 
-  const resizedImage = await resizeAndConvertToWebp(image.image as File, { width: 100, height: 100 });
-  const cleansingImage = await uploadImage(resizedImage as File);
+  let cleansingImageUrl = null;
+  if (image.image) {
+    const resizedImage = await resizeAndConvertToWebp(image.image as File, { width: 100, height: 100 });
+    const cleansingImage = await uploadImage(resizedImage as File);
+    cleansingImageUrl = cleansingImage?.imageUrl;
+  }
 
   return {
     ...rest,
-    imageUrl: cleansingImage?.imageUrl || '',
+    ...(cleansingImageUrl !== null && { imageUrl: cleansingImageUrl }),
     birth: dayjs(birth).format('YYYY-MM-DD'),
   };
 };
