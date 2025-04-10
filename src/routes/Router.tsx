@@ -1,7 +1,7 @@
 import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { PATH, RECIPE_PATH, ROOM_PATH, TALK_PATH, CHAT_PATH } from '@/constants/paths';
+import { PATH, RECIPE_PATH, ROOM_PATH, TALK_PATH } from '@/constants/paths';
 
 import AuthRouter from './AuthRouter';
 import UserRouter from './UserRouter';
@@ -18,8 +18,6 @@ import { RoomDetailPage } from '@/pages/RoomDetail';
 import { TalkDetailPage } from '@/pages/TalkDetail';
 import { RecipeWritePage } from '@/pages/RecipeWrite';
 import { RoomWritePage } from '@/pages/RoomWrite';
-import { ChattingsPage } from '@/pages/Chattings';
-import { ChattingPage } from '@/pages/Chatting';
 
 import { KakaoCallbackPage } from '@/pages/KakaoCallback';
 import { NotFoundPage } from '@/pages/NotFound';
@@ -78,9 +76,6 @@ const Router = () => {
             <Route path={PATH.room} element={<RoomPage />} />
             <Route path={PATH.talk} element={<TalkPage />} />
             <Route path={PATH.privacy} element={<PrivacyPage />} />
-
-            <Route path={PATH.chattings} element={<ChattingsPage />} />
-            <Route path={CHAT_PATH.detail} element={<ChattingPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
