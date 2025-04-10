@@ -1,9 +1,9 @@
-import { useRef, ChangeEvent } from 'react';
+import { useRef, ChangeEvent, useState, useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { CarouselItem } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
-import { CirclePlus, CircleX, Image } from 'lucide-react';
+import { CircleX, Image, ImagePlus } from 'lucide-react';
 
 interface RoomImagesFieldsType {
   roomImages: {
@@ -21,6 +21,7 @@ const RoomImagesFields = () => {
   });
 
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [appendedIndex, setAppendedIndex] = useState<number | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
     const { files } = e.target;
@@ -32,6 +33,26 @@ const RoomImagesFields = () => {
       setValue(`roomImages.${index}.imageUrl`, imageUrl);
     }
   };
+
+  const handleAppend = () => {
+    const newIndex = fields.length;
+    append({ image: {} as File, imageUrl: '' });
+    setAppendedIndex(newIndex);
+  };
+
+  useEffect(() => {
+    if (appendedIndex !== null && fileInputRefs.current[appendedIndex]) {
+      fileInputRefs.current[appendedIndex]?.click();
+      setAppendedIndex(null);
+    }
+  }, [fields, appendedIndex]);
+
+  //  const handleAppend = () => {
+  //   append({ image: {} as File, imageUrl: '' });
+  //   setTimeout(() => {
+  //     fileInputRefs.current[fileInputRefs.current.length - 1]?.click();
+  //   }, 0);
+  // };
 
   return (
     <>
@@ -96,10 +117,10 @@ const RoomImagesFields = () => {
         <div className="p-1">
           <Card>
             <CardContent
-              className="flex aspect-square items-center justify-center cursor-pointer group"
-              onClick={() => append({ image: {} as File, imageUrl: '' })}
+              className="flex aspect-square items-center justify-center cursor-pointer group pb-0"
+              onClick={handleAppend}
             >
-              <CirclePlus size={64} color="#a0aec0" strokeWidth={2} className=" group-hover:stroke-[#2d3748]" />
+              <ImagePlus size={64} color="#a0aec0" strokeWidth={2} className=" group-hover:stroke-[#2d3748]" />
             </CardContent>
           </Card>
         </div>
