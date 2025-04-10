@@ -61,6 +61,8 @@ export default tseslint.config(
          * env
          */
         process: 'readonly',
+
+        __dirname: 'readonly',
       },
       parser: {
         ...typescriptEslintParser,

@@ -4,10 +4,9 @@ import { CircleCheck, CircleXIcon, Undo2 } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import * as yup from 'yup';
 
-import { Appbar } from '@/components/Appbar';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
-import { Layout } from '@/layout';
+
 import { ListTitle } from '../Main/components/ListTitle';
 
 import { PATH } from '@/constants/paths';
@@ -38,7 +37,7 @@ const TalkWrite = () => {
   const searchParams = new URLSearchParams(location.search);
   const talkId = searchParams.get('id') ?? '';
 
-  const { data: talkData } = useTalkDetailQuery({ id: talkId });
+  const { data: talkData } = talkId ? useTalkDetailQuery({ id: talkId }) : { data: null };
 
   const { toast } = useToast();
 
@@ -123,55 +122,53 @@ const TalkWrite = () => {
   return (
     <>
       {displaySpinner ? <Spinner>{loadingText}</Spinner> : null}
-      <Appbar />
-      <Layout>
-        <>
-          <Button
-            variant="ghost"
-            className="flex items-center gap-2"
-            onClick={() => (talkId ? navigate(-1) : navigate(PATH.talk))}
-          >
-            <Undo2 />
-            <span className="text-xl">돌아갈래요</span>
-          </Button>
-          <div className="-mt-8">
-            <ListTitle imgPath="/icons/single_ment.png" title={titleText} />
-          </div>
-          <FormProvider {...method}>
-            <div className="container flex justify-between w-11/12 mx-auto">
-              <div className="w-full mb-8">
-                {/* 제목 */}
-                <div className="mt-8">
-                  <Input
-                    control={control}
-                    name="title"
-                    type="text"
-                    label="혼잣말 제목"
-                    placeholder="혼잣말 제목을 입력해주세요."
-                    error={errors?.title}
-                    defaultValue={talkData?.title}
-                  />
-                </div>
 
-                {/* 내용 */}
-                <div className="mt-8 h-72">
-                  <QuillEditor ref={quillRef} modules={modules} placeholder="혼잣말 내용을 입력해주세요." />
-                  {errors?.content ? (
-                    <p className="mt-16 text-sm text-left text-red-600">{errors?.content.message}</p>
-                  ) : null}
-                </div>
+      <>
+        <Button
+          variant="ghost"
+          className="flex items-center gap-2"
+          onClick={() => (talkId ? navigate(-1) : navigate(PATH.talk))}
+        >
+          <Undo2 />
+          <span className="text-xl">돌아갈래요</span>
+        </Button>
+        <div className="-mt-8">
+          <ListTitle imgPath="/icons/single_ment.png" title={titleText} />
+        </div>
+        <FormProvider {...method}>
+          <div className="container flex justify-between w-11/12 mx-auto">
+            <div className="w-full mb-8">
+              {/* 제목 */}
+              <div className="mt-8">
+                <Input
+                  control={control}
+                  name="title"
+                  type="text"
+                  label="혼잣말 제목"
+                  placeholder="혼잣말 제목을 입력해주세요."
+                  error={errors?.title}
+                  defaultValue={talkData?.title}
+                />
+              </div>
 
-                {/* 등록 버튼 */}
-                <div className="mt-20 text-center">
-                  <Button className="w-24 text-lg rounded-lg" onClick={handleSubmit}>
-                    {submitBtnText}
-                  </Button>
-                </div>
+              {/* 내용 */}
+              <div className="mt-8 h-72">
+                <QuillEditor ref={quillRef} modules={modules} placeholder="혼잣말 내용을 입력해주세요." />
+                {errors?.content ? (
+                  <p className="mt-16 text-sm text-left text-red-600">{errors?.content.message}</p>
+                ) : null}
+              </div>
+
+              {/* 등록 버튼 */}
+              <div className="mt-20 text-center">
+                <Button className="w-24 text-lg rounded-lg" onClick={handleSubmit}>
+                  {submitBtnText}
+                </Button>
               </div>
             </div>
-          </FormProvider>
-        </>
-      </Layout>
+          </div>
+        </FormProvider>
+      </>
     </>
   );
 };

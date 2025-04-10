@@ -19,7 +19,8 @@ tar -czf build.tgz ./build
 
 echo -e "\033[1;36m[-] SUCCESS TAR AND SEND VM ... \033[0m"
 
-sshpass -p "$PASSWORD" scp build.tgz elice@34.22.76.244:/home/elice/Front/
+# sshpass -p "$PASSWORD" scp build.tgz ubuntu@43.202.14.207:/home/ubuntu/Front/
+scp -i ~/.ssh/naholo.pem build.tgz ubuntu@43.202.14.207:/home/ubuntu/Front/
 
 echo -e "\033[1;32;40m[+] SEND SUCCESS!!! \033[0m"
 

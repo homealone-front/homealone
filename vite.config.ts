@@ -2,8 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { resolve } from 'path';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { dependencies } = require('./package.json');
+import { dependencies } from './package.json';
 
 const renderChunks = (deps: Record<string, string>) => {
   const chunks: { [key: string]: string[] } = {};
@@ -33,7 +32,7 @@ export default ({ mode }: { mode: 'development' | 'production' }) =>
       cors: true,
       proxy: {
         '/api': {
-          target: 'https://www.na-holo.site/',
+          target: 'https://www.home-alone.site/',
           changeOrigin: true,
         },
       },

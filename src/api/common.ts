@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { useUserStore } from '@/store/useUserStore';
-// import { PATH } from '@/constants/paths';
-// import { redirectDocument } from 'react-router-dom';
-// import { refreshPostFetch } from './member/refreshPostFetch';
+import { PATH } from '@/constants/paths';
+import { refreshGetFetch } from './member/refreshPostFetch';
 
 export const baseURL = import.meta.env.VITE_APP_BASE_URL;
 
@@ -14,13 +13,7 @@ export const apiFetch = axios.create({
   withCredentials: true,
 });
 
-export const kakaoFetch = axios.create({
-  headers: {
-    'Content-type': ' application/x-www-form-urlencoded;charset=utf-8',
-  },
-});
-
-const isExitApplication = false;
+let isExitApplication = false;
 
 apiFetch.interceptors.request.use((config) => {
   if (isExitApplication) {
@@ -36,32 +29,43 @@ apiFetch.interceptors.request.use((config) => {
   return config;
 });
 
-apiFetch.interceptors.response.use(async (res) => {
-  // if (!isExitApplication && res.data.status === 401 && res.data.error === 'UNAUTHORIZED') {
-  //   const originalRequest = res.config;
+apiFetch.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const { config, response } = error;
 
-  //   const { data } = await refreshPostFetch();
+    const originalRequest = config;
+    const { status, code } = response.data;
 
-  //   console.log('새로운 ㅁㅊㅊ', data);
+    const logout = () => {
+      useUserStore.persist.clearStorage();
+      isExitApplication = true;
 
-  //   if (data.accessToken) {
-  //     // 기존 요청에 새로운 토큰을 설정
-  //     res.config.headers.set('Authorization', data.accessToken);
-  //     // 요청을 재시도
-  //     return apiFetch(originalRequest);
-  //   } else {
-  //     // 새로운 토큰을 받지 못한 경우
-  //     alert(
-  //       '다른 기기에서 동일한 아이디로 로그인되어 자동로그아웃 되었습니다. 서비스를 계속 이용하시려면 다시 로그인 하시기 바랍니다!',
-  //     );
+      location.href = PATH.root;
+    };
 
-  //     useUserStore.persist.clearStorage();
-  //     isExitApplication = true;
+    if (!isExitApplication && status === 401) {
+      if (code === 'EXPIRED_ACCESS_TOKEN') {
+        const { data } = await refreshGetFetch();
 
-  //     // 메인 페이지로 리다이렉트
-  //     location.href = PATH.root;
-  //   }
-  // }
+        if (data.accessToken) {
+          useUserStore.setState({ accessToken: data.accessToken });
 
-  return res;
-});
+          originalRequest.headers['Authorization'] = data.accessToken;
+
+          return apiFetch(originalRequest);
+        } else {
+          alert('토큰 갱신에 실패했습니다. 다시 로그인해주세요!');
+
+          logout();
+        }
+      }
+      if (code === 'EXPIRED_REFRESH_TOKEN') {
+        alert('세션이 만료되었습니다. 다시 로그인해주세요!');
+
+        logout();
+      }
+      return Promise.reject(error);
+    }
+  },
+);

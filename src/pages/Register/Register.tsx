@@ -2,9 +2,6 @@ import { FieldError, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Layout } from '@/layout';
-
-import { Appbar } from '@/components/Appbar';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/ui/button';
 import { AddressSearch } from './AddressSearch';
@@ -105,97 +102,94 @@ const Register = () => {
 
   return (
     <>
-      <Appbar />
-      <Layout>
-        <div className="w-[30rem] m-auto py-10">
-          <div className="mb-14">
-            <h3 className="mb-6 text-2xl font-semibold text-center text-primary">환영합니다</h3>
-            <p className="text-lg text-center text-gray400">회원가입 하기</p>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <Input
-                name="email"
-                control={control}
-                type="email"
-                extractNumber={false}
-                label="이메일"
-                placeholder="example@example.com"
-                error={errors?.email}
-                addon={{
-                  buttonText: '중복확인',
-                  color: '#000',
-                  onSubmit: handleDoubleCheckEmail,
-                }}
-              />
-            </div>
-            <div className="my-8">
-              <Input
-                name="name"
-                control={control}
-                type="text"
-                extractNumber={false}
-                label="이름"
-                placeholder="홍길동"
-                error={errors?.name}
-              />
-            </div>
-            <div className="my-8">
-              <Input
-                name="birth"
-                control={control}
-                type="text"
-                extractNumber={true}
-                label="생년월일"
-                placeholder="YYYYMMDD"
-                maxLength={8}
-                error={errors?.birth}
-              />
-            </div>
-            <div className="my-8">
-              <Input
-                name="password"
-                control={control}
-                type="password"
-                extractNumber={false}
-                label="비밀번호"
-                placeholder="영어 대소문자, 특수문자 1자를 포함"
-                error={errors?.password}
-              />
-            </div>
-            <div className="my-8">
-              <Input
-                name="confirmPassword"
-                control={control}
-                type="password"
-                extractNumber={false}
-                label="비밀번호 확인"
-                placeholder="비밀번호 재입력"
-                error={errors?.confirmPassword}
-              />
-            </div>
-            <AddressSearch
-              name="firstAddress"
-              lastName="secondAddress"
+      <div className="w-[30rem] m-auto py-10">
+        <div className="mb-14">
+          <h3 className="mb-6 text-2xl font-semibold text-center text-primary">환영합니다</h3>
+          <p className="text-lg text-center text-gray400">회원가입 하기</p>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <Input
+              name="email"
               control={control}
-              errors={errors?.firstAddress as FieldError}
-              onAddressChange={(addr) => {
-                setValue('firstAddress', addr);
-
-                if (errors?.firstAddress) {
-                  clearErrors('firstAddress');
-
-                  return;
-                }
+              type="email"
+              extractNumber={false}
+              label="이메일"
+              placeholder="example@example.com"
+              error={errors?.email}
+              addon={{
+                buttonText: '중복확인',
+                color: '#000',
+                onSubmit: handleDoubleCheckEmail,
               }}
             />
+          </div>
+          <div className="my-8">
+            <Input
+              name="name"
+              control={control}
+              type="text"
+              extractNumber={false}
+              label="이름"
+              placeholder="홍길동"
+              error={errors?.name}
+            />
+          </div>
+          <div className="my-8">
+            <Input
+              name="birth"
+              control={control}
+              type="text"
+              extractNumber={true}
+              label="생년월일"
+              placeholder="YYYYMMDD"
+              maxLength={8}
+              error={errors?.birth}
+            />
+          </div>
+          <div className="my-8">
+            <Input
+              name="password"
+              control={control}
+              type="password"
+              extractNumber={false}
+              label="비밀번호"
+              placeholder="영어 대소문자, 특수문자 1자를 포함"
+              error={errors?.password}
+            />
+          </div>
+          <div className="my-8">
+            <Input
+              name="confirmPassword"
+              control={control}
+              type="password"
+              extractNumber={false}
+              label="비밀번호 확인"
+              placeholder="비밀번호 재입력"
+              error={errors?.confirmPassword}
+            />
+          </div>
+          <AddressSearch
+            name="firstAddress"
+            lastName="secondAddress"
+            control={control}
+            errors={errors?.firstAddress as FieldError}
+            onAddressChange={(addr) => {
+              setValue('firstAddress', addr);
 
-            <Button className="w-full my-8" type="submit">
-              회원가입 하기
-            </Button>
-          </form>
-        </div>
-      </Layout>
+              if (errors?.firstAddress) {
+                clearErrors('firstAddress');
+
+                return;
+              }
+            }}
+          />
+
+          <Button className="w-full my-8" type="submit">
+            회원가입 하기
+          </Button>
+        </form>
+      </div>
     </>
   );
 };

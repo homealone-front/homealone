@@ -3,6 +3,7 @@ import { uploadImage } from '@/utils/uploadImage';
 import { WriteRecipePostFetchParams } from '@/api/recipe/writeRecipePostFetch';
 import { RecipeSchemaType } from './RecipeWrite';
 import { RecipeDetailResponse } from '@/api/recipe/recipeDetailGetFetch';
+import { resizeAndConvertToWebp } from '@/utils/resizeAndConvertToWebp';
 
 /**
  * 레시피 수정 및 등록 파라미터를 포맷팅한다.
@@ -16,7 +17,8 @@ export const getRecipeCleansingData = async (data: RecipeSchemaType) => {
   const cleansingMainImage = (await Promise.all(
     images.map(async (item) => {
       if (item.image instanceof File) {
-        const uploadedImage = await uploadImage(item.image);
+        const resizedImage = await resizeAndConvertToWebp(item.image, { height: 224 });
+        const uploadedImage = await uploadImage(resizedImage as File);
 
         return {
           ...uploadedImage,

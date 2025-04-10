@@ -1,4 +1,4 @@
-import { CheckCircle, CircleXIcon } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { useUserStore } from '@/store/useUserStore';
 
@@ -26,14 +26,6 @@ export const useMemberInfoMutation = () => {
         title: '변경 사항이 저장되었습니다.',
         icon: <CheckCircle />,
         className: TOAST.success,
-      });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast({
-        title: '회원 정보 수정에 실패했습니다.',
-        icon: <CircleXIcon />,
-        className: TOAST.error,
       });
     },
   });

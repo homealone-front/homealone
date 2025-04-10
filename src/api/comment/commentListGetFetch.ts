@@ -63,6 +63,11 @@ export interface CommentListResponse extends ResponseModel {
    * 게시글 종류
    */
   postType: 'RECIPE' | 'ROOM' | 'TALK' | 'USEDTRADE';
+
+  /**
+   * 유저 댓글 좋아요 여부
+   */
+  likeByCurrentUser: boolean;
 }
 
 /**

@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "types": ["jest", "@testing-library/jest-dom"],
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
